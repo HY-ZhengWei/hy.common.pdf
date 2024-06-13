@@ -36,6 +36,9 @@ public class PDFText implements Serializable
     /** 文本颜色。支持 #FFFFFF 格式的颜色 */
     private String fontColor;
     
+    /** 字间距 */
+    private Float  fontSpacing;
+    
     
     
     /**
@@ -322,6 +325,27 @@ public class PDFText implements Serializable
     public PDFText setFontColor(String i_FontColor)
     {
         this.fontColor = i_FontColor;
+        return this;
+    }
+
+    
+    /**
+     * 获取：字间距
+     */
+    public Float getFontSpacing()
+    {
+        return fontSpacing;
+    }
+
+
+    /**
+     * 设置：字间距
+     * 
+     * @param i_FontSpacing 字间距
+     */
+    public PDFText setFontSpacing(Float i_FontSpacing)
+    {
+        this.fontSpacing = i_FontSpacing;
         return this;
     }
     

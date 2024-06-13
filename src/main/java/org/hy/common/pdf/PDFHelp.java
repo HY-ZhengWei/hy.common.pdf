@@ -13,7 +13,6 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
 import org.hy.common.Help;
 import org.hy.common.pdf.data.PDFText;
 import org.hy.common.pdf.data.PDFTextDomain;
@@ -71,48 +70,56 @@ public class PDFHelp
 
             // 开始在页面上写入内容
             v_ContentStream = new PDPageContentStream(v_Doc, v_Page);
-            PDFont  v_LastFont      = null;
-            Float   v_LastFontSize  = null;
-            PDColor v_LastFontColor = null;
+            PDFTextDomain v_LastFormat = new PDFTextDomain();  // 最近一次的格式
             for (PDFText v_Text : i_Texts)
             {
                 PDFTextDomain v_TextDomain = new PDFTextDomain(v_Text);
                 
-                // 是否延用上次的字体
+                // 开始写入内容
+                v_ContentStream.beginText();
+                
+                // 设置字体
                 if ( v_TextDomain.getPdFont() != null )
                 {
-                    v_LastFont = v_TextDomain.getPdFont();
+                    v_LastFormat.setPdFont(v_TextDomain.getPdFont());
                 }
                 else if ( !Help.isNull(v_TextDomain.getFontName()) )
                 {
                     // 可加载支持中文的字体
-                    v_LastFont = PDType0Font.load(v_Doc, new File(v_TextDomain.getFontName()));
+                    v_LastFormat.setPdFont(PDType0Font.load(v_Doc, new File(v_TextDomain.getFontName())));
                 }
                 
-                // 开始写入内容
-                v_ContentStream.beginText();
-                
-                // 设置字体和字号
-                if ( v_TextDomain.getFontSize() != null && v_LastFont != null )
+                // 设置字号
+                if ( v_TextDomain.getFontSize() != null )
                 {
-                    v_LastFontSize = v_TextDomain.getFontSize();
-                    v_ContentStream.setFont(v_LastFont, v_LastFontSize);
+                    v_LastFormat.setFontSize(v_TextDomain.getFontSize());
                 }
-                else if ( v_TextDomain.getPdFont() != null && v_LastFontSize != null )
+                if ( v_LastFormat.getFontSize() != null && v_LastFormat.getPdFont() != null )
                 {
-                    // 延用上次的字体大小
-                    v_ContentStream.setFont(v_LastFont, v_LastFontSize);
+                    // 延用上次的字体与字号
+                    v_ContentStream.setFont(v_LastFormat.getPdFont(), v_LastFormat.getFontSize());
                 }
                 
                 // 设置字体颜色。设置非描边颜色（即填充颜色）
                 if ( v_TextDomain.getPdColor() != null )
                 {
-                    v_LastFontColor = v_TextDomain.getPdColor();
+                    v_LastFormat.setPdColor(v_TextDomain.getPdColor());
                 }
-                if ( v_LastFontColor != null )
+                if ( v_LastFormat.getPdColor() != null )
                 {
                     // 延用上次的字体颜色
-                    v_ContentStream.setNonStrokingColor(v_LastFontColor);
+                    v_ContentStream.setNonStrokingColor(v_LastFormat.getPdColor());
+                }
+                
+                // 设置字间距
+                if ( v_TextDomain.getFontSpacing() != null )
+                {
+                    v_LastFormat.setFontSpacing(v_TextDomain.getFontSpacing());
+                }
+                if ( v_TextDomain.getFontSpacing() != null )
+                {
+                    // 延用上次的字间距
+                    v_ContentStream.setCharacterSpacing(v_TextDomain.getFontSpacing());
                 }
                 
                 // 设置文本起始位置

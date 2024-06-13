@@ -70,7 +70,7 @@ public class PDFTextDomain extends BaseDomain<PDFText> implements Serializable
         if ( !Help.isNull(this.data.getFontColor()) )
         {
             Color v_Color = Color.decode(this.data.getFontColor());
-            this.pdColor = new PDColor(new float[]{v_Color.getRed() / 255 ,v_Color.getGreen() / 255 ,v_Color.getBlue() / 255}, PDDeviceRGB.INSTANCE);
+            this.pdColor = new PDColor(new float[]{v_Color.getRed() / 255F ,v_Color.getGreen() / 255F ,v_Color.getBlue() / 255F}, PDDeviceRGB.INSTANCE);
         }
     }
 
@@ -253,6 +253,26 @@ public class PDFTextDomain extends BaseDomain<PDFText> implements Serializable
     public void setPdColor(PDColor i_PdColor)
     {
         this.pdColor = i_PdColor;
+    }
+    
+    
+    /**
+     * 获取：字间距
+     */
+    public Float getFontSpacing()
+    {
+        return this.data.getFontSpacing();
+    }
+
+
+    /**
+     * 设置：字间距
+     * 
+     * @param i_FontSpacing 字间距
+     */
+    public void setFontSpacing(Float i_FontSpacing)
+    {
+        this.data.setFontSpacing(i_FontSpacing);
     }
     
 }
