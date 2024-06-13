@@ -315,4 +315,24 @@ public class PDFTextDomain extends BaseDomain<PDFText> implements Serializable
         this.data.setHorizontalScaling(i_HorizontalScaling);
     }
     
+    
+    /**
+     * 获取：文本的垂直偏移量，可实现上标与下标的功能
+     */
+    public Float getTextRise()
+    {
+        return this.data.getTextRise();
+    }
+
+    
+    /**
+     * 设置：文本的垂直偏移量，可实现上标与下标的功能
+     * 
+     * @param i_TextRise 文本的垂直偏移量，可实现上标与下标的功能
+     */
+    public void setTextRise(Float i_TextRise)
+    {
+        this.data.setTextRise(i_TextRise);
+    }
+    
 }

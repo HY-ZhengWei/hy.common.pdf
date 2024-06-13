@@ -290,6 +290,17 @@ public class PDFHelp
                 io_ContentStream.setHorizontalScaling(v_TextDomain.getHorizontalScaling());
             }
             
+            // 设置文本的上标与下标
+            if ( v_TextDomain.getTextRise() != null )
+            {
+                v_LastFormat.setTextRise(v_TextDomain.getTextRise());
+            }
+            if ( v_TextDomain.getTextRise() != null )
+            {
+                // 延用上次的文本的上标与下标
+                io_ContentStream.setTextRise(v_TextDomain.getTextRise());
+            }
+            
             // 设置文本起始位置
             if ( v_TextDomain.getTextX() != null && v_TextDomain.getTextY() != null )
             {

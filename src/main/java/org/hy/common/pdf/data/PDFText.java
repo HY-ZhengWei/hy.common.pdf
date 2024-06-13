@@ -45,6 +45,9 @@ public class PDFText implements Serializable
     /** 文本的水平缩放比例 */
     private Float  horizontalScaling;
     
+    /** 文本的垂直偏移量，可实现上标与下标的功能 */
+    private Float  textRise;
+    
     
     
     /**
@@ -394,6 +397,27 @@ public class PDFText implements Serializable
     public PDFText setHorizontalScaling(Float i_HorizontalScaling)
     {
         this.horizontalScaling = i_HorizontalScaling;
+        return this;
+    }
+
+    
+    /**
+     * 获取：文本的垂直偏移量，可实现上标与下标的功能
+     */
+    public Float getTextRise()
+    {
+        return textRise;
+    }
+
+    
+    /**
+     * 设置：文本的垂直偏移量，可实现上标与下标的功能
+     * 
+     * @param i_TextRise 文本的垂直偏移量，可实现上标与下标的功能
+     */
+    public PDFText setTextRise(Float i_TextRise)
+    {
+        this.textRise = i_TextRise;
         return this;
     }
     
