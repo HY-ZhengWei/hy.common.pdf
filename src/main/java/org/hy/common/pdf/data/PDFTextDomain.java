@@ -1,11 +1,14 @@
 package org.hy.common.pdf.data;
 
+import java.awt.Color;
 import java.io.Serializable;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
+import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
+import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
 import org.hy.common.Help;
 import org.hy.common.pdf.common.BaseDomain;
 
@@ -28,10 +31,13 @@ public class PDFTextDomain extends BaseDomain<PDFText> implements Serializable
 
     
     /** 字体名称的枚举类型 */
-    private FontName fontName;
+    private FontName fontNameType;
     
     /** 字体对象 */
     private PDFont   pdFont;
+    
+    /** 字体颜色对象 */
+    private PDColor  pdColor;
     
     
     
@@ -46,14 +52,25 @@ public class PDFTextDomain extends BaseDomain<PDFText> implements Serializable
     {
         this.data = i_PDFText;
         
-        // 转换为领域模型
+        // 转换字体
         if ( !Help.isNull(this.data.getFontName()) )
         {
             if ( Standard14Fonts.containsName(this.data.getFontName()) )
             {
-                this.fontName = Standard14Fonts.getMappedFontName(this.data.getFontName());
-                this.pdFont   = new PDType1Font(this.fontName);
+                this.fontNameType = Standard14Fonts.getMappedFontName(this.data.getFontName());
+                this.pdFont       = new PDType1Font(this.fontNameType);
             }
+            else
+            {
+                // 自定字体在 PDFHelp 中加载
+            }
+        }
+        
+        // 转换字体颜色
+        if ( !Help.isNull(this.data.getFontColor()) )
+        {
+            Color v_Color = Color.decode(this.data.getFontColor());
+            this.pdColor = new PDColor(new float[]{v_Color.getRed() / 255 ,v_Color.getGreen() / 255 ,v_Color.getBlue() / 255}, PDDeviceRGB.INSTANCE);
         }
     }
 
@@ -142,20 +159,40 @@ public class PDFTextDomain extends BaseDomain<PDFText> implements Serializable
     /**
      * 获取：字体名称的枚举类型
      */
-    public FontName getFontName()
+    public FontName getFontNameType()
     {
-        return fontName;
+        return fontNameType;
     }
 
     
     /**
      * 设置：字体名称的枚举类型
      * 
+     * @param i_FontNameType 字体名称
+     */
+    public void setFontName(FontName i_FontNameType)
+    {
+        this.fontNameType = i_FontNameType;
+    }
+    
+    
+    /**
+     * 获取：字体名称
+     */
+    public String getFontName()
+    {
+        return this.data.getFontName();
+    }
+
+    
+    /**
+     * 设置：字体名称
+     * 
      * @param i_FontName 字体名称
      */
-    public void setFontName(FontName i_FontName)
+    public void setFontName(String i_FontName)
     {
-        this.fontName = i_FontName;
+        this.data.setFontName(i_FontName);
     }
 
     
@@ -176,6 +213,46 @@ public class PDFTextDomain extends BaseDomain<PDFText> implements Serializable
     public void setPdFont(PDFont i_PdFont)
     {
         this.pdFont = i_PdFont;
+    }
+    
+    
+    /**
+     * 获取：文本颜色
+     */
+    public String getFontColor()
+    {
+        return this.data.getFontColor();
+    }
+
+    
+    /**
+     * 设置：文本颜色
+     * 
+     * @param i_FontColor 文本颜色
+     */
+    public void setFontColor(String i_FontColor)
+    {
+        this.data.setFontColor(i_FontColor);
+    }
+
+    
+    /**
+     * 获取：字体颜色对象
+     */
+    public PDColor getPdColor()
+    {
+        return pdColor;
+    }
+
+    
+    /**
+     * 设置：字体颜色对象
+     * 
+     * @param i_PdColor 字体颜色对象
+     */
+    public void setPdColor(PDColor i_PdColor)
+    {
+        this.pdColor = i_PdColor;
     }
     
 }

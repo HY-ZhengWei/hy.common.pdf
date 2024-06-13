@@ -1,5 +1,6 @@
 package org.hy.common.pdf.junit.alipay;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,15 @@ public class JU_Alipay
     
     
     
+    @Test
+    public void editAlipayPDF()
+    {
+        String v_AlipayPDF = "D:\\Template.pdf";
+        PDFHelp.edit(new File(v_AlipayPDF) ,makeDatas());
+    }
+    
+    
+    
     /**
      * 生成PDF数据
      * 
@@ -50,8 +60,8 @@ public class JU_Alipay
         List<PDFText> v_Texts = new ArrayList<PDFText>();
         
         // Company
-        v_Texts.add(new PDFText("China Company"                       ,70F ,663F ,12F ,"Helvetica"));
-        v_Texts.add(new PDFText("Xi'an City, Shaanxi Province, China" ,70F  ,644F));
+        v_Texts.add(new PDFText("蚂蚁科技集团股份有限公司"               ,70F  ,663F ,12F ,"D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\DENGB.TTF"));
+        v_Texts.add(new PDFText("Xi'an City, Shaanxi Province, China" ,70F  ,644F ,"Helvetica"));
         v_Texts.add(new PDFText("Wuhan City, Hubei Province, China"   ,70F  ,624F));
         
         // Guest Details
@@ -63,7 +73,7 @@ public class JU_Alipay
         v_Texts.add(new PDFText("Correct Hotel"                       ,300F ,481F));
         v_Texts.add(new PDFText("2024-06-13"                          ,300F ,463F));
         v_Texts.add(new PDFText("2024-06-28"                          ,300F ,444F));
-        v_Texts.add(new PDFText("3"                                   ,300F ,426F));
+        v_Texts.add(new PDFText("5"                                   ,300F ,426F));
         v_Texts.add(new PDFText("2024-04-28"                          ,300F ,408F));
         
         // Price Details
@@ -105,8 +115,8 @@ public class JU_Alipay
         List<PDFText> v_Texts = new ArrayList<PDFText>();
         
         // Company
-        v_Texts.add(new PDFText("China Company"                       ,70F ,663F ,12F ,"Helvetica"));
-        v_Texts.add(new PDFText("Xi'an City, Shaanxi Province, China" ,70F  ,644F));
+        v_Texts.add(new PDFText("蚂蚁科技集团股份有限公司"               ,70F  ,663F ,12F ,"D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\DENGB.TTF"));
+        v_Texts.add(new PDFText("Xi'an City, Shaanxi Province, China" ,70F  ,644F ,"Helvetica"));
         v_Texts.add(new PDFText("Wuhan City, Hubei Province, China"   ,70F  ,624F));
         
         // Guest Details
@@ -119,7 +129,7 @@ public class JU_Alipay
         v_Texts.add(new PDFText("CANCELED"                            ,300F ,463F));
         v_Texts.add(new PDFText("2024-06-13"                          ,300F ,444F));
         v_Texts.add(new PDFText("2024-06-28"                          ,300F ,426F));
-        v_Texts.add(new PDFText("3"                                   ,300F ,408F));
+        v_Texts.add(new PDFText("5"                                   ,300F ,408F));
         v_Texts.add(new PDFText("2024-04-28"                          ,300F ,391F));
         
         // Price Details
@@ -128,8 +138,8 @@ public class JU_Alipay
         v_Texts.add(new PDFText("CNY 450.00"                          ,300F ,320F ,"Helvetica-Bold"));
         
         // Refund Details
-        v_Texts.add(new PDFText("CNY 300.00"                           ,300F ,284.5F ,"Helvetica"));
-        v_Texts.add(new PDFText("CNY 150.00"                           ,300F ,266F));
+        v_Texts.add(new PDFText("CNY 300.00"                          ,300F ,284.5F ,"Helvetica"));
+        v_Texts.add(new PDFText("CNY 150.00"                          ,300F ,266F).setFontColor("#FF0000"));
         
         return v_Texts;
     }

@@ -12,6 +12,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
 import org.hy.common.Help;
 import org.hy.common.pdf.data.PDFText;
 import org.hy.common.pdf.data.PDFTextDomain;
@@ -60,6 +62,7 @@ public class PDFHelp
         // 创建一个空的PDF文档
         PDDocument          v_Doc           = new PDDocument();
         PDPageContentStream v_ContentStream = null;
+        boolean             v_IsClose       = false;
 
         try {
             // 创建页面对象
@@ -68,6 +71,148 @@ public class PDFHelp
 
             // 开始在页面上写入内容
             v_ContentStream = new PDPageContentStream(v_Doc, v_Page);
+            PDFont  v_LastFont      = null;
+            Float   v_LastFontSize  = null;
+            PDColor v_LastFontColor = null;
+            for (PDFText v_Text : i_Texts)
+            {
+                PDFTextDomain v_TextDomain = new PDFTextDomain(v_Text);
+                
+                // 是否延用上次的字体
+                if ( v_TextDomain.getPdFont() != null )
+                {
+                    v_LastFont = v_TextDomain.getPdFont();
+                }
+                else if ( !Help.isNull(v_TextDomain.getFontName()) )
+                {
+                    // 可加载支持中文的字体
+                    v_LastFont = PDType0Font.load(v_Doc, new File(v_TextDomain.getFontName()));
+                }
+                
+                // 开始写入内容
+                v_ContentStream.beginText();
+                
+                // 设置字体和字号
+                if ( v_TextDomain.getFontSize() != null && v_LastFont != null )
+                {
+                    v_LastFontSize = v_TextDomain.getFontSize();
+                    v_ContentStream.setFont(v_LastFont, v_LastFontSize);
+                }
+                else if ( v_TextDomain.getPdFont() != null && v_LastFontSize != null )
+                {
+                    // 延用上次的字体大小
+                    v_ContentStream.setFont(v_LastFont, v_LastFontSize);
+                }
+                
+                // 设置字体颜色。设置非描边颜色（即填充颜色）
+                if ( v_TextDomain.getPdColor() != null )
+                {
+                    v_LastFontColor = v_TextDomain.getPdColor();
+                }
+                if ( v_LastFontColor != null )
+                {
+                    // 延用上次的字体颜色
+                    v_ContentStream.setNonStrokingColor(v_LastFontColor);
+                }
+                
+                // 设置文本起始位置
+                if ( v_TextDomain.getTextX() != null && v_TextDomain.getTextY() != null )
+                {
+                    v_ContentStream.newLineAtOffset(v_TextDomain.getTextX(), v_TextDomain.getTextY());
+                }
+                else
+                {
+                    v_ContentStream.newLine();
+                }
+                
+                // 写入文本
+                v_ContentStream.showText(v_TextDomain.getText());
+                // 结束写入内容
+                v_ContentStream.endText();
+            }
+            
+            v_ContentStream.close();
+            v_IsClose = true;
+
+            // 保存PDF文件
+            v_Doc.save(i_SaveFile ,CompressParameters.DEFAULT_COMPRESSION);
+            
+            return true;
+        }
+        catch (IOException exce)
+        {
+            $Logger.error(exce);
+        }
+        finally
+        {
+            if ( v_ContentStream != null && !v_IsClose )
+            {
+                try
+                {
+                    v_ContentStream.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+            }
+            v_ContentStream = null;
+            
+            if ( v_Doc != null )
+            {
+                try
+                {
+                    v_Doc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                
+                v_Doc = null;
+            }
+        }
+        
+        return false;
+    }
+    
+    
+    
+    /**
+     * 修改PDF文件。很可能造成原文件上的图片丢失
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param i_SaveFile  PDF保存路径
+     * @param i_Texts     PDF数据
+     * @return
+     */
+    public static boolean edit(File i_SaveFile ,List<PDFText> i_Texts)
+    {
+        if ( i_SaveFile == null || !i_SaveFile.exists() )
+        {
+            return false;
+        }
+        if ( Help.isNull(i_Texts) )
+        {
+            return false;
+        }
+        
+        // 创建一个空的PDF文档
+        PDDocument          v_Doc           = null;
+        PDPageContentStream v_ContentStream = null;
+        boolean             v_IsClose       = false;
+
+        try {
+            v_Doc = Loader.loadPDF(i_SaveFile);
+            
+            // 获取页面对象
+            PDPage v_Page = v_Doc.getPage(0); // 获取第一页（索引从0开始）
+
+            // 开始在页面上写入内容
+            v_ContentStream = new PDPageContentStream(v_Doc, v_Page ,PDPageContentStream.AppendMode.APPEND, true);
             PDFont v_LastFont     = null;
             Float  v_LastFontSize = null;
             for (PDFText v_Text : i_Texts)
@@ -78,6 +223,11 @@ public class PDFHelp
                 if ( v_TextDomain.getPdFont() != null )
                 {
                     v_LastFont = v_TextDomain.getPdFont();
+                }
+                else if ( !Help.isNull(v_TextDomain.getFontName()) )
+                {
+                    // 可加载支持中文的字体
+                    v_LastFont = PDType0Font.load(v_Doc, new File(v_TextDomain.getFontName()));
                 }
                 
                 // 开始写入内容
@@ -113,9 +263,10 @@ public class PDFHelp
             
             
             v_ContentStream.close();
+            v_IsClose = true;
 
             // 保存PDF文件
-            v_Doc.save(i_SaveFile ,CompressParameters.DEFAULT_COMPRESSION);
+            v_Doc.save(i_SaveFile);
             
             return true;
         }
@@ -125,7 +276,7 @@ public class PDFHelp
         }
         finally
         {
-            if ( v_ContentStream != null )
+            if ( v_ContentStream != null && !v_IsClose )
             {
                 try
                 {
@@ -135,9 +286,8 @@ public class PDFHelp
                 {
                     $Logger.error(exce);
                 }
-                
-                v_ContentStream = null;
             }
+            v_ContentStream = null;
             
             if ( v_Doc != null )
             {

@@ -33,8 +33,18 @@ public class PDFText implements Serializable
     /** 字体名称 */
     private String fontName;
     
+    /** 文本颜色。支持 #FFFFFF 格式的颜色 */
+    private String fontColor;
     
     
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     */
     public PDFText()
     {
         
@@ -42,6 +52,15 @@ public class PDFText implements Serializable
     
     
     
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param i_Text      文本信息
+     */
     public PDFText(String i_Text)
     {
         this(i_Text ,null ,null ,null ,null);
@@ -49,6 +68,16 @@ public class PDFText implements Serializable
     
     
     
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param i_Text      文本信息
+     * @param i_FontName  字体名称
+     */
     public PDFText(String i_Text ,String i_FontName)
     {
         this(i_Text ,null ,null ,null ,i_FontName);
@@ -56,6 +85,16 @@ public class PDFText implements Serializable
     
     
     
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param i_Text      文本信息
+     * @param i_FontSize  字体大小
+     */
     public PDFText(String i_Text ,Float i_FontSize)
     {
         this(i_Text ,null ,null ,i_FontSize ,null);
@@ -63,6 +102,17 @@ public class PDFText implements Serializable
     
     
     
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param i_Text      文本信息
+     * @param i_FontSize  字体大小
+     * @param i_FontName  字体名称
+     */
     public PDFText(String i_Text ,Float i_FontSize ,String i_FontName)
     {
         this(i_Text ,null ,null ,i_FontSize ,i_FontName);
@@ -70,6 +120,17 @@ public class PDFText implements Serializable
     
     
     
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param i_Text      文本信息
+     * @param i_TextX     文本位置 x 轴
+     * @param i_TextY     文本位置 y 轴
+     */
     public PDFText(String i_Text ,Float i_TextX ,Float i_TextY)
     {
         this(i_Text ,i_TextX ,i_TextY ,null ,null);
@@ -77,6 +138,18 @@ public class PDFText implements Serializable
     
     
     
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param i_Text      文本信息
+     * @param i_TextX     文本位置 x 轴
+     * @param i_TextY     文本位置 y 轴
+     * @param i_FontSize  字体大小
+     */
     public PDFText(String i_Text ,Float i_TextX ,Float i_TextY ,Float i_FontSize)
     {
         this(i_Text ,i_TextX ,i_TextY ,i_FontSize ,null);
@@ -84,6 +157,18 @@ public class PDFText implements Serializable
     
     
     
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param i_Text      文本信息
+     * @param i_TextX     文本位置 x 轴
+     * @param i_TextY     文本位置 y 轴
+     * @param i_FontName  字体名称
+     */
     public PDFText(String i_Text ,Float i_TextX ,Float i_TextY ,String i_FontName)
     {
         this(i_Text ,i_TextX ,i_TextY ,null ,i_FontName);
@@ -91,6 +176,19 @@ public class PDFText implements Serializable
     
     
     
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param i_Text      文本信息
+     * @param i_TextX     文本位置 x 轴
+     * @param i_TextY     文本位置 y 轴
+     * @param i_FontSize  字体大小
+     * @param i_FontName  字体名称
+     */
     public PDFText(String i_Text ,Float i_TextX ,Float i_TextY ,Float i_FontSize ,String i_FontName)
     {
         this.text     = i_Text;
@@ -116,9 +214,10 @@ public class PDFText implements Serializable
      * 
      * @param i_Text 文本信息
      */
-    public void setText(String i_Text)
+    public PDFText setText(String i_Text)
     {
         this.text = i_Text;
+        return this;
     }
 
     
@@ -136,9 +235,10 @@ public class PDFText implements Serializable
      * 
      * @param i_TextX 文本位置 x 轴
      */
-    public void setTextX(Float i_TextX)
+    public PDFText setTextX(Float i_TextX)
     {
         this.textX = i_TextX;
+        return this;
     }
 
     
@@ -156,9 +256,10 @@ public class PDFText implements Serializable
      * 
      * @param i_TextY 文本位置 y 轴
      */
-    public void setTextY(Float i_TextY)
+    public PDFText setTextY(Float i_TextY)
     {
         this.textY = i_TextY;
+        return this;
     }
 
     
@@ -176,9 +277,10 @@ public class PDFText implements Serializable
      * 
      * @param i_FontSize 字体大小
      */
-    public void setFontSize(Float i_FontSize)
+    public PDFText setFontSize(Float i_FontSize)
     {
         this.fontSize = i_FontSize;
+        return this;
     }
 
     
@@ -196,9 +298,31 @@ public class PDFText implements Serializable
      * 
      * @param i_FontName 字体名称
      */
-    public void setFontName(String i_FontName)
+    public PDFText setFontName(String i_FontName)
     {
         this.fontName = i_FontName;
+        return this;
+    }
+
+    
+    /**
+     * 获取：文本颜色。支持 #FFFFFF 格式的颜色
+     */
+    public String getFontColor()
+    {
+        return fontColor;
+    }
+
+    
+    /**
+     * 设置：文本颜色
+     * 
+     * @param i_FontColor 文本颜色。支持 #FFFFFF 格式的颜色
+     */
+    public PDFText setFontColor(String i_FontColor)
+    {
+        this.fontColor = i_FontColor;
+        return this;
     }
     
 }
