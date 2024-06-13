@@ -295,4 +295,24 @@ public class PDFTextDomain extends BaseDomain<PDFText> implements Serializable
         this.data.setLeading(i_Leading);
     }
     
+    
+    /**
+     * 获取：文本的水平缩放比例
+     */
+    public Float getHorizontalScaling()
+    {
+        return this.data.getHorizontalScaling();
+    }
+
+    
+    /**
+     * 设置：文本的水平缩放比例
+     * 
+     * @param i_HorizontalScaling 文本的水平缩放比例
+     */
+    public void setHorizontalScaling(Float i_HorizontalScaling)
+    {
+        this.data.setHorizontalScaling(i_HorizontalScaling);
+    }
+    
 }

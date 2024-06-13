@@ -375,5 +375,26 @@ public class PDFText implements Serializable
         this.leading = i_Leading;
         return this;
     }
+
+
+    /**
+     * 获取：文本的水平缩放比例
+     */
+    public Float getHorizontalScaling()
+    {
+        return horizontalScaling;
+    }
+
+    
+    /**
+     * 设置：文本的水平缩放比例
+     * 
+     * @param i_HorizontalScaling 文本的水平缩放比例
+     */
+    public PDFText setHorizontalScaling(Float i_HorizontalScaling)
+    {
+        this.horizontalScaling = i_HorizontalScaling;
+        return this;
+    }
     
 }

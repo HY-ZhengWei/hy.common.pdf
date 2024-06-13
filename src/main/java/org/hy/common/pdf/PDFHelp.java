@@ -279,6 +279,17 @@ public class PDFHelp
                 io_ContentStream.setLeading(v_TextDomain.getLeading());
             }
             
+            // 设置文本的水平缩放比例
+            if ( v_TextDomain.getHorizontalScaling() != null )
+            {
+                v_LastFormat.setHorizontalScaling(v_TextDomain.getHorizontalScaling());
+            }
+            if ( v_TextDomain.getHorizontalScaling() != null )
+            {
+                // 延用上次的文本的水平缩放比例
+                io_ContentStream.setHorizontalScaling(v_TextDomain.getHorizontalScaling());
+            }
+            
             // 设置文本起始位置
             if ( v_TextDomain.getTextX() != null && v_TextDomain.getTextY() != null )
             {
