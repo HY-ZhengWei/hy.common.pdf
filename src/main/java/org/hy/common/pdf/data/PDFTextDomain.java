@@ -335,4 +335,24 @@ public class PDFTextDomain extends BaseDomain<PDFText> implements Serializable
         this.data.setTextRise(i_TextRise);
     }
     
+    
+    /**
+     * 获取：单词间距
+     */
+    public Float getWordSpacing()
+    {
+        return this.data.getWordSpacing();
+    }
+
+    
+    /**
+     * 设置：单词间距
+     * 
+     * @param i_WordSpacing 单词间距
+     */
+    public void setWordSpacing(Float i_WordSpacing)
+    {
+        this.data.setWordSpacing(i_WordSpacing);
+    }
+    
 }

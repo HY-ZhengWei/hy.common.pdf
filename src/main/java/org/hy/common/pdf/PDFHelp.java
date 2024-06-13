@@ -268,6 +268,17 @@ public class PDFHelp
                 io_ContentStream.setCharacterSpacing(v_TextDomain.getFontSpacing());
             }
             
+            // 设置字间距
+            if ( v_TextDomain.getWordSpacing() != null )
+            {
+                v_LastFormat.setWordSpacing(v_TextDomain.getWordSpacing());
+            }
+            if ( v_TextDomain.getWordSpacing() != null )
+            {
+                // 延用上次的字间距
+                io_ContentStream.setWordSpacing(v_TextDomain.getWordSpacing());
+            }
+            
             // 设置行间距
             if ( v_TextDomain.getLeading() != null )
             {

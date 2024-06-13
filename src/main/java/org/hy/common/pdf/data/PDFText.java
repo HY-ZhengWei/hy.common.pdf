@@ -39,6 +39,9 @@ public class PDFText implements Serializable
     /** 字间距 */
     private Float  fontSpacing;
     
+    /** 单词间距 */
+    private Float  wordSpacing;
+    
     /** 行间距 */
     private Float  leading;
     
@@ -418,6 +421,27 @@ public class PDFText implements Serializable
     public PDFText setTextRise(Float i_TextRise)
     {
         this.textRise = i_TextRise;
+        return this;
+    }
+
+    
+    /**
+     * 获取：单词间距
+     */
+    public Float getWordSpacing()
+    {
+        return wordSpacing;
+    }
+
+    
+    /**
+     * 设置：单词间距
+     * 
+     * @param i_WordSpacing 单词间距
+     */
+    public PDFText setWordSpacing(Float i_WordSpacing)
+    {
+        this.wordSpacing = i_WordSpacing;
         return this;
     }
     
