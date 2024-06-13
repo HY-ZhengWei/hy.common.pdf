@@ -11,7 +11,6 @@ import org.apache.pdfbox.pdfwriter.compress.CompressParameters;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.hy.common.Help;
 import org.hy.common.pdf.data.PDFText;
@@ -70,73 +69,7 @@ public class PDFHelp
 
             // 开始在页面上写入内容
             v_ContentStream = new PDPageContentStream(v_Doc, v_Page);
-            PDFTextDomain v_LastFormat = new PDFTextDomain();  // 最近一次的格式
-            for (PDFText v_Text : i_Texts)
-            {
-                PDFTextDomain v_TextDomain = new PDFTextDomain(v_Text);
-                
-                // 开始写入内容
-                v_ContentStream.beginText();
-                
-                // 设置字体
-                if ( v_TextDomain.getPdFont() != null )
-                {
-                    v_LastFormat.setPdFont(v_TextDomain.getPdFont());
-                }
-                else if ( !Help.isNull(v_TextDomain.getFontName()) )
-                {
-                    // 可加载支持中文的字体
-                    v_LastFormat.setPdFont(PDType0Font.load(v_Doc, new File(v_TextDomain.getFontName())));
-                }
-                
-                // 设置字号
-                if ( v_TextDomain.getFontSize() != null )
-                {
-                    v_LastFormat.setFontSize(v_TextDomain.getFontSize());
-                }
-                if ( v_LastFormat.getFontSize() != null && v_LastFormat.getPdFont() != null )
-                {
-                    // 延用上次的字体与字号
-                    v_ContentStream.setFont(v_LastFormat.getPdFont(), v_LastFormat.getFontSize());
-                }
-                
-                // 设置字体颜色。设置非描边颜色（即填充颜色）
-                if ( v_TextDomain.getPdColor() != null )
-                {
-                    v_LastFormat.setPdColor(v_TextDomain.getPdColor());
-                }
-                if ( v_LastFormat.getPdColor() != null )
-                {
-                    // 延用上次的字体颜色
-                    v_ContentStream.setNonStrokingColor(v_LastFormat.getPdColor());
-                }
-                
-                // 设置字间距
-                if ( v_TextDomain.getFontSpacing() != null )
-                {
-                    v_LastFormat.setFontSpacing(v_TextDomain.getFontSpacing());
-                }
-                if ( v_TextDomain.getFontSpacing() != null )
-                {
-                    // 延用上次的字间距
-                    v_ContentStream.setCharacterSpacing(v_TextDomain.getFontSpacing());
-                }
-                
-                // 设置文本起始位置
-                if ( v_TextDomain.getTextX() != null && v_TextDomain.getTextY() != null )
-                {
-                    v_ContentStream.newLineAtOffset(v_TextDomain.getTextX(), v_TextDomain.getTextY());
-                }
-                else
-                {
-                    v_ContentStream.newLine();
-                }
-                
-                // 写入文本
-                v_ContentStream.showText(v_TextDomain.getText());
-                // 结束写入内容
-                v_ContentStream.endText();
-            }
+            pageContent(v_Doc ,v_ContentStream ,i_Texts);
             
             v_ContentStream.close();
             v_IsClose = true;
@@ -220,54 +153,7 @@ public class PDFHelp
 
             // 开始在页面上写入内容
             v_ContentStream = new PDPageContentStream(v_Doc, v_Page ,PDPageContentStream.AppendMode.APPEND, true);
-            PDFont v_LastFont     = null;
-            Float  v_LastFontSize = null;
-            for (PDFText v_Text : i_Texts)
-            {
-                PDFTextDomain v_TextDomain = new PDFTextDomain(v_Text);
-                
-                // 是否延用上次的字体
-                if ( v_TextDomain.getPdFont() != null )
-                {
-                    v_LastFont = v_TextDomain.getPdFont();
-                }
-                else if ( !Help.isNull(v_TextDomain.getFontName()) )
-                {
-                    // 可加载支持中文的字体
-                    v_LastFont = PDType0Font.load(v_Doc, new File(v_TextDomain.getFontName()));
-                }
-                
-                // 开始写入内容
-                v_ContentStream.beginText();
-                
-                // 设置字体和字号
-                if ( v_TextDomain.getFontSize() != null && v_LastFont != null )
-                {
-                    v_LastFontSize = v_TextDomain.getFontSize();
-                    v_ContentStream.setFont(v_LastFont, v_LastFontSize);
-                }
-                else if ( v_TextDomain.getPdFont() != null && v_LastFontSize != null )
-                {
-                    // 延用上次的字体大小
-                    v_ContentStream.setFont(v_LastFont, v_LastFontSize);
-                }
-                
-                // 设置文本起始位置
-                if ( v_TextDomain.getTextX() != null && v_TextDomain.getTextY() != null )
-                {
-                    v_ContentStream.newLineAtOffset(v_TextDomain.getTextX(), v_TextDomain.getTextY());
-                }
-                else
-                {
-                    v_ContentStream.newLine();
-                }
-                
-                // 写入文本
-                v_ContentStream.showText(v_TextDomain.getText());
-                // 结束写入内容
-                v_ContentStream.endText();
-            }
-            
+            pageContent(v_Doc ,v_ContentStream ,i_Texts);
             
             v_ContentStream.close();
             v_IsClose = true;
@@ -312,6 +198,102 @@ public class PDFHelp
         }
         
         return false;
+    }
+    
+    
+    
+    /**
+     * 处理PDF页内容
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param io_Doc            PDF文件
+     * @param io_ContentStream  PDF页
+     * @param i_Texts           文本数据
+     * @throws IOException
+     */
+    private static void pageContent(PDDocument io_Doc ,PDPageContentStream io_ContentStream ,List<PDFText> i_Texts) throws IOException
+    {
+        PDFTextDomain v_LastFormat = new PDFTextDomain();  // 最近一次的格式
+        for (PDFText v_Text : i_Texts)
+        {
+            PDFTextDomain v_TextDomain = new PDFTextDomain(v_Text);
+            
+            // 开始写入内容
+            io_ContentStream.beginText();
+            
+            // 设置字体
+            if ( v_TextDomain.getPdFont() != null )
+            {
+                v_LastFormat.setPdFont(v_TextDomain.getPdFont());
+            }
+            else if ( !Help.isNull(v_TextDomain.getFontName()) )
+            {
+                // 可加载支持中文的字体
+                v_LastFormat.setPdFont(PDType0Font.load(io_Doc, new File(v_TextDomain.getFontName())));
+            }
+            
+            // 设置字号
+            if ( v_TextDomain.getFontSize() != null )
+            {
+                v_LastFormat.setFontSize(v_TextDomain.getFontSize());
+            }
+            if ( v_LastFormat.getFontSize() != null && v_LastFormat.getPdFont() != null )
+            {
+                // 延用上次的字体与字号
+                io_ContentStream.setFont(v_LastFormat.getPdFont(), v_LastFormat.getFontSize());
+            }
+            
+            // 设置字体颜色。设置非描边颜色（即填充颜色）
+            if ( v_TextDomain.getPdColor() != null )
+            {
+                v_LastFormat.setPdColor(v_TextDomain.getPdColor());
+            }
+            if ( v_LastFormat.getPdColor() != null )
+            {
+                // 延用上次的字体颜色
+                io_ContentStream.setNonStrokingColor(v_LastFormat.getPdColor());
+            }
+            
+            // 设置字间距
+            if ( v_TextDomain.getFontSpacing() != null )
+            {
+                v_LastFormat.setFontSpacing(v_TextDomain.getFontSpacing());
+            }
+            if ( v_TextDomain.getFontSpacing() != null )
+            {
+                // 延用上次的字间距
+                io_ContentStream.setCharacterSpacing(v_TextDomain.getFontSpacing());
+            }
+            
+            // 设置行间距
+            if ( v_TextDomain.getLeading() != null )
+            {
+                v_LastFormat.setLeading(v_TextDomain.getLeading());
+            }
+            if ( v_TextDomain.getLeading() != null )
+            {
+                // 延用上次的行间距
+                io_ContentStream.setLeading(v_TextDomain.getLeading());
+            }
+            
+            // 设置文本起始位置
+            if ( v_TextDomain.getTextX() != null && v_TextDomain.getTextY() != null )
+            {
+                io_ContentStream.newLineAtOffset(v_TextDomain.getTextX(), v_TextDomain.getTextY());
+            }
+            else
+            {
+                io_ContentStream.newLine();
+            }
+            
+            // 写入文本
+            io_ContentStream.showText(v_TextDomain.getText());
+            // 结束写入内容
+            io_ContentStream.endText();
+        }
     }
     
     

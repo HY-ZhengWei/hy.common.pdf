@@ -39,6 +39,12 @@ public class PDFText implements Serializable
     /** 字间距 */
     private Float  fontSpacing;
     
+    /** 行间距 */
+    private Float  leading;
+    
+    /** 文本的水平缩放比例 */
+    private Float  horizontalScaling;
+    
     
     
     /**
@@ -346,6 +352,27 @@ public class PDFText implements Serializable
     public PDFText setFontSpacing(Float i_FontSpacing)
     {
         this.fontSpacing = i_FontSpacing;
+        return this;
+    }
+
+    
+    /**
+     * 获取：行间距
+     */
+    public Float getLeading()
+    {
+        return leading;
+    }
+
+    
+    /**
+     * 设置：行间距
+     * 
+     * @param i_Leading 行间距
+     */
+    public PDFText setLeading(Float i_Leading)
+    {
+        this.leading = i_Leading;
         return this;
     }
     

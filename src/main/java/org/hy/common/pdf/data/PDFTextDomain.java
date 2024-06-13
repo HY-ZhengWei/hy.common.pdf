@@ -275,4 +275,24 @@ public class PDFTextDomain extends BaseDomain<PDFText> implements Serializable
         this.data.setFontSpacing(i_FontSpacing);
     }
     
+    
+    /**
+     * 获取：行间距
+     */
+    public Float getLeading()
+    {
+        return this.data.getLeading();
+    }
+
+    
+    /**
+     * 设置：行间距
+     * 
+     * @param i_Leading 行间距
+     */
+    public void setLeading(Float i_Leading)
+    {
+        this.data.setLeading(i_Leading);
+    }
+    
 }
