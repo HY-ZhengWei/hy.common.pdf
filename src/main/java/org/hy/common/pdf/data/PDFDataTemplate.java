@@ -54,6 +54,21 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     /** 文本的垂直偏移量，可实现上标与下标的功能 */
     private Float  textRise;
     
+    /** 图片路径 */
+    private String imagePath;
+    
+    /** 图片宽度 */
+    private Float  imageWidth;
+    
+    /** 图片高度 */
+    private Float  imageHeight;
+    
+    /** 图片宽度缩放比例 */
+    private Float  imageWidthScale;
+    
+    /** 图片高度缩放比例 */
+    private Float  imageHeightScale;
+    
     
     
     /**
@@ -438,6 +453,116 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     public I setWordSpacing(Float i_WordSpacing)
     {
         this.wordSpacing = i_WordSpacing;
+        return (I) this;
+    }
+
+
+    /**
+     * 获取：图片路径
+     */
+    public String getImagePath()
+    {
+        return imagePath;
+    }
+
+
+    /**
+     * 设置：图片路径
+     * 
+     * @param i_ImagePath 图片路径
+     */
+    @SuppressWarnings("unchecked")
+    public I setImagePath(String i_ImagePath)
+    {
+        this.imagePath = i_ImagePath;
+        return (I) this;
+    }
+
+
+    /**
+     * 获取：图片宽度
+     */
+    public Float getImageWidth()
+    {
+        return imageWidth;
+    }
+
+
+    /**
+     * 设置：图片宽度
+     * 
+     * @param i_ImageWidth 图片宽度
+     */
+    @SuppressWarnings("unchecked")
+    public I setImageWidth(Float i_ImageWidth)
+    {
+        this.imageWidth = i_ImageWidth;
+        return (I) this;
+    }
+
+    
+    /**
+     * 获取：图片高度
+     */
+    public Float getImageHeight()
+    {
+        return imageHeight;
+    }
+
+
+    /**
+     * 设置：图片高度
+     * 
+     * @param i_ImageHeight 图片高度
+     */
+    @SuppressWarnings("unchecked")
+    public I setImageHeight(Float i_ImageHeight)
+    {
+        this.imageHeight = i_ImageHeight;
+        return (I) this;
+    }
+
+
+    /**
+     * 获取：图片宽度缩放比例
+     */
+    public Float getImageWidthScale()
+    {
+        return imageWidthScale;
+    }
+
+    
+    /**
+     * 设置：图片宽度缩放比例
+     * 
+     * @param i_ImageWidthScale 图片宽度缩放比例
+     */
+    @SuppressWarnings("unchecked")
+    public I setImageWidthScale(Float i_ImageWidthScale)
+    {
+        this.imageWidthScale = i_ImageWidthScale;
+        return (I) this;
+    }
+
+
+    /**
+     * 获取：图片高度缩放比例
+     */
+    public Float getImageHeightScale()
+    {
+        return imageHeightScale;
+    }
+
+
+    /**
+     * 设置：图片高度缩放比例
+     * 
+     * @param i_ImageHeightScale 图片高度缩放比例
+     */
+    @SuppressWarnings("unchecked")
+    public I setImageHeightScale(Float i_ImageHeightScale)
+    {
+        this.imageHeightScale = i_ImageHeightScale;
         return (I) this;
     }
     

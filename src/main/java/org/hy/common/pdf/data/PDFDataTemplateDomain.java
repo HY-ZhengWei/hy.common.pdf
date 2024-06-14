@@ -356,4 +356,104 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
         this.data.setWordSpacing(i_WordSpacing);
     }
     
+    
+    /**
+     * 获取：图片路径
+     */
+    public String getImagePath()
+    {
+        return this.data.getImagePath();
+    }
+
+
+    /**
+     * 设置：图片路径
+     * 
+     * @param i_ImagePath 图片路径
+     */
+    public void setImagePath(String i_ImagePath)
+    {
+        this.data.setImagePath(i_ImagePath);
+    }
+
+
+    /**
+     * 获取：图片宽度
+     */
+    public Float getImageWidth()
+    {
+        return this.data.getImageWidth();
+    }
+
+
+    /**
+     * 设置：图片宽度
+     * 
+     * @param i_ImageWidth 图片宽度
+     */
+    public void setImageWidth(Float i_ImageWidth)
+    {
+        this.data.setImageWidth(i_ImageWidth);
+    }
+
+    
+    /**
+     * 获取：图片高度
+     */
+    public Float getImageHeight()
+    {
+        return this.data.getImageHeight();
+    }
+
+
+    /**
+     * 设置：图片高度
+     * 
+     * @param i_ImageHeight 图片高度
+     */
+    public void setImageHeight(Float i_ImageHeight)
+    {
+        this.data.setImageHeight(i_ImageHeight);
+    }
+
+
+    /**
+     * 获取：图片宽度缩放比例
+     */
+    public Float getImageWidthScale()
+    {
+        return this.data.getImageWidthScale();
+    }
+
+    
+    /**
+     * 设置：图片宽度缩放比例
+     * 
+     * @param i_ImageWidthScale 图片宽度缩放比例
+     */
+    public void setImageWidthScale(Float i_ImageWidthScale)
+    {
+        this.data.setImageWidthScale(i_ImageWidthScale);
+    }
+
+
+    /**
+     * 获取：图片高度缩放比例
+     */
+    public Float getImageHeightScale()
+    {
+        return this.data.getImageHeightScale();
+    }
+
+
+    /**
+     * 设置：图片高度缩放比例
+     * 
+     * @param i_ImageHeightScale 图片高度缩放比例
+     */
+    public void setImageHeightScale(Float i_ImageHeightScale)
+    {
+        this.data.setImageHeightScale(i_ImageHeightScale);
+    }
+    
 }
