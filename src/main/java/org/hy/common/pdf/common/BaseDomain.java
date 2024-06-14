@@ -10,31 +10,31 @@ package org.hy.common.pdf.common;
  * @author      ZhengWei(HY)
  * @createDate  2024-06-12
  * @version     v1.0
- * @param <DO>  DO类的数据
+ * @param <Data>  数据对象的类型
  */
-public class BaseDomain<DO>
+public class BaseDomain<Data>
 {
  
-    /** DO 类型的数据 */
-    protected DO data;
+    /** 数据对象 */
+    protected Data data;
     
     
     
     /**
-     * 获取：DO 类型的数据
+     * 获取：Data 类型的数据
      */
-    public DO gatData()
+    public Data gatData()
     {
         return data;
     }
 
     
     /**
-     * 设置：DO 类型的数据
+     * 设置：Data 类型的数据
      * 
-     * @param i_Data DO 类型的数据
+     * @param i_Data 类型的数据
      */
-    public void satData(DO i_Data)
+    public void satData(Data i_Data)
     {
         this.data = i_Data;
     }
