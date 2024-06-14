@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.multipdf.Overlay;
@@ -13,6 +14,8 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.hy.common.Help;
+import org.hy.common.pdf.data.PDFDataTemplate;
+import org.hy.common.pdf.data.PDFDataTemplateDomain;
 import org.hy.common.pdf.data.PDFText;
 import org.hy.common.pdf.data.PDFTextDomain;
 import org.hy.common.xml.log.Logger;
@@ -32,6 +35,95 @@ public class PDFHelp
 {
     
     private static final Logger $Logger = new Logger(PDFHelp.class);
+    
+    
+    
+    /**
+     * 创建纯文本的PDF文件
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-14
+     * @version     v1.0
+     *
+     * @param i_SaveFile      PDF保存路径
+     * @param i_DataTemplates PDF数据样式的模板
+     * @param i_Datas         PDF数据
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    public static boolean create(String i_SaveFile ,List<PDFDataTemplate> i_DataTemplates ,Map<String ,Object> i_Datas)
+    {
+        if ( Help.isNull(i_SaveFile) )
+        {
+            return false;
+        }
+        if ( Help.isNull(i_DataTemplates) )
+        {
+            return false;
+        }
+        if ( Help.isNull(i_Datas) )
+        {
+            return false;
+        }
+        
+        // 创建一个空的PDF文档
+        PDDocument          v_Doc           = new PDDocument();
+        PDPageContentStream v_ContentStream = null;
+        boolean             v_IsClose       = false;
+
+        try {
+            // 创建页面对象
+            PDPage v_Page = new PDPage();
+            v_Doc.addPage(v_Page);
+
+            // 开始在页面上写入内容
+            v_ContentStream = new PDPageContentStream(v_Doc, v_Page);
+            pageContent(v_Doc ,v_ContentStream ,i_DataTemplates ,i_Datas);
+            
+            v_ContentStream.close();
+            v_IsClose = true;
+
+            // 保存PDF文件
+            v_Doc.save(i_SaveFile ,CompressParameters.DEFAULT_COMPRESSION);
+            
+            return true;
+        }
+        catch (IOException exce)
+        {
+            $Logger.error(exce);
+        }
+        finally
+        {
+            if ( v_ContentStream != null && !v_IsClose )
+            {
+                try
+                {
+                    v_ContentStream.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+            }
+            v_ContentStream = null;
+            
+            if ( v_Doc != null )
+            {
+                try
+                {
+                    v_Doc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                
+                v_Doc = null;
+            }
+        }
+        
+        return false;
+    }
     
     
     
@@ -76,6 +168,96 @@ public class PDFHelp
 
             // 保存PDF文件
             v_Doc.save(i_SaveFile ,CompressParameters.DEFAULT_COMPRESSION);
+            
+            return true;
+        }
+        catch (IOException exce)
+        {
+            $Logger.error(exce);
+        }
+        finally
+        {
+            if ( v_ContentStream != null && !v_IsClose )
+            {
+                try
+                {
+                    v_ContentStream.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+            }
+            v_ContentStream = null;
+            
+            if ( v_Doc != null )
+            {
+                try
+                {
+                    v_Doc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                
+                v_Doc = null;
+            }
+        }
+        
+        return false;
+    }
+    
+    
+    
+    /**
+     * 修改PDF文件。很可能造成原文件上的图片丢失
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-14
+     * @version     v1.0
+     *
+     * @param i_SaveFile      PDF保存路径
+     * @param i_DataTemplates PDF数据样式的模板
+     * @param i_Datas         PDF数据
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    public static boolean edit(File i_SaveFile ,List<PDFDataTemplate> i_DataTemplates ,Map<String ,Object> i_Datas)
+    {
+        if ( i_SaveFile == null || !i_SaveFile.exists() )
+        {
+            return false;
+        }
+        if ( Help.isNull(i_DataTemplates) )
+        {
+            return false;
+        }
+        if ( Help.isNull(i_Datas) )
+        {
+            return false;
+        }
+        
+        // 创建一个空的PDF文档
+        PDDocument          v_Doc           = null;
+        PDPageContentStream v_ContentStream = null;
+        boolean             v_IsClose       = false;
+
+        try {
+            v_Doc = Loader.loadPDF(i_SaveFile);
+            
+            // 获取页面对象
+            PDPage v_Page = v_Doc.getPage(0); // 获取第一页（索引从0开始）
+
+            // 开始在页面上写入内容
+            v_ContentStream = new PDPageContentStream(v_Doc, v_Page ,PDPageContentStream.AppendMode.APPEND, true);
+            pageContent(v_Doc ,v_ContentStream ,i_DataTemplates ,i_Datas);
+            
+            v_ContentStream.close();
+            v_IsClose = true;
+
+            // 保存PDF文件
+            v_Doc.save(i_SaveFile);
             
             return true;
         }
@@ -324,6 +506,142 @@ public class PDFHelp
             
             // 写入文本
             io_ContentStream.showText(v_TextDomain.getText());
+            // 结束写入内容
+            io_ContentStream.endText();
+        }
+    }
+    
+    
+    
+    /**
+     * 处理PDF页内容
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param io_Doc            PDF文件
+     * @param io_ContentStream  PDF页
+     * @param i_Texts           文本数据
+     * @throws IOException
+     */
+    @SuppressWarnings("rawtypes")
+    private static void pageContent(PDDocument io_Doc ,PDPageContentStream io_ContentStream ,List<PDFDataTemplate> i_DataTemplates ,Map<String ,Object> i_Datas) throws IOException
+    {
+        PDFTextDomain v_LastFormat = new PDFTextDomain();  // 最近一次的格式
+        for (PDFDataTemplate v_Item : i_DataTemplates)
+        {
+            PDFDataTemplateDomain v_DataTemplate = new PDFDataTemplateDomain(v_Item);
+            Object                v_TextObj      = i_Datas.get(v_DataTemplate.getName());
+            if ( v_TextObj == null )
+            {
+                // 数据为NULL不操作PDF
+                continue;
+            }
+            
+            // 开始写入内容
+            io_ContentStream.beginText();
+            
+            // 设置字体
+            if ( v_DataTemplate.getPdFont() != null )
+            {
+                v_LastFormat.setPdFont(v_DataTemplate.getPdFont());
+            }
+            else if ( !Help.isNull(v_DataTemplate.getFontName()) )
+            {
+                // 可加载支持中文的字体
+                v_LastFormat.setPdFont(PDType0Font.load(io_Doc, new File(v_DataTemplate.getFontName())));
+            }
+            
+            // 设置字号
+            if ( v_DataTemplate.getFontSize() != null )
+            {
+                v_LastFormat.setFontSize(v_DataTemplate.getFontSize());
+            }
+            if ( v_LastFormat.getFontSize() != null && v_LastFormat.getPdFont() != null )
+            {
+                // 延用上次的字体与字号
+                io_ContentStream.setFont(v_LastFormat.getPdFont(), v_LastFormat.getFontSize());
+            }
+            
+            // 设置字体颜色。设置非描边颜色（即填充颜色）
+            if ( v_DataTemplate.getPdColor() != null )
+            {
+                v_LastFormat.setPdColor(v_DataTemplate.getPdColor());
+            }
+            if ( v_LastFormat.getPdColor() != null )
+            {
+                // 延用上次的字体颜色
+                io_ContentStream.setNonStrokingColor(v_LastFormat.getPdColor());
+            }
+            
+            // 设置字间距
+            if ( v_DataTemplate.getFontSpacing() != null )
+            {
+                v_LastFormat.setFontSpacing(v_DataTemplate.getFontSpacing());
+            }
+            if ( v_DataTemplate.getFontSpacing() != null )
+            {
+                // 延用上次的字间距
+                io_ContentStream.setCharacterSpacing(v_DataTemplate.getFontSpacing());
+            }
+            
+            // 设置字间距
+            if ( v_DataTemplate.getWordSpacing() != null )
+            {
+                v_LastFormat.setWordSpacing(v_DataTemplate.getWordSpacing());
+            }
+            if ( v_DataTemplate.getWordSpacing() != null )
+            {
+                // 延用上次的字间距
+                io_ContentStream.setWordSpacing(v_DataTemplate.getWordSpacing());
+            }
+            
+            // 设置行间距
+            if ( v_DataTemplate.getLeading() != null )
+            {
+                v_LastFormat.setLeading(v_DataTemplate.getLeading());
+            }
+            if ( v_DataTemplate.getLeading() != null )
+            {
+                // 延用上次的行间距
+                io_ContentStream.setLeading(v_DataTemplate.getLeading());
+            }
+            
+            // 设置文本的水平缩放比例
+            if ( v_DataTemplate.getHorizontalScaling() != null )
+            {
+                v_LastFormat.setHorizontalScaling(v_DataTemplate.getHorizontalScaling());
+            }
+            if ( v_DataTemplate.getHorizontalScaling() != null )
+            {
+                // 延用上次的文本的水平缩放比例
+                io_ContentStream.setHorizontalScaling(v_DataTemplate.getHorizontalScaling());
+            }
+            
+            // 设置文本的上标与下标
+            if ( v_DataTemplate.getTextRise() != null )
+            {
+                v_LastFormat.setTextRise(v_DataTemplate.getTextRise());
+            }
+            if ( v_DataTemplate.getTextRise() != null )
+            {
+                // 延用上次的文本的上标与下标
+                io_ContentStream.setTextRise(v_DataTemplate.getTextRise());
+            }
+            
+            // 设置文本起始位置
+            if ( v_DataTemplate.getTextX() != null && v_DataTemplate.getTextY() != null )
+            {
+                io_ContentStream.newLineAtOffset(v_DataTemplate.getTextX(), v_DataTemplate.getTextY());
+            }
+            else
+            {
+                io_ContentStream.newLine();
+            }
+            
+            // 写入文本
+            io_ContentStream.showText(v_TextObj.toString());
             // 结束写入内容
             io_ContentStream.endText();
         }

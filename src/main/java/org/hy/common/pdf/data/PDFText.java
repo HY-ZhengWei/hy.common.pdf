@@ -176,7 +176,7 @@ public class PDFText extends PDFDataTemplate<PDFText> implements Serializable
      */
     public PDFText(String i_Text ,Float i_TextX ,Float i_TextY ,Float i_FontSize ,String i_FontName)
     {
-        super(i_TextX ,i_TextY ,i_FontSize ,i_FontName);
+        super("" ,i_TextX ,i_TextY ,i_FontSize ,i_FontName);
         this.text = i_Text;
     }
 

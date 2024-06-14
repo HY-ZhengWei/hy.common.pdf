@@ -7,7 +7,8 @@ import java.io.Serializable;
 
 
 /**
- * PDF文本数据的模板
+ * PDF文本数据的模板。
+ * 将数据与数据格式分离，形成数据与数据模板
  *
  * @author      ZhengWei(HY)
  * @createDate  2024-06-14
@@ -18,6 +19,10 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     
     private static final long serialVersionUID = 578154708824103744L;
     
+    
+    
+    /** 模板占位符变量名称 */
+    private String name;
     
     /** 文本位置 x 轴 */
     private Float  textX;
@@ -72,11 +77,12 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * @createDate  2024-06-13
      * @version     v1.0
      *
+     * @param i_Name      模板占位符变量名称
      * @param i_FontName  字体名称
      */
-    public PDFDataTemplate(String i_FontName)
+    public PDFDataTemplate(String i_Name ,String i_FontName)
     {
-        this(null ,null ,null ,i_FontName);
+        this(i_Name ,null ,null ,null ,i_FontName);
     }
     
     
@@ -88,11 +94,12 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * @createDate  2024-06-13
      * @version     v1.0
      *
+     * @param i_Name      模板占位符变量名称
      * @param i_FontSize  字体大小
      */
-    public PDFDataTemplate(Float i_FontSize)
+    public PDFDataTemplate(String i_Name ,Float i_FontSize)
     {
-        this(null ,null ,i_FontSize ,null);
+        this(i_Name ,null ,null ,i_FontSize ,null);
     }
     
     
@@ -104,83 +111,89 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * @createDate  2024-06-13
      * @version     v1.0
      *
-     * @param i_FontSize  字体大小
-     * @param i_FontName  字体名称
-     */
-    public PDFDataTemplate(Float i_FontSize ,String i_FontName)
-    {
-        this(null ,null ,i_FontSize ,i_FontName);
-    }
-    
-    
-    
-    /**
-     * 构建器
-     *
-     * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
-     * @version     v1.0
-     *
-     * @param i_TextX     文本位置 x 轴
-     * @param i_TextY     文本位置 y 轴
-     */
-    public PDFDataTemplate(Float i_TextX ,Float i_TextY)
-    {
-        this(i_TextX ,i_TextY ,null ,null);
-    }
-    
-    
-    
-    /**
-     * 构建器
-     *
-     * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
-     * @version     v1.0
-     *
-     * @param i_TextX     文本位置 x 轴
-     * @param i_TextY     文本位置 y 轴
-     * @param i_FontSize  字体大小
-     */
-    public PDFDataTemplate(Float i_TextX ,Float i_TextY ,Float i_FontSize)
-    {
-        this(i_TextX ,i_TextY ,i_FontSize ,null);
-    }
-    
-    
-    
-    /**
-     * 构建器
-     *
-     * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
-     * @version     v1.0
-     *
-     * @param i_TextX     文本位置 x 轴
-     * @param i_TextY     文本位置 y 轴
-     * @param i_FontName  字体名称
-     */
-    public PDFDataTemplate(Float i_TextX ,Float i_TextY ,String i_FontName)
-    {
-        this(i_TextX ,i_TextY ,null ,i_FontName);
-    }
-    
-    
-    
-    /**
-     * 构建器
-     *
-     * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
-     * @version     v1.0
-     *
-     * @param i_TextX     文本位置 x 轴
-     * @param i_TextY     文本位置 y 轴
+     * @param i_Name      模板占位符变量名称
      * @param i_FontSize  字体大小
      * @param i_FontName  字体名称
      */
-    public PDFDataTemplate(Float i_TextX ,Float i_TextY ,Float i_FontSize ,String i_FontName)
+    public PDFDataTemplate(String i_Name ,Float i_FontSize ,String i_FontName)
     {
+        this(i_Name ,null ,null ,i_FontSize ,i_FontName);
+    }
+    
+    
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     * 
+     * @param i_Name      模板占位符变量名称
+     * @param i_TextX     文本位置 x 轴
+     * @param i_TextY     文本位置 y 轴
+     */
+    public PDFDataTemplate(String i_Name ,Float i_TextX ,Float i_TextY)
+    {
+        this(i_Name ,i_TextX ,i_TextY ,null ,null);
+    }
+    
+    
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param i_Name      模板占位符变量名称
+     * @param i_TextX     文本位置 x 轴
+     * @param i_TextY     文本位置 y 轴
+     * @param i_FontSize  字体大小
+     */
+    public PDFDataTemplate(String i_Name ,Float i_TextX ,Float i_TextY ,Float i_FontSize)
+    {
+        this(i_Name ,i_TextX ,i_TextY ,i_FontSize ,null);
+    }
+    
+    
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param i_Name      模板占位符变量名称
+     * @param i_TextX     文本位置 x 轴
+     * @param i_TextY     文本位置 y 轴
+     * @param i_FontName  字体名称
+     */
+    public PDFDataTemplate(String i_Name ,Float i_TextX ,Float i_TextY ,String i_FontName)
+    {
+        this(i_Name ,i_TextX ,i_TextY ,null ,i_FontName);
+    }
+    
+    
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-13
+     * @version     v1.0
+     *
+     * @param i_Name      模板占位符变量名称
+     * @param i_TextX     文本位置 x 轴
+     * @param i_TextY     文本位置 y 轴
+     * @param i_FontSize  字体大小
+     * @param i_FontName  字体名称
+     */
+    public PDFDataTemplate(String i_Name ,Float i_TextX ,Float i_TextY ,Float i_FontSize ,String i_FontName)
+    {
+        this.name     = i_Name;
         this.textX    = i_TextX;
         this.textY    = i_TextY;
         this.fontSize = i_FontSize;
@@ -189,6 +202,26 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     
     
     
+    /**
+     * 获取：模板占位符变量名称
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * 设置：模板占位符变量名称
+     * 
+     * @param i_Name 模板占位符变量名称
+     */
+    public void setName(String i_Name)
+    {
+        this.name = i_Name;
+    }
+
+
     /**
      * 获取：文本位置 x 轴
      */

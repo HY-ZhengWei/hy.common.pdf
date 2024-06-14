@@ -17,7 +17,8 @@ import org.hy.common.pdf.common.BaseDomain;
 
 
 /**
- * PDF文本数据模板的领域模型
+ * PDF文本数据模板的领域模型。
+ * 将数据与数据格式分离，形成数据与数据模板
  *
  * @author      ZhengWei(HY)
  * @createDate  2024-06-14
@@ -73,8 +74,28 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
             this.pdColor = new PDColor(new float[]{v_Color.getRed() / 255F ,v_Color.getGreen() / 255F ,v_Color.getBlue() / 255F}, PDDeviceRGB.INSTANCE);
         }
     }
-
     
+    
+    
+    /**
+     * 获取：模板占位符变量名称
+     */
+    public String getName()
+    {
+        return this.data.getName();
+    }
+
+
+    /**
+     * 设置：模板占位符变量名称
+     * 
+     * @param i_Name 模板占位符变量名称
+     */
+    public void setName(String i_Name)
+    {
+        this.data.setName(i_Name);
+    }
+
     
     /**
      * 获取：文本位置 x 轴

@@ -125,11 +125,11 @@ public class JU_Alipay
         
         // Booking Details
         v_Texts.add(new PDFText("1234567890"                          ,300F ,499F));
-        v_Texts.add(new PDFText("Correct Hotel"                       ,300F ,481F));
-        v_Texts.add(new PDFText("CANCELED"                            ,300F ,463F));
+        v_Texts.add(new PDFText("CANCELED"                            ,300F ,481F));
+        v_Texts.add(new PDFText("Correct Hotel"                       ,300F ,463F));
         v_Texts.add(new PDFText("2024-06-13"                          ,300F ,444F));
         v_Texts.add(new PDFText("2024-06-28"                          ,300F ,426F));
-        v_Texts.add(new PDFText("5"                                   ,300F ,408F));
+        v_Texts.add(new PDFText("5"                                   ,300F ,409F));
         v_Texts.add(new PDFText("2024-04-28"                          ,300F ,391F));
         
         // Price Details
