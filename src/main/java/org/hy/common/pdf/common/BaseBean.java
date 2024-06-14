@@ -5,14 +5,13 @@ package org.hy.common.pdf.common;
 
 
 /**
- * 通用的DO数据
+ * 通用的Bean
  *
  * @author      ZhengWei(HY)
  * @createDate  2024-06-12
  * @version     v1.0
- * @param <DO>  DO类的数据
  */
-public class BaseDO
+public class BaseBean
 {
     
     /** 注解说明 */
