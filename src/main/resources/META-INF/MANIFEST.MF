@@ -1,6 +1,6 @@
-Manifest-Version: 1.0.0
+Manifest-Version: 1.0.1
 Created-By: HY.ZhengWei@qq.com  2024
-Specification-Version: 1.0.0  2024-06-12
+Specification-Version: 1.0.1  2024-06-14
 SourceCode: https://github.com/HY-ZhengWei/hy.common.pdf
 SourceCodeChina: https://gitee.com/HY-ZhengWei/hy.common.pdf
 Build-JDK: 17
