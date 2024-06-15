@@ -11,6 +11,7 @@ import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
 import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
 import org.hy.common.Help;
 import org.hy.common.pdf.common.BaseDomain;
+import org.hy.common.pdf.enums.DataTypeEnum;
 import org.hy.common.pdf.enums.ImageTypeEnum;
 
 
@@ -30,6 +31,11 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
 {
 
     private static final long serialVersionUID = -8592559297561051249L;
+    
+    
+    
+    /** 数据类型（文本、图片、线段） */
+    private DataTypeEnum  dataTypeEnum;
     
     /** 字体名称的枚举类型 */
     private FontName      fontNameType;
@@ -57,6 +63,9 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     {
         this.data = (D) i_PDFDataTemplate;
         
+        // 转换数据类型
+        this.dataTypeEnum = DataTypeEnum.get(this.getDataType());
+                
         // 转换字体
         if ( !Help.isNull(this.data.getFontName()) )
         {
@@ -82,6 +91,46 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
         this.imageTypeEnum = ImageTypeEnum.get(this.getImageType());
     }
     
+    
+    
+    /**
+     * 获取：数据类型（文本、图片、线段）
+     */
+    public DataTypeEnum getDataTypeEnum()
+    {
+        return dataTypeEnum;
+    }
+
+    
+    /**
+     * 设置：数据类型（文本、图片、线段）
+     * 
+     * @param i_DataTypeEnum 数据类型（文本、图片、线段）
+     */
+    public void setDataTypeEnum(DataTypeEnum i_DataTypeEnum)
+    {
+        this.dataTypeEnum = i_DataTypeEnum;
+    }
+
+
+    /**
+     * 获取：数据类型（文本、图片、线段）。参考 DataTypeEnum 枚举
+     */
+    public String getDataType()
+    {
+        return this.data.getDataType();
+    }
+
+    
+    /**
+     * 设置：数据类型（文本、图片、线段）。参考 DataTypeEnum 枚举
+     * 
+     * @param i_DataType 数据类型（文本、图片、线段）。参考 DataTypeEnum 枚举
+     */
+    public void setDataType(String i_DataType)
+    {
+        this.data.setDataType(i_DataType);
+    }
     
     
     /**
@@ -363,26 +412,6 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
         this.data.setWordSpacing(i_WordSpacing);
     }
     
-    
-    /**
-     * 获取：图片路径
-     */
-    public String getImagePath()
-    {
-        return this.data.getImagePath();
-    }
-
-
-    /**
-     * 设置：图片路径
-     * 
-     * @param i_ImagePath 图片路径
-     */
-    public void setImagePath(String i_ImagePath)
-    {
-        this.data.setImagePath(i_ImagePath);
-    }
-
 
     /**
      * 获取：图片宽度
@@ -501,6 +530,26 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     public void setImageHeightScale(Float i_ImageHeightScale)
     {
         this.data.setImageHeightScale(i_ImageHeightScale);
+    }
+    
+    
+    /**
+     * 获取：线段宽度
+     */
+    public Float getLineWidth()
+    {
+        return this.data.getLineWidth();
+    }
+
+    
+    /**
+     * 设置：线段宽度
+     * 
+     * @param i_LineWidth 线段宽度
+     */
+    public void setLineWidth(Float i_LineWidth)
+    {
+        this.data.setLineWidth(i_LineWidth);
     }
     
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.hy.common.pdf.PDFHelp;
 import org.hy.common.pdf.data.PDFDataTemplate;
+import org.hy.common.pdf.data.type.PDFDataImage;
 import org.junit.Test;
 
 
@@ -47,9 +48,9 @@ public class JU_ImagePDF
     {
         List<PDFDataTemplate> v_DataTemplates = new ArrayList<PDFDataTemplate>();
         
-        v_DataTemplates.add(new PDFDataTemplate("imageLocal" ,100F ,650F).setImageType("png").setImageWidth(128F).setImageHeight(128F));
-        v_DataTemplates.add(new PDFDataTemplate("imageFile"  ,100F ,500F).setImageType("png").setImageWidth(128F).setImageHeight(128F));
-        v_DataTemplates.add(new PDFDataTemplate("imageHttps" ,100F ,350F).setImageType("png").setImageWidth(128F).setImageHeight(128F));
+        v_DataTemplates.add(new PDFDataImage("imageLocal" ,100F ,650F).setImageType("png").setImageWidth(128F).setImageHeight(128F));
+        v_DataTemplates.add(new PDFDataImage("imageFile"  ,100F ,500F).setImageType("png").setImageWidth(128F).setImageHeight(128F));
+        v_DataTemplates.add(new PDFDataImage("imageHttps" ,100F ,350F).setImageType("png").setImageWidth(128F).setImageHeight(128F));
         
         return v_DataTemplates;
     }

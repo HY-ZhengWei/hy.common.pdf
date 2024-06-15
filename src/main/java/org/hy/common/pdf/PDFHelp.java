@@ -1,5 +1,7 @@
 package org.hy.common.pdf;
 
+import java.awt.Shape;
+import java.awt.geom.PathIterator;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +23,7 @@ import org.hy.common.pdf.data.PDFDataTemplate;
 import org.hy.common.pdf.data.PDFDataTemplateDomain;
 import org.hy.common.pdf.data.PDFText;
 import org.hy.common.pdf.data.PDFTextDomain;
+import org.hy.common.pdf.enums.DataTypeEnum;
 import org.hy.common.pdf.enums.ImageTypeEnum;
 import org.hy.common.xml.log.Logger;
 
@@ -415,28 +418,6 @@ public class PDFHelp
      * 处理PDF页内容
      * 
      * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
-     * @version     v1.0
-     *
-     * @param io_Doc         PDF文件
-     * @param io_Content     PDF页
-     * @param i_DataTemplate 数据模板
-     * @param i_Data         数据
-     * @param io_LastStyle   最后一次的数据样式
-     * @throws IOException
-     */
-    @SuppressWarnings("rawtypes")
-    private static void pageContent(PDDocument io_Doc ,PDPageContentStream io_Content ,PDFTextDomain i_DataTemplate ,Object i_Data ,PDFTextDomain io_LastStyle) throws IOException
-    {
-        pageContent(io_Doc ,io_Content ,(PDFDataTemplateDomain) i_DataTemplate ,i_Data ,(PDFDataTemplateDomain) io_LastStyle);
-    }
-    
-    
-    
-    /**
-     * 处理PDF页内容
-     * 
-     * @author      ZhengWei(HY)
      * @createDate  2024-06-14
      * @version     v1.0
      *
@@ -456,13 +437,105 @@ public class PDFHelp
             return;
         }
         
-        if ( !Help.isNull(i_DataTemplate.getImageType()) )
+        if ( DataTypeEnum.TEXT == i_DataTemplate.getDataTypeEnum() )
+        {
+            pageContentByText(io_Doc ,io_Content ,i_DataTemplate ,i_Data ,io_LastStyle);
+        }
+        else if ( DataTypeEnum.IMAGE == i_DataTemplate.getDataTypeEnum() )
         {
             pageContentByImage(io_Doc ,io_Content ,i_DataTemplate ,i_Data ,io_LastStyle);
+        }
+        else if ( DataTypeEnum.PATH == i_DataTemplate.getDataTypeEnum() )
+        {
+            pageContentByPath(io_Doc ,io_Content ,i_DataTemplate ,i_Data ,io_LastStyle);
+        }
+        // 容错判定
+        else if ( !Help.isNull(i_DataTemplate.getImageType()) )
+        {
+            pageContentByImage(io_Doc ,io_Content ,i_DataTemplate ,i_Data ,io_LastStyle);
+        }
+        // 容错判定
+        else if ( !Help.isNull(i_DataTemplate.getLineWidth()) )
+        {
+            pageContentByPath(io_Doc ,io_Content ,i_DataTemplate ,i_Data ,io_LastStyle);
         }
         else
         {
             pageContentByText(io_Doc ,io_Content ,i_DataTemplate ,i_Data ,io_LastStyle);
+        }
+    }
+    
+    
+    
+    /**
+     * 处理PDF页内容（SVG Path对象）
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-14
+     * @version     v1.0
+     *
+     * @param io_Doc         PDF文件
+     * @param io_Content     PDF页
+     * @param i_DataTemplate 数据模板
+     * @param i_Data         数据
+     * @param io_LastStyle   最后一次的数据样式
+     * @throws IOException
+     */
+    @SuppressWarnings("rawtypes")
+    private static void pageContentByPath(PDDocument io_Doc ,PDPageContentStream io_Content ,PDFDataTemplateDomain i_DataTemplate ,Object i_Data ,PDFDataTemplateDomain io_LastStyle) throws IOException
+    {
+        io_Content.setStrokingColor(0, 0, 255);   // 设置绘制颜色为蓝色
+        io_Content.setLineWidth(2);               // 设置线宽
+
+        // drawShape(io_Content, shape);
+
+        // 执行描边操作
+        io_Content.stroke();
+    }
+    
+    
+    
+    private static void drawShape(PDPageContentStream io_Content, Shape i_SvgShape) throws IOException
+    {
+        PathIterator v_PathIterator = i_SvgShape.getPathIterator(null);
+        float [] v_Coordinates = new float[6];
+
+        while ( !v_PathIterator.isDone() )
+        {
+            int type = v_PathIterator.currentSegment(v_Coordinates);
+
+            switch (type)
+            {
+                // 将画笔移动到指定的坐标位置
+                case PathIterator.SEG_MOVETO:
+                    io_Content.moveTo(v_Coordinates[0], v_Coordinates[1]);
+                    break;
+                    
+                // 从当前点绘制一条直线到指定的坐标
+                case PathIterator.SEG_LINETO:
+                    io_Content.lineTo(v_Coordinates[0], v_Coordinates[1]);
+                    break;
+                
+                // 使用两个坐标点绘制二次贝塞尔曲线
+                case PathIterator.SEG_QUADTO:
+                    io_Content.curveTo1(v_Coordinates[0], v_Coordinates[1], v_Coordinates[2], v_Coordinates[3]);
+                    break;
+                    
+                // 使用三个坐标点绘制贝塞尔曲线
+                case PathIterator.SEG_CUBICTO:
+                    io_Content.curveTo(v_Coordinates[0], v_Coordinates[1], v_Coordinates[2], v_Coordinates[3], v_Coordinates[4], v_Coordinates[5]);
+                    break;
+                    
+                // 关闭路径，绘制一条从当前点到起始点的直线
+                case PathIterator.SEG_CLOSE:
+                    io_Content.closePath();
+                    break;
+                    
+                default:
+                    throw new IllegalArgumentException("Unsupported PathIterator segment type.");
+            }
+
+            v_PathIterator.next();
         }
     }
     

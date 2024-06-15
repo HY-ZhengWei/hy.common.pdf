@@ -20,6 +20,8 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     private static final long serialVersionUID = 578154708824103744L;
     
     
+    /** 数据类型（文本、图片、线段）。参考 DataTypeEnum 枚举 */
+    private String dataType;
     
     /** 模板占位符变量名称 */
     private String name;
@@ -53,17 +55,10 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     
     /** 文本的垂直偏移量，可实现上标与下标的功能 */
     private Float  textRise;
+   
     
-    /**
-     * 图片路径
-     * 支持格式：JPG、JPEG、TIF、TIFF、GIF、BMP和PNG
-     * 支持路径：1.本地路径的图片
-     *          2.file:// 开头的图片
-     *          3.http:// 开头的网络图片，支持 https:// 的网络图片
-     */
-    private String imagePath;
     
-    /** 图片格式。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名 */
+    /** 图片格式。参考 ImageTypeEnum 枚举。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名 */
     private String imageType;
     
     /** 图片宽度。为NULL时自动取图片原始大小 */
@@ -77,6 +72,11 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     
     /** 图片高度缩放比例 */
     private Float  imageHeightScale;
+    
+    
+    
+    /** 线段宽度 */
+    private Float  lineWidth;
     
     
     
@@ -154,12 +154,12 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * @version     v1.0
      * 
      * @param i_Name      模板占位符变量名称
-     * @param i_TextX     文本位置 x 轴
-     * @param i_TextY     文本位置 y 轴
+     * @param i_X     文本位置 x 轴
+     * @param i_Y     文本位置 y 轴
      */
-    public PDFDataTemplate(String i_Name ,Float i_TextX ,Float i_TextY)
+    public PDFDataTemplate(String i_Name ,Float i_X ,Float i_Y)
     {
-        this(i_Name ,i_TextX ,i_TextY ,null ,null);
+        this(i_Name ,i_X ,i_Y ,null ,null);
     }
     
     
@@ -172,13 +172,13 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * @version     v1.0
      *
      * @param i_Name      模板占位符变量名称
-     * @param i_TextX     文本位置 x 轴
-     * @param i_TextY     文本位置 y 轴
+     * @param i_X     文本位置 x 轴
+     * @param i_Y     文本位置 y 轴
      * @param i_FontSize  字体大小
      */
-    public PDFDataTemplate(String i_Name ,Float i_TextX ,Float i_TextY ,Float i_FontSize)
+    public PDFDataTemplate(String i_Name ,Float i_X ,Float i_Y ,Float i_FontSize)
     {
-        this(i_Name ,i_TextX ,i_TextY ,i_FontSize ,null);
+        this(i_Name ,i_X ,i_Y ,i_FontSize ,null);
     }
     
     
@@ -191,13 +191,13 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * @version     v1.0
      *
      * @param i_Name      模板占位符变量名称
-     * @param i_TextX     文本位置 x 轴
-     * @param i_TextY     文本位置 y 轴
+     * @param i_X     文本位置 x 轴
+     * @param i_Y     文本位置 y 轴
      * @param i_FontName  字体名称
      */
-    public PDFDataTemplate(String i_Name ,Float i_TextX ,Float i_TextY ,String i_FontName)
+    public PDFDataTemplate(String i_Name ,Float i_X ,Float i_Y ,String i_FontName)
     {
-        this(i_Name ,i_TextX ,i_TextY ,null ,i_FontName);
+        this(i_Name ,i_X ,i_Y ,null ,i_FontName);
     }
     
     
@@ -210,22 +210,44 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * @version     v1.0
      *
      * @param i_Name      模板占位符变量名称
-     * @param i_TextX     文本位置 x 轴
-     * @param i_TextY     文本位置 y 轴
+     * @param i_X         位置 x 轴
+     * @param i_Y         位置 y 轴
      * @param i_FontSize  字体大小
      * @param i_FontName  字体名称
      */
-    public PDFDataTemplate(String i_Name ,Float i_TextX ,Float i_TextY ,Float i_FontSize ,String i_FontName)
+    public PDFDataTemplate(String i_Name ,Float i_X ,Float i_Y ,Float i_FontSize ,String i_FontName)
     {
         this.name     = i_Name;
-        this.x    = i_TextX;
-        this.y    = i_TextY;
+        this.x        = i_X;
+        this.y        = i_Y;
         this.fontSize = i_FontSize;
         this.fontName = i_FontName;
     }
     
     
     
+    /**
+     * 获取：数据类型（文本、图片、线段）。参考 DataTypeEnum 枚举
+     */
+    public String getDataType()
+    {
+        return dataType;
+    }
+
+    
+    /**
+     * 设置：数据类型（文本、图片、线段）。参考 DataTypeEnum 枚举
+     * 
+     * @param i_DataType 数据类型（文本、图片、线段）。参考 DataTypeEnum 枚举
+     */
+    @SuppressWarnings("unchecked")
+    public I setDataType(String i_DataType)
+    {
+        this.dataType = i_DataType;
+        return (I) this;
+    }
+
+
     /**
      * 获取：模板占位符变量名称
      */
@@ -467,39 +489,7 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
 
 
     /**
-     * 获取：图片路径
-     * 
-     * 支持格式：JPG、JPEG、TIF、TIFF、GIF、BMP和PNG
-     * 支持路径：1.本地路径的图片
-     *          2.file:// 开头的图片
-     *          3.http:// 开头的网络图片，支持 https:// 的网络图片
-     */
-    public String getImagePath()
-    {
-        return imagePath;
-    }
-
-
-    /**
-     * 设置：图片路径
-     * 
-     * 支持格式：JPG、JPEG、TIF、TIFF、GIF、BMP和PNG
-     * 支持路径：1.本地路径的图片
-     *          2.file:// 开头的图片
-     *          3.http:// 开头的网络图片，支持 https:// 的网络图片
-     * 
-     * @param i_ImagePath 图片路径
-     */
-    @SuppressWarnings("unchecked")
-    public I setImagePath(String i_ImagePath)
-    {
-        this.imagePath = i_ImagePath;
-        return (I) this;
-    }
-
-    
-    /**
-     * 获取：图片格式。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
+     * 获取：图片格式。参考 ImageTypeEnum 枚举。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
      */
     public String getImageType()
     {
@@ -508,9 +498,9 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
 
     
     /**
-     * 设置：图片格式。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
+     * 设置：图片格式。参考 ImageTypeEnum 枚举。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
      * 
-     * @param i_ImageType 图片格式。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
+     * @param i_ImageType 图片格式。参考 ImageTypeEnum 枚举。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
      */
     @SuppressWarnings("unchecked")
     public I setImageType(String i_ImageType)
@@ -604,6 +594,28 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     public I setImageHeightScale(Float i_ImageHeightScale)
     {
         this.imageHeightScale = i_ImageHeightScale;
+        return (I) this;
+    }
+
+    
+    /**
+     * 获取：线段宽度
+     */
+    public Float getLineWidth()
+    {
+        return lineWidth;
+    }
+
+    
+    /**
+     * 设置：线段宽度
+     * 
+     * @param i_LineWidth 线段宽度
+     */
+    @SuppressWarnings("unchecked")
+    public I setLineWidth(Float i_LineWidth)
+    {
+        this.lineWidth = i_LineWidth;
         return (I) this;
     }
     
