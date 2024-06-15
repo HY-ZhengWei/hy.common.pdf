@@ -47,7 +47,9 @@ public class JU_ImagePDF
     {
         List<PDFDataTemplate> v_DataTemplates = new ArrayList<PDFDataTemplate>();
         
-        v_DataTemplates.add(new PDFDataTemplate("imageLocal" ,70F ,663F).setImageType("png").setImageWidth(128F).setImageHeight(128F));
+        v_DataTemplates.add(new PDFDataTemplate("imageLocal" ,100F ,650F).setImageType("png").setImageWidth(128F).setImageHeight(128F));
+        v_DataTemplates.add(new PDFDataTemplate("imageFile"  ,100F ,500F).setImageType("png").setImageWidth(128F).setImageHeight(128F));
+        v_DataTemplates.add(new PDFDataTemplate("imageHttps" ,100F ,350F).setImageType("png").setImageWidth(128F).setImageHeight(128F));
         
         return v_DataTemplates;
     }
@@ -68,7 +70,9 @@ public class JU_ImagePDF
         Map<String ,Object> v_Datas = new HashMap<String ,Object>();
         
         // Company
-        v_Datas.put("imageLocal" ,"D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\image\\iamge01.png");
+        v_Datas.put("imageLocal" ,"D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\image\\image01.png");
+        v_Datas.put("imageFile"  ,"file:///D:/WorkSpace/hy.common.pdf/src/test/java/org/hy/common/pdf/junit/image/image02.png");
+        v_Datas.put("imageHttps" ,"https://mat1.gtimg.com/pingjs/ext2020/weather/mobile2.0/assets/weather/day/01.png");
         
         return v_Datas;
     }
