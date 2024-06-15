@@ -24,11 +24,11 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     /** 模板占位符变量名称 */
     private String name;
     
-    /** 文本位置 x 轴 */
-    private Float  textX;
+    /** 位置 x 轴 */
+    private Float  x;
     
-    /** 文本位置 y 轴 */
-    private Float  textY;
+    /** 位置 y 轴 */
+    private Float  y;
     
     /** 字体大小 */
     private Float  fontSize;
@@ -54,13 +54,22 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     /** 文本的垂直偏移量，可实现上标与下标的功能 */
     private Float  textRise;
     
-    /** 图片路径 */
+    /**
+     * 图片路径
+     * 支持格式：JPG、JPEG、TIF、TIFF、GIF、BMP和PNG
+     * 支持路径：1.本地路径的图片
+     *          2.file:// 开头的图片
+     *          3.http:// 开头的网络图片，支持 https:// 的网络图片
+     */
     private String imagePath;
     
-    /** 图片宽度 */
+    /** 图片格式。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名 */
+    private String imageType;
+    
+    /** 图片宽度。为NULL时自动取图片原始大小 */
     private Float  imageWidth;
     
-    /** 图片高度 */
+    /** 图片高度。为NULL时自动取图片原始大小 */
     private Float  imageHeight;
     
     /** 图片宽度缩放比例 */
@@ -209,8 +218,8 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     public PDFDataTemplate(String i_Name ,Float i_TextX ,Float i_TextY ,Float i_FontSize ,String i_FontName)
     {
         this.name     = i_Name;
-        this.textX    = i_TextX;
-        this.textY    = i_TextY;
+        this.x    = i_TextX;
+        this.y    = i_TextY;
         this.fontSize = i_FontSize;
         this.fontName = i_FontName;
     }
@@ -238,45 +247,45 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
 
 
     /**
-     * 获取：文本位置 x 轴
+     * 获取：位置 x 轴
      */
-    public Float getTextX()
+    public Float getX()
     {
-        return textX;
+        return x;
     }
 
     
     /**
-     * 设置：文本位置 x 轴
+     * 设置：位置 x 轴
      * 
-     * @param i_TextX 文本位置 x 轴
+     * @param i_X 位置 x 轴
      */
     @SuppressWarnings("unchecked")
-    public I setTextX(Float i_TextX)
+    public I setX(Float i_X)
     {
-        this.textX = i_TextX;
+        this.x = i_X;
         return (I) this;
     }
 
     
     /**
-     * 获取：文本位置 y 轴
+     * 获取：位置 y 轴
      */
-    public Float getTextY()
+    public Float getY()
     {
-        return textY;
+        return y;
     }
 
     
     /**
-     * 设置：文本位置 y 轴
+     * 设置：位置 y 轴
      * 
-     * @param i_TextY 文本位置 y 轴
+     * @param i_Y 位置 y 轴
      */
     @SuppressWarnings("unchecked")
-    public I setTextY(Float i_TextY)
+    public I setY(Float i_Y)
     {
-        this.textY = i_TextY;
+        this.y = i_Y;
         return (I) this;
     }
 
@@ -459,6 +468,11 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
 
     /**
      * 获取：图片路径
+     * 
+     * 支持格式：JPG、JPEG、TIF、TIFF、GIF、BMP和PNG
+     * 支持路径：1.本地路径的图片
+     *          2.file:// 开头的图片
+     *          3.http:// 开头的网络图片，支持 https:// 的网络图片
      */
     public String getImagePath()
     {
@@ -469,6 +483,11 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     /**
      * 设置：图片路径
      * 
+     * 支持格式：JPG、JPEG、TIF、TIFF、GIF、BMP和PNG
+     * 支持路径：1.本地路径的图片
+     *          2.file:// 开头的图片
+     *          3.http:// 开头的网络图片，支持 https:// 的网络图片
+     * 
      * @param i_ImagePath 图片路径
      */
     @SuppressWarnings("unchecked")
@@ -478,9 +497,31 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
         return (I) this;
     }
 
+    
+    /**
+     * 获取：图片格式。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
+     */
+    public String getImageType()
+    {
+        return imageType;
+    }
+
+    
+    /**
+     * 设置：图片格式。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
+     * 
+     * @param i_ImageType 图片格式。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
+     */
+    @SuppressWarnings("unchecked")
+    public I setImageType(String i_ImageType)
+    {
+        this.imageType = i_ImageType;
+        return (I) this;
+    }
+
 
     /**
-     * 获取：图片宽度
+     * 获取：图片宽度。为NULL时自动取图片原始大小
      */
     public Float getImageWidth()
     {
@@ -489,7 +530,7 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
 
 
     /**
-     * 设置：图片宽度
+     * 设置：图片宽度。为NULL时自动取图片原始大小
      * 
      * @param i_ImageWidth 图片宽度
      */
@@ -502,7 +543,7 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
 
     
     /**
-     * 获取：图片高度
+     * 获取：图片高度。为NULL时自动取图片原始大小
      */
     public Float getImageHeight()
     {
@@ -511,9 +552,9 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
 
 
     /**
-     * 设置：图片高度
+     * 设置：图片高度。为NULL时自动取图片原始大小
      * 
-     * @param i_ImageHeight 图片高度
+     * @param i_ImageHeight 图片高度。为NULL时自动取图片原始大小
      */
     @SuppressWarnings("unchecked")
     public I setImageHeight(Float i_ImageHeight)

@@ -1,5 +1,6 @@
 package org.hy.common.pdf;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,11 +14,14 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.hy.common.Help;
+import org.hy.common.file.FileHelp;
 import org.hy.common.pdf.data.PDFDataTemplate;
 import org.hy.common.pdf.data.PDFDataTemplateDomain;
 import org.hy.common.pdf.data.PDFText;
 import org.hy.common.pdf.data.PDFTextDomain;
+import org.hy.common.pdf.enums.ImageTypeEnum;
 import org.hy.common.xml.log.Logger;
 
 
@@ -452,6 +456,91 @@ public class PDFHelp
             return;
         }
         
+        if ( !Help.isNull(i_DataTemplate.getImageType()) )
+        {
+            pageContentByImage(io_Doc ,io_Content ,i_DataTemplate ,i_Data ,io_LastStyle);
+        }
+        else
+        {
+            pageContentByText(io_Doc ,io_Content ,i_DataTemplate ,i_Data ,io_LastStyle);
+        }
+    }
+    
+    
+    
+    /**
+     * 处理PDF页内容（图片的处理）
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-14
+     * @version     v1.0
+     *
+     * @param io_Doc         PDF文件
+     * @param io_Content     PDF页
+     * @param i_DataTemplate 数据模板
+     * @param i_Data         数据
+     * @param io_LastStyle   最后一次的数据样式
+     * @throws IOException
+     */
+    @SuppressWarnings("rawtypes")
+    private static void pageContentByImage(PDDocument io_Doc ,PDPageContentStream io_Content ,PDFDataTemplateDomain i_DataTemplate ,Object i_Data ,PDFDataTemplateDomain io_LastStyle) throws IOException
+    {
+        String         v_ImagePath   = i_Data.toString();
+        BufferedImage  v_ImageBuffer = FileHelp.getContentImage(v_ImagePath);
+        ImageTypeEnum  v_ImageType   = i_DataTemplate.getImageTypeEnum() == null ? ImageTypeEnum.PNG : i_DataTemplate.getImageTypeEnum();
+        byte []        v_ImageBytes  = FileHelp.toBytes(v_ImageBuffer ,v_ImageType.getDesc());
+        PDImageXObject v_PDImage     = PDImageXObject.createFromByteArray(io_Doc ,v_ImageBytes ,v_ImagePath);
+        
+        Float v_Width = 0F;
+        if ( i_DataTemplate.getImageWidth() != null )
+        {
+            v_Width = i_DataTemplate.getImageWidth();
+        }
+        else
+        {
+            v_Width = v_ImageBuffer.getWidth() * 1.0F;
+        }
+        if ( i_DataTemplate.getImageWidthScale() != null )
+        {
+            v_Width = v_Width * i_DataTemplate.getImageWidthScale();
+        }
+        
+        Float v_Height = 0F;
+        if ( i_DataTemplate.getImageHeight() != null )
+        {
+            v_Height = i_DataTemplate.getImageHeight();
+        }
+        else
+        {
+            v_Height = v_ImageBuffer.getHeight() * 1.0F;
+        }
+        if ( i_DataTemplate.getImageHeightScale() != null )
+        {
+            v_Height = v_Height * i_DataTemplate.getImageHeightScale();
+        }
+        
+        io_Content.drawImage(v_PDImage ,i_DataTemplate.getX() ,i_DataTemplate.getY() ,v_Width ,v_Height);
+    }
+    
+    
+    
+    /**
+     * 处理PDF页内容（文本的处理）
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-14
+     * @version     v1.0
+     *
+     * @param io_Doc         PDF文件
+     * @param io_Content     PDF页
+     * @param i_DataTemplate 数据模板
+     * @param i_Data         数据
+     * @param io_LastStyle   最后一次的数据样式
+     * @throws IOException
+     */
+    @SuppressWarnings("rawtypes")
+    private static void pageContentByText(PDDocument io_Doc ,PDPageContentStream io_Content ,PDFDataTemplateDomain i_DataTemplate ,Object i_Data ,PDFDataTemplateDomain io_LastStyle) throws IOException
+    {
         // 开始写入内容
         io_Content.beginText();
         
@@ -544,9 +633,9 @@ public class PDFHelp
         }
         
         // 设置文本起始位置
-        if ( i_DataTemplate.getTextX() != null && i_DataTemplate.getTextY() != null )
+        if ( i_DataTemplate.getX() != null && i_DataTemplate.getY() != null )
         {
-            io_Content.newLineAtOffset(i_DataTemplate.getTextX(), i_DataTemplate.getTextY());
+            io_Content.newLineAtOffset(i_DataTemplate.getX(), i_DataTemplate.getY());
         }
         else
         {

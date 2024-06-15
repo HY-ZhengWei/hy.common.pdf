@@ -11,6 +11,7 @@ import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
 import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
 import org.hy.common.Help;
 import org.hy.common.pdf.common.BaseDomain;
+import org.hy.common.pdf.enums.ImageTypeEnum;
 
 
 
@@ -31,13 +32,16 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     private static final long serialVersionUID = -8592559297561051249L;
     
     /** 字体名称的枚举类型 */
-    private FontName fontNameType;
+    private FontName      fontNameType;
     
     /** 字体对象 */
-    private PDFont   pdFont;
+    private PDFont        pdFont;
     
     /** 字体颜色对象 */
-    private PDColor  pdColor;
+    private PDColor       pdColor;
+    
+    /** 图片类型 */
+    private ImageTypeEnum imageTypeEnum;
     
     
     
@@ -73,6 +77,9 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
             Color v_Color = Color.decode(this.data.getFontColor());
             this.pdColor = new PDColor(new float[]{v_Color.getRed() / 255F ,v_Color.getGreen() / 255F ,v_Color.getBlue() / 255F}, PDDeviceRGB.INSTANCE);
         }
+        
+        // 转换图片类型
+        this.imageTypeEnum = ImageTypeEnum.get(this.getImageType());
     }
     
     
@@ -98,42 +105,42 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
 
     
     /**
-     * 获取：文本位置 x 轴
+     * 获取：位置 x 轴
      */
-    public Float getTextX()
+    public Float getX()
     {
-        return this.data.getTextX();
+        return this.data.getX();
     }
 
     
     /**
-     * 设置：文本位置 x 轴
+     * 设置：位置 x 轴
      * 
-     * @param i_TextX 文本位置 x 轴
+     * @param i_X 位置 x 轴
      */
-    public void setTextX(Float i_TextX)
+    public void setX(Float i_X)
     {
-        this.data.setTextX(i_TextX);
+        this.data.setX(i_X);
     }
 
     
     /**
-     * 获取：文本位置 y 轴
+     * 获取：位置 y 轴
      */
-    public Float getTextY()
+    public Float getY()
     {
-        return this.data.getTextY();
+        return this.data.getY();
     }
 
     
     /**
-     * 设置：文本位置 y 轴
+     * 设置：位置 y 轴
      * 
-     * @param i_TextY 文本位置 y 轴
+     * @param i_Y 位置 y 轴
      */
-    public void setTextY(Float i_TextY)
+    public void setTextY(Float i_Y)
     {
-        this.data.setTextY(i_TextY);
+        this.data.setY(i_Y);
     }
 
     
@@ -383,6 +390,46 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     public Float getImageWidth()
     {
         return this.data.getImageWidth();
+    }
+    
+    
+    /**
+     * 获取：图片格式。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
+     */
+    public String getImageType()
+    {
+        return this.data.getImageType();
+    }
+
+    
+    /**
+     * 设置：图片格式。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
+     * 
+     * @param i_ImageType 图片格式。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
+     */
+    public void setImageType(String i_ImageType)
+    {
+        this.data.setImageType(i_ImageType);
+    }
+
+    
+    /**
+     * 获取：图片类型
+     */
+    public ImageTypeEnum getImageTypeEnum()
+    {
+        return imageTypeEnum;
+    }
+
+    
+    /**
+     * 设置：图片类型
+     * 
+     * @param i_ImageTypeEnum 图片类型
+     */
+    public void setImageTypeEnum(ImageTypeEnum i_ImageTypeEnum)
+    {
+        this.imageTypeEnum = i_ImageTypeEnum;
     }
 
 
