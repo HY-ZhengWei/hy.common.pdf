@@ -1085,6 +1085,140 @@ public class PDFHelp
     
     
     /**
+     * 将两个PDF文件叠加（重叠&覆盖）在一起（内存字节流）
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-16
+     * @version     v1.0
+     *
+     * @param i_TemplatePDF  模板PDF文件
+     * @param io_DataPDF     数据PDF文件（内存字节流）（会在方法中释放内存）
+     * @param i_SaveFile     保存路径。全路径（包含扩展名）。覆盖式保存
+     * @return  异常时返回NULL。成功时返回对象，请再使用完成后释放内存。
+     */
+    public boolean overlay(File i_TemplatePDF ,ByteArrayOutputStream io_DataPDF ,String i_SaveFile)
+    {
+        try
+        {
+            return overlay(i_TemplatePDF ,io_DataPDF.toByteArray() ,i_SaveFile);
+        }
+        finally
+        {
+            io_DataPDF.reset();
+        }
+    }
+    
+    
+    
+    /**
+     * 将两个PDF文件叠加（重叠&覆盖）在一起
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-16
+     * @version     v1.0
+     *
+     * @param i_TemplatePDF  模板PDF文件
+     * @param i_DataPDF      数据PDF文件（内存字节流）
+     * @param i_SaveFile     保存路径。全路径（包含扩展名）。覆盖式保存
+     * @return
+     */
+    public static boolean overlay(File i_TemplatePDF ,byte[] i_DataPDF ,String i_SaveFile)
+    {
+        if ( i_TemplatePDF == null || !i_TemplatePDF.exists() )
+        {
+            return false;
+        }
+        
+        if ( i_DataPDF == null || i_DataPDF.length <= 0 )
+        {
+            return false;
+        }
+        
+        Overlay    v_Overlay     = null;
+        PDDocument v_SaveDoc     = null;
+        PDDocument v_TemplateDoc = null;
+        PDDocument v_DataDoc     = null;
+        try {
+            // 加载需要叠加的源文件和叠加文件
+            v_TemplateDoc = Loader.loadPDF(i_TemplatePDF);
+            v_DataDoc     = Loader.loadPDF(i_DataPDF);
+            
+            // 创建 Overlay 实例并执行叠加操作
+            v_Overlay = new Overlay();
+            v_Overlay.setInputPDF(v_TemplateDoc);
+            v_Overlay.setOverlayPosition(Overlay.Position.FOREGROUND);
+            v_Overlay.setAllPagesOverlayPDF(v_DataDoc);
+            v_SaveDoc = v_Overlay.overlay(new HashMap<Integer ,String>());
+
+            // 保存叠加后的结果文档
+            v_SaveDoc.save(i_SaveFile ,CompressParameters.DEFAULT_COMPRESSION);
+            return true;
+        }
+        catch (Exception exce)
+        {
+            $Logger.error(exce);
+        }
+        finally
+        {
+            if ( v_TemplateDoc != null )
+            {
+                try
+                {
+                    v_TemplateDoc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                v_TemplateDoc = null;
+            }
+            
+            if ( v_DataDoc != null )
+            {
+                try
+                {
+                    v_DataDoc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                v_DataDoc = null;
+            }
+            
+            if ( v_Overlay != null )
+            {
+                try
+                {
+                    v_Overlay.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                v_Overlay = null;
+            }
+            
+            if ( v_SaveDoc != null )
+            {
+                try
+                {
+                    v_SaveDoc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                v_SaveDoc = null;
+            }
+        }
+        
+        return false;
+    }
+    
+    
+    
+    /**
      * 将两个PDF文件叠加（重叠&覆盖）在一起
      * 
      * @author      ZhengWei(HY)
