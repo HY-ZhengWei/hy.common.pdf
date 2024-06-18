@@ -90,6 +90,7 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * 格式举例：
      *   5,3       表示5单位实线，3单位空白：
      *   10,5,3,5  表示10单位实线，5单位空白，3单位实线，5单位空白
+     *   空字符串   表示绘制实线
      */
     private String lineDashPattern;
     
@@ -666,6 +667,7 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * 格式举例：
      *   5,3       表示5单位实线，3单位空白：
      *   10,5,3,5  表示10单位实线，5单位空白，3单位实线，5单位空白
+     *   空字符串   表示绘制实线
      */
     public String getLineDashPattern()
     {
@@ -682,6 +684,7 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * 格式举例：
      *   5,3       表示5单位实线，3单位空白：
      *   10,5,3,5  表示10单位实线，5单位空白，3单位实线，5单位空白
+     *   空字符串   表示绘制实线
      * 
      * @param i_LineDashPattern 线段虚线样式。
      */

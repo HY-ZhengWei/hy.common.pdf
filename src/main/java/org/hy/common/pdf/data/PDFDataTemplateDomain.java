@@ -128,6 +128,11 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
                 }
             }
         }
+        else if ( "".equals(this.data.getLineDashPattern()) )
+        {
+            // 绘制实线
+            this.lineDashPatternArr = new float[0];
+        }
     }
     
     
