@@ -3,6 +3,7 @@ package org.hy.common.pdf;
 import java.awt.Shape;
 import java.awt.geom.PathIterator;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -42,6 +43,97 @@ public class PDFHelp
 {
     
     private static final Logger $Logger = new Logger(PDFHelp.class);
+    
+    
+    
+    /**
+     * 创建纯文本的PDF文件（内存字节流）
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-16
+     * @version     v1.0
+     *
+     * @param i_DataTemplates PDF数据样式的模板
+     * @param i_Datas         PDF数据
+     * @return  异常时返回NULL。成功时返回对象，请再使用完成后释放内存。
+     */
+    @SuppressWarnings("rawtypes")
+    public static ByteArrayOutputStream create(List<PDFDataTemplate> i_DataTemplates ,Map<String ,Object> i_Datas)
+    {
+        if ( Help.isNull(i_DataTemplates) )
+        {
+            return null;
+        }
+        if ( Help.isNull(i_Datas) )
+        {
+            return null;
+        }
+        
+        // 创建一个空的PDF文档
+        PDDocument          v_Doc           = new PDDocument();
+        PDPageContentStream v_Content = null;
+        boolean             v_IsClose       = false;
+
+        try {
+            // 创建页面对象
+            PDPage v_Page = new PDPage();
+            v_Doc.addPage(v_Page);
+
+            // 开始在页面上写入内容
+            v_Content = new PDPageContentStream(v_Doc, v_Page);
+            
+            PDFDataTemplateDomain v_LastStyle = new PDFDataTemplateDomain();  // 最近一次的格式
+            for (PDFDataTemplate v_Item : i_DataTemplates)
+            {
+                PDFDataTemplateDomain v_DataTemplate = new PDFDataTemplateDomain(v_Item);
+                pageContent(v_Doc ,v_Content ,v_DataTemplate ,i_Datas.get(v_DataTemplate.getName()) ,v_LastStyle);
+            }
+            
+            v_Content.close();
+            v_IsClose = true;
+
+            // 保存PDF文件
+            ByteArrayOutputStream v_SaveFile = new ByteArrayOutputStream();
+            v_Doc.save(v_SaveFile ,CompressParameters.DEFAULT_COMPRESSION);
+            
+            return v_SaveFile;
+        }
+        catch (IOException exce)
+        {
+            $Logger.error(exce);
+        }
+        finally
+        {
+            if ( v_Content != null && !v_IsClose )
+            {
+                try
+                {
+                    v_Content.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+            }
+            v_Content = null;
+            
+            if ( v_Doc != null )
+            {
+                try
+                {
+                    v_Doc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                
+                v_Doc = null;
+            }
+        }
+        
+        return null;
+    }
     
     
     
@@ -724,6 +816,247 @@ public class PDFHelp
     
     
     /**
+     * 将两个PDF文件叠加（重叠&覆盖）在一起（内存字节流）
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-16
+     * @version     v1.0
+     *
+     * @param i_TemplatePDF  模板PDF文件
+     * @param io_DataPDF     数据PDF文件（内存字节流）（会在方法中释放内存）
+     * @return  异常时返回NULL。成功时返回对象，请再使用完成后释放内存。
+     */
+    public static ByteArrayOutputStream overlay(File i_TemplatePDF ,ByteArrayOutputStream io_DataPDF)
+    {
+        try
+        {
+            return overlay(i_TemplatePDF ,io_DataPDF.toByteArray());
+        }
+        finally
+        {
+            io_DataPDF.reset();
+        }
+    }
+    
+    
+    
+    /**
+     * 将两个PDF文件叠加（重叠&覆盖）在一起（内存字节流）
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-16
+     * @version     v1.0
+     *
+     * @param i_TemplatePDF  模板PDF文件
+     * @param i_DataPDF      数据PDF文件（内存字节流）
+     * @return  异常时返回NULL。成功时返回对象，请再使用完成后释放内存。
+     */
+    public static ByteArrayOutputStream overlay(File i_TemplatePDF ,byte[] i_DataPDF)
+    {
+        if ( i_TemplatePDF == null || !i_TemplatePDF.exists() )
+        {
+            return null;
+        }
+        
+        if ( i_DataPDF == null || i_DataPDF.length <= 0 )
+        {
+            return null;
+        }
+        
+        Overlay    v_Overlay     = null;
+        PDDocument v_SaveDoc     = null;
+        PDDocument v_TemplateDoc = null;
+        PDDocument v_DataDoc     = null;
+        try {
+            // 加载需要叠加的源文件和叠加文件
+            v_TemplateDoc = Loader.loadPDF(i_TemplatePDF);
+            v_DataDoc     = Loader.loadPDF(i_DataPDF);
+            
+            // 创建 Overlay 实例并执行叠加操作
+            v_Overlay = new Overlay();
+            v_Overlay.setInputPDF(v_TemplateDoc);
+            v_Overlay.setOverlayPosition(Overlay.Position.FOREGROUND);
+            v_Overlay.setAllPagesOverlayPDF(v_DataDoc);
+            v_SaveDoc = v_Overlay.overlay(new HashMap<Integer ,String>());
+
+            // 保存叠加后的结果文档
+            ByteArrayOutputStream v_SaveFile = new ByteArrayOutputStream();
+            v_SaveDoc.save(v_SaveFile ,CompressParameters.DEFAULT_COMPRESSION);
+            return v_SaveFile;
+        }
+        catch (Exception exce)
+        {
+            $Logger.error(exce);
+        }
+        finally
+        {
+            if ( v_TemplateDoc != null )
+            {
+                try
+                {
+                    v_TemplateDoc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                v_TemplateDoc = null;
+            }
+            
+            if ( v_DataDoc != null )
+            {
+                try
+                {
+                    v_DataDoc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                v_DataDoc = null;
+            }
+            
+            if ( v_Overlay != null )
+            {
+                try
+                {
+                    v_Overlay.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                v_Overlay = null;
+            }
+            
+            if ( v_SaveDoc != null )
+            {
+                try
+                {
+                    v_SaveDoc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                v_SaveDoc = null;
+            }
+        }
+        
+        return null;
+    }
+    
+    
+    
+    /**
+     * 将两个PDF文件叠加（重叠&覆盖）在一起（内存字节流）
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-16
+     * @version     v1.0
+     *
+     * @param i_TemplatePDF  模板PDF文件
+     * @param i_DataPDF      数据PDF文件
+     * @return  异常时返回NULL。成功时返回对象，请再使用完成后释放内存。
+     */
+    public static ByteArrayOutputStream overlay(File i_TemplatePDF ,File i_DataPDF)
+    {
+        if ( i_TemplatePDF == null || !i_TemplatePDF.exists() )
+        {
+            return null;
+        }
+        
+        if ( i_DataPDF == null || !i_DataPDF.exists() )
+        {
+            return null;
+        }
+        
+        Overlay    v_Overlay     = null;
+        PDDocument v_SaveDoc     = null;
+        PDDocument v_TemplateDoc = null;
+        PDDocument v_DataDoc     = null;
+        try {
+            // 加载需要叠加的源文件和叠加文件
+            v_TemplateDoc = Loader.loadPDF(i_TemplatePDF);
+            v_DataDoc     = Loader.loadPDF(i_DataPDF);
+            
+            // 创建 Overlay 实例并执行叠加操作
+            v_Overlay = new Overlay();
+            v_Overlay.setInputPDF(v_TemplateDoc);
+            v_Overlay.setOverlayPosition(Overlay.Position.FOREGROUND);
+            v_Overlay.setAllPagesOverlayPDF(v_DataDoc);
+            v_SaveDoc = v_Overlay.overlay(new HashMap<Integer ,String>());
+
+            // 保存叠加后的结果文档
+            ByteArrayOutputStream v_SaveFile = new ByteArrayOutputStream();
+            v_SaveDoc.save(v_SaveFile ,CompressParameters.DEFAULT_COMPRESSION);
+            return v_SaveFile;
+        }
+        catch (Exception exce)
+        {
+            $Logger.error(exce);
+        }
+        finally
+        {
+            if ( v_TemplateDoc != null )
+            {
+                try
+                {
+                    v_TemplateDoc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                v_TemplateDoc = null;
+            }
+            
+            if ( v_DataDoc != null )
+            {
+                try
+                {
+                    v_DataDoc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                v_DataDoc = null;
+            }
+            
+            if ( v_Overlay != null )
+            {
+                try
+                {
+                    v_Overlay.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                v_Overlay = null;
+            }
+            
+            if ( v_SaveDoc != null )
+            {
+                try
+                {
+                    v_SaveDoc.close();
+                }
+                catch (IOException exce)
+                {
+                    $Logger.error(exce);
+                }
+                v_SaveDoc = null;
+            }
+        }
+        
+        return null;
+    }
+    
+    
+    
+    /**
      * 将两个PDF文件叠加（重叠&覆盖）在一起
      * 
      * @author      ZhengWei(HY)
@@ -792,7 +1125,7 @@ public class PDFHelp
             v_SaveDoc = v_Overlay.overlay(new HashMap<Integer ,String>());
 
             // 保存叠加后的结果文档
-            v_SaveDoc.save(i_SaveFile);
+            v_SaveDoc.save(i_SaveFile ,CompressParameters.DEFAULT_COMPRESSION);
             return true;
         }
         catch (Exception exce)
