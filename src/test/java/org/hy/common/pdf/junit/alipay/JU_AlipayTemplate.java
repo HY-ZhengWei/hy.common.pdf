@@ -72,6 +72,7 @@ public class JU_AlipayTemplate
         // Price Details
         v_DataTemplates.add(new PDFDataTemplate("totalRoomCharges" ,300F ,374F));
         v_DataTemplates.add(new PDFDataTemplate("discount"         ,300F ,356F));
+        v_DataTemplates.add(new PDFDataTemplate("walletName"       ,133F  ,338.5F));
         v_DataTemplates.add(new PDFDataTemplate("grandTotal"       ,300F ,338F ,"Helvetica-Bold"));
         
         return v_DataTemplates;
@@ -113,6 +114,7 @@ public class JU_AlipayTemplate
         v_Datas.put("totalRoomCharges" ,"CNY 500.00");
         v_Datas.put("discount"         ,"-CNY 50.00");
         v_Datas.put("grandTotal"       ,"CNY 450.00");
+        v_Datas.put("walletName"       ,"(Paid via TNG eWallet)");
         
         return v_Datas;
     }
@@ -169,6 +171,7 @@ public class JU_AlipayTemplate
         // Price Details
         v_DataTemplates.add(new PDFDataTemplate("totalRoomCharges" ,300F ,357F));
         v_DataTemplates.add(new PDFDataTemplate("discount"         ,300F ,338F));
+        v_DataTemplates.add(new PDFDataTemplate("walletName"       ,133F ,320.5F));
         v_DataTemplates.add(new PDFDataTemplate("grandTotal"       ,300F ,320F ,"Helvetica-Bold"));
         
         // Refund Details
@@ -215,6 +218,7 @@ public class JU_AlipayTemplate
         v_Datas.put("totalRoomCharges" ,"CNY 500.00");
         v_Datas.put("discount"         ,"-CNY 50.00");
         v_Datas.put("grandTotal"       ,"CNY 450.00");
+        v_Datas.put("walletName"       ,"(Paid via TNG eWallet)");
         
         // Refund Details
         v_Datas.put("refunded"         ,"CNY 300.00");
