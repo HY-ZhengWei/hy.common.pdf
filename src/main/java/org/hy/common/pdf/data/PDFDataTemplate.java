@@ -81,6 +81,9 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     /** 线段颜色。支持 #FFFFFF 格式的颜色 */
     private String lineColor;
     
+    /** 线段填充颜色（闭合形状）。支持 #FFFFFF 格式的颜色 */
+    private String lineFillColor;
+    
     /**
      * 线段虚线样式。
      * 由数字组成的用英文逗号分隔。
@@ -93,6 +96,12 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      *   空字符串   表示绘制实线
      */
     private String lineDashPattern;
+    
+    /** 线段路径宽度缩放比例 */
+    private Float  lineWidthScale;
+    
+    /** 线段路径高度缩放比例 */
+    private Float  lineHeightScale;
     
     
     
@@ -656,8 +665,30 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
         this.lineColor = i_LineColor;
         return (I) this;
     }
+    
+    
+    /**
+     * 获取：线段填充颜色（闭合形状）。支持 #FFFFFF 格式的颜色
+     */
+    public String getLineFillColor()
+    {
+        return lineFillColor;
+    }
 
     
+    /**
+     * 设置：线段填充颜色（闭合形状）。支持 #FFFFFF 格式的颜色
+     * 
+     * @param i_LineFillColor 线段填充颜色（闭合形状）。支持 #FFFFFF 格式的颜色
+     */
+    @SuppressWarnings("unchecked")
+    public I setLineFillColor(String i_LineFillColor)
+    {
+        this.lineFillColor = i_LineFillColor;
+        return (I) this;
+    }
+
+
     /**
      * 获取：线段虚线样式。
      * 由数字组成的用英文逗号分隔。
@@ -692,6 +723,50 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     public I setLineDashPattern(String i_LineDashPattern)
     {
         this.lineDashPattern = i_LineDashPattern;
+        return (I) this;
+    }
+
+    
+    /**
+     * 获取：线段路径宽度缩放比例
+     */
+    public Float getLineWidthScale()
+    {
+        return lineWidthScale;
+    }
+
+    
+    /**
+     * 设置：线段路径宽度缩放比例
+     * 
+     * @param i_LineWidthScale 线段路径宽度缩放比例
+     */
+    @SuppressWarnings("unchecked")
+    public I setLineWidthScale(Float i_LineWidthScale)
+    {
+        this.lineWidthScale = i_LineWidthScale;
+        return (I) this;
+    }
+
+    
+    /**
+     * 获取：线段路径高度缩放比例
+     */
+    public Float getLineHeightScale()
+    {
+        return lineHeightScale;
+    }
+
+    
+    /**
+     * 设置：线段路径高度缩放比例
+     * 
+     * @param i_LineHeightScale 线段路径高度缩放比例
+     */
+    @SuppressWarnings("unchecked")
+    public I setLineHeightScale(Float i_LineHeightScale)
+    {
+        this.lineHeightScale = i_LineHeightScale;
         return (I) this;
     }
     

@@ -1,6 +1,7 @@
 package org.hy.common.pdf;
 
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -582,11 +583,24 @@ public class PDFHelp
         if ( i_DataTemplate.getPdLineColor() != null )
         {
             io_LastStyle.setPdLineColor(i_DataTemplate.getPdLineColor());
+            io_LastStyle.setPdLineFillColor(null);   // 填充与描边互斥
         }
         if ( io_LastStyle.getPdLineColor() != null )
         {
             // 延用上次的线段颜色
             io_Content.setStrokingColor(io_LastStyle.getPdLineColor());
+        }
+        
+        // 设置线段填充颜色
+        if ( i_DataTemplate.getPdLineFillColor() != null )
+        {
+            io_LastStyle.setPdLineColor(null);       // 填充与描边互斥
+            io_LastStyle.setPdLineFillColor(i_DataTemplate.getPdLineFillColor());
+        }
+        if ( io_LastStyle.getPdLineFillColor() != null )
+        {
+            // 延用上次的线段填充颜色
+            io_Content.setNonStrokingColor(io_LastStyle.getPdLineFillColor());
         }
         
         // 设置线段宽度
@@ -609,6 +623,30 @@ public class PDFHelp
         {
             // 延用上次的线段虚线样式
             io_Content.setLineDashPattern(io_LastStyle.getLineDashPatternArr() ,0F);
+        }
+        
+        // 设置线段路径宽度缩放比例
+        float v_WidthScale = 1F;
+        if ( i_DataTemplate.getLineWidthScale() != null )
+        {
+            io_LastStyle.setLineWidthScale(i_DataTemplate.getLineWidthScale());
+        }
+        if ( io_LastStyle.getLineWidthScale() != null )
+        {
+            // 延用上次的线段路径宽度缩放比例
+            v_WidthScale = io_LastStyle.getLineWidthScale();
+        }
+        
+        // 设置线段路径高度缩放比例
+        float v_HeightScale = 1F;
+        if ( i_DataTemplate.getLineHeightScale() != null )
+        {
+            io_LastStyle.setLineHeightScale(i_DataTemplate.getLineHeightScale());
+        }
+        if ( io_LastStyle.getLineHeightScale() != null )
+        {
+            // 延用上次的线段路径高度缩放比例
+            v_HeightScale = io_LastStyle.getLineHeightScale();
         }
         
         // 设置线段原点坐标X
@@ -635,10 +673,18 @@ public class PDFHelp
             v_OriginY = io_LastStyle.getY();
         }
 
-        drawShape(v_OriginX ,v_OriginY ,io_Content, parserPath(i_Data.toString()));
+        drawShape(v_OriginX ,v_OriginY ,io_Content, parserPath(i_Data.toString() ,v_WidthScale ,v_HeightScale));
 
-        // 执行描边操作
-        io_Content.stroke();
+        if ( io_LastStyle.getPdLineColor() != null )
+        {
+            // 执行描边操作
+            io_Content.stroke();
+        }
+        else if ( io_LastStyle.getPdLineFillColor() != null )
+        {
+            // 执行填充形状操作
+            io_Content.fill();
+        }
     }
     
     
@@ -651,9 +697,11 @@ public class PDFHelp
      * @version     v1.0
      *
      * @param i_Datas
+     * @param i_WidthScale
+     * @param i_HeightScale
      * @return
      */
-    private static Shape parserPath(String i_Datas)
+    private static Shape parserPath(String i_Datas ,float i_WidthScale ,float i_HeightScale)
     {
         AWTPathProducer v_Pandler = new AWTPathProducer();
         
@@ -661,7 +709,20 @@ public class PDFHelp
         v_PathParser.setPathHandler(v_Pandler);
         v_PathParser.parse(i_Datas);
         
-        return v_Pandler.getShape();
+        Shape v_Shape = v_Pandler.getShape();
+        
+        if ( i_WidthScale != 1F || i_HeightScale != 1F )
+        {
+            // 创建缩放变换
+            AffineTransform transform = AffineTransform.getScaleInstance(i_WidthScale ,i_HeightScale);
+            // 对路径进行缩放
+            Shape v_ScaledShape = transform.createTransformedShape(v_Shape);
+            return v_ScaledShape;
+        }
+        else
+        {
+            return v_Shape;
+        }
     }
     
     

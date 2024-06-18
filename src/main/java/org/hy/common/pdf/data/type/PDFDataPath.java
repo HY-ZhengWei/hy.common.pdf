@@ -49,7 +49,7 @@ public class PDFDataPath extends PDFDataTemplate<PDFDataPath> implements Seriali
      */
     public PDFDataPath(String i_Name)
     {
-        this(i_Name ,null ,null ,null ,null ,null);
+        this(i_Name ,null ,null ,null ,null ,null ,null);
     }
     
     
@@ -66,7 +66,25 @@ public class PDFDataPath extends PDFDataTemplate<PDFDataPath> implements Seriali
      */
     public PDFDataPath(String i_Name ,String i_LineColor)
     {
-        this(i_Name ,null ,null ,null ,i_LineColor ,null);
+        this(i_Name ,null ,null ,null ,i_LineColor ,null ,null);
+    }
+    
+    
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-18
+     * @version     v1.0
+     *
+     * @param i_Name             模板占位符变量名称
+     * @param i_LineColor        线段颜色。支持 #FFFFFF 格式的颜色
+     * @param i_Scale            等比缩放比例值
+     */
+    public PDFDataPath(String i_Name ,String i_LineColor ,Float i_Scale)
+    {
+        this(i_Name ,null ,null ,null ,i_LineColor ,null ,i_Scale);
     }
     
     
@@ -84,7 +102,7 @@ public class PDFDataPath extends PDFDataTemplate<PDFDataPath> implements Seriali
      */
     public PDFDataPath(String i_Name ,String i_LineColor ,String i_LineDashPattern)
     {
-        this(i_Name ,null ,null ,null ,i_LineColor ,i_LineDashPattern);
+        this(i_Name ,null ,null ,null ,i_LineColor ,i_LineDashPattern ,null);
     }
     
     
@@ -101,7 +119,7 @@ public class PDFDataPath extends PDFDataTemplate<PDFDataPath> implements Seriali
      */
     public PDFDataPath(String i_Name ,Float i_LineWidth)
     {
-        this(i_Name ,null ,null ,i_LineWidth ,null ,null);
+        this(i_Name ,null ,null ,i_LineWidth ,null ,null ,null);
     }
     
     
@@ -119,7 +137,26 @@ public class PDFDataPath extends PDFDataTemplate<PDFDataPath> implements Seriali
      */
     public PDFDataPath(String i_Name ,Float i_LineWidth ,String i_LineColor)
     {
-        this(i_Name ,null ,null ,i_LineWidth ,i_LineColor ,null);
+        this(i_Name ,null ,null ,i_LineWidth ,i_LineColor ,null ,null);
+    }
+    
+    
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-18
+     * @version     v1.0
+     *
+     * @param i_Name             模板占位符变量名称
+     * @param i_LineWidth        线段宽度
+     * @param i_LineColor        线段颜色。支持 #FFFFFF 格式的颜色
+     * @param i_Scale            等比缩放比例值
+     */
+    public PDFDataPath(String i_Name ,Float i_LineWidth ,String i_LineColor ,Float i_Scale)
+    {
+        this(i_Name ,null ,null ,i_LineWidth ,i_LineColor ,null ,i_Scale);
     }
     
     
@@ -138,7 +175,27 @@ public class PDFDataPath extends PDFDataTemplate<PDFDataPath> implements Seriali
      */
     public PDFDataPath(String i_Name ,Float i_LineWidth ,String i_LineColor ,String i_LineDashPattern)
     {
-        this(i_Name ,null ,null ,i_LineWidth ,i_LineColor ,i_LineDashPattern);
+        this(i_Name ,null ,null ,i_LineWidth ,i_LineColor ,i_LineDashPattern ,null);
+    }
+    
+    
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-18
+     * @version     v1.0
+     *
+     * @param i_Name             模板占位符变量名称
+     * @param i_LineWidth        线段宽度
+     * @param i_LineColor        线段颜色。支持 #FFFFFF 格式的颜色
+     * @param i_LineDashPattern  线段虚线样式。由数字组成的用英文逗号分隔
+     * @param i_Scale            等比缩放比例值
+     */
+    public PDFDataPath(String i_Name ,Float i_LineWidth ,String i_LineColor ,String i_LineDashPattern ,Float i_Scale)
+    {
+        this(i_Name ,null ,null ,i_LineWidth ,i_LineColor ,i_LineDashPattern ,i_Scale);
     }
     
     
@@ -156,7 +213,7 @@ public class PDFDataPath extends PDFDataTemplate<PDFDataPath> implements Seriali
      */
     public PDFDataPath(String i_Name ,Float i_X ,Float i_Y)
     {
-        this(i_Name ,i_X ,i_Y ,null ,null ,null);
+        this(i_Name ,i_X ,i_Y ,null ,null ,null ,null);
     }
     
     
@@ -175,7 +232,27 @@ public class PDFDataPath extends PDFDataTemplate<PDFDataPath> implements Seriali
      */
     public PDFDataPath(String i_Name ,Float i_X ,Float i_Y ,Float i_LineWidth)
     {
-        this(i_Name ,i_X ,i_Y ,i_LineWidth ,null ,null);
+        this(i_Name ,i_X ,i_Y ,i_LineWidth ,null ,null ,null);
+    }
+    
+    
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-18
+     * @version     v1.0
+     *
+     * @param i_Name             模板占位符变量名称
+     * @param i_X                位置 x 轴
+     * @param i_Y                位置 y 轴
+     * @param i_LineWidth        线段宽度
+     * @param i_Scale            等比缩放比例值
+     */
+    public PDFDataPath(String i_Name ,Float i_X ,Float i_Y ,Float i_LineWidth ,Float i_Scale)
+    {
+        this(i_Name ,i_X ,i_Y ,i_LineWidth ,null ,null ,i_Scale);
     }
     
     
@@ -195,7 +272,28 @@ public class PDFDataPath extends PDFDataTemplate<PDFDataPath> implements Seriali
      */
     public PDFDataPath(String i_Name ,Float i_X ,Float i_Y ,Float i_LineWidth ,String i_LineColor)
     {
-        this(i_Name ,i_X ,i_Y ,i_LineWidth ,i_LineColor ,null);
+        this(i_Name ,i_X ,i_Y ,i_LineWidth ,i_LineColor ,null ,null);
+    }
+    
+    
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-18
+     * @version     v1.0
+     *
+     * @param i_Name             模板占位符变量名称
+     * @param i_X                位置 x 轴
+     * @param i_Y                位置 y 轴
+     * @param i_LineWidth        线段宽度
+     * @param i_LineColor        线段颜色。支持 #FFFFFF 格式的颜色
+     * @param i_Scale            等比缩放比例值
+     */
+    public PDFDataPath(String i_Name ,Float i_X ,Float i_Y ,Float i_LineWidth ,String i_LineColor ,Float i_Scale)
+    {
+        this(i_Name ,i_X ,i_Y ,i_LineWidth ,i_LineColor ,null ,i_Scale);
     }
     
     
@@ -214,7 +312,27 @@ public class PDFDataPath extends PDFDataTemplate<PDFDataPath> implements Seriali
      */
     public PDFDataPath(String i_Name ,Float i_X ,Float i_Y ,String i_LineColor)
     {
-        this(i_Name ,i_X ,i_Y ,null ,i_LineColor ,null);
+        this(i_Name ,i_X ,i_Y ,null ,i_LineColor ,null ,null);
+    }
+    
+    
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-18
+     * @version     v1.0
+     *
+     * @param i_Name             模板占位符变量名称
+     * @param i_X                位置 x 轴
+     * @param i_Y                位置 y 轴
+     * @param i_LineColor        线段颜色。支持 #FFFFFF 格式的颜色
+     * @param i_Scale            等比缩放比例值
+     */
+    public PDFDataPath(String i_Name ,Float i_X ,Float i_Y ,String i_LineColor ,Float i_Scale)
+    {
+        this(i_Name ,i_X ,i_Y ,null ,i_LineColor ,null ,i_Scale);
     }
     
     
@@ -234,7 +352,28 @@ public class PDFDataPath extends PDFDataTemplate<PDFDataPath> implements Seriali
      */
     public PDFDataPath(String i_Name ,Float i_X ,Float i_Y ,String i_LineColor ,String i_LineDashPattern)
     {
-        this(i_Name ,i_X ,i_Y ,null ,i_LineColor ,i_LineDashPattern);
+        this(i_Name ,i_X ,i_Y ,null ,i_LineColor ,i_LineDashPattern ,null);
+    }
+    
+    
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-18
+     * @version     v1.0
+     *
+     * @param i_Name             模板占位符变量名称
+     * @param i_X                位置 x 轴
+     * @param i_Y                位置 y 轴
+     * @param i_LineColor        线段颜色。支持 #FFFFFF 格式的颜色
+     * @param i_LineDashPattern  线段虚线样式。由数字组成的用英文逗号分隔
+     * @param i_Scale            等比缩放比例值
+     */
+    public PDFDataPath(String i_Name ,Float i_X ,Float i_Y ,String i_LineColor ,String i_LineDashPattern ,Float i_Scale)
+    {
+        this(i_Name ,i_X ,i_Y ,null ,i_LineColor ,i_LineDashPattern ,i_Scale);
     }
     
     
@@ -255,11 +394,35 @@ public class PDFDataPath extends PDFDataTemplate<PDFDataPath> implements Seriali
      */
     public PDFDataPath(String i_Name ,Float i_X ,Float i_Y ,Float i_LineWidth ,String i_LineColor ,String i_LineDashPattern)
     {
+        this(i_Name ,i_X ,i_Y ,i_LineWidth ,i_LineColor ,i_LineDashPattern ,null);
+    }
+    
+    
+    
+    /**
+     * 构建器
+     *
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-18
+     * @version     v1.0
+     *
+     * @param i_Name             模板占位符变量名称
+     * @param i_X                位置 x 轴
+     * @param i_Y                位置 y 轴
+     * @param i_LineWidth        线段宽度
+     * @param i_LineColor        线段颜色。支持 #FFFFFF 格式的颜色
+     * @param i_LineDashPattern  线段虚线样式。由数字组成的用英文逗号分隔
+     * @param i_Scale            等比缩放比例值
+     */
+    public PDFDataPath(String i_Name ,Float i_X ,Float i_Y ,Float i_LineWidth ,String i_LineColor ,String i_LineDashPattern ,Float i_Scale)
+    {
         super(i_Name ,i_X ,i_Y ,null ,null);
         this.setDataType(DataTypeEnum.PATH.getValue());
         this.setLineWidth(i_LineWidth);
         this.setLineColor(i_LineColor);
         this.setLineDashPattern(i_LineDashPattern);
+        this.setLineWidthScale(i_Scale);
+        this.setLineHeightScale(i_Scale);
     }
     
 }

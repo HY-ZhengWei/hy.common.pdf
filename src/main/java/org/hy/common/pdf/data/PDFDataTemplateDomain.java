@@ -57,6 +57,9 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     /** 线段颜色 */
     private PDColor       pdLineColor;
     
+    /** 线段填充颜色（闭合形状） */
+    private PDColor       pdLineFillColor;
+    
     /** 线段虚线样式 */
     private float []      lineDashPatternArr;
     
@@ -106,6 +109,13 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
         {
             Color v_Color = Color.decode(this.data.getLineColor());
             this.pdLineColor = new PDColor(new float[]{v_Color.getRed() / 255F ,v_Color.getGreen() / 255F ,v_Color.getBlue() / 255F}, PDDeviceRGB.INSTANCE);
+        }
+        
+        // 转换线段填充颜色
+        if ( !Help.isNull(this.data.getLineFillColor()) )
+        {
+            Color v_Color = Color.decode(this.data.getLineFillColor());
+            this.pdLineFillColor = new PDColor(new float[]{v_Color.getRed() / 255F ,v_Color.getGreen() / 255F ,v_Color.getBlue() / 255F}, PDDeviceRGB.INSTANCE);
         }
         
         // 转换线段虚线样式
@@ -615,8 +625,8 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     {
         this.data.setLineColor(i_LineColor);
     }
-
-
+    
+    
     /**
      * 获取：线段颜色
      */
@@ -637,6 +647,46 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     }
     
     
+    /**
+     * 获取：线段填充颜色（闭合形状）。支持 #FFFFFF 格式的颜色
+     */
+    public String getLineFillColor()
+    {
+        return this.data.getLineFillColor();
+    }
+
+    
+    /**
+     * 设置：线段填充颜色（闭合形状）。支持 #FFFFFF 格式的颜色
+     * 
+     * @param i_LineFillColor 线段填充颜色（闭合形状）。支持 #FFFFFF 格式的颜色
+     */
+    public void setLineFillColor(String i_LineFillColor)
+    {
+        this.data.setLineFillColor(i_LineFillColor);
+    }
+    
+    
+    /**
+     * 获取：线段填充颜色（闭合形状）
+     */
+    public PDColor getPdLineFillColor()
+    {
+        return pdLineFillColor;
+    }
+
+    
+    /**
+     * 设置：线段填充颜色（闭合形状）
+     * 
+     * @param i_PdLineFillColor 线段填充颜色（闭合形状）
+     */
+    public void setPdLineFillColor(PDColor i_PdLineFillColor)
+    {
+        this.pdLineFillColor = i_PdLineFillColor;
+    }
+
+
     /**
      * 获取：线段虚线样式。
      */
@@ -674,6 +724,46 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     public void setLineDashPatternArr(float [] i_LineDashPatternArr)
     {
         this.lineDashPatternArr = i_LineDashPatternArr;
+    }
+    
+    
+    /**
+     * 获取：线段路径宽度缩放比例
+     */
+    public Float getLineWidthScale()
+    {
+        return this.data.getLineWidthScale();
+    }
+
+    
+    /**
+     * 设置：线段路径宽度缩放比例
+     * 
+     * @param i_LineWidthScale 线段路径宽度缩放比例
+     */
+    public void setLineWidthScale(Float i_LineWidthScale)
+    {
+        this.data.setLineWidthScale(i_LineWidthScale);
+    }
+
+    
+    /**
+     * 获取：线段路径高度缩放比例
+     */
+    public Float getLineHeightScale()
+    {
+        return this.data.getLineHeightScale();
+    }
+
+    
+    /**
+     * 设置：线段路径高度缩放比例
+     * 
+     * @param i_LineHeightScale 线段路径高度缩放比例
+     */
+    public void setLineHeightScale(Float i_LineHeightScale)
+    {
+        this.data.setLineHeightScale(i_LineHeightScale);
     }
     
 }
