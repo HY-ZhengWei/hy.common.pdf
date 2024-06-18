@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.batik.parser.AWTPathProducer;
+import org.apache.batik.parser.PathParser;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.multipdf.Overlay;
 import org.apache.pdfbox.pdfwriter.compress.CompressParameters;
@@ -33,7 +35,7 @@ import org.hy.common.xml.log.Logger;
 
 
 /**
- * PDF 工具类型
+ * PDF 工具类
  *
  * @author      ZhengWei(HY)
  * @createDate  2024-06-12
@@ -576,10 +578,64 @@ public class PDFHelp
     @SuppressWarnings("rawtypes")
     private static void pageContentByPath(PDDocument io_Doc ,PDPageContentStream io_Content ,PDFDataTemplateDomain i_DataTemplate ,Object i_Data ,PDFDataTemplateDomain io_LastStyle) throws IOException
     {
-        io_Content.setStrokingColor(0, 0, 255);   // 设置绘制颜色为蓝色
-        io_Content.setLineWidth(2);               // 设置线宽
+        // 设置线段颜色
+        if ( i_DataTemplate.getPdLineColor() != null )
+        {
+            io_LastStyle.setPdLineColor(i_DataTemplate.getPdLineColor());
+        }
+        if ( io_LastStyle.getPdLineColor() != null )
+        {
+            // 延用上次的线段颜色
+            io_Content.setStrokingColor(io_LastStyle.getPdLineColor());
+        }
+        
+        // 设置线段宽度
+        if ( i_DataTemplate.getLineWidth() != null )
+        {
+            io_LastStyle.setLineWidth(i_DataTemplate.getLineWidth());
+        }
+        if ( io_LastStyle.getLineWidth() != null )
+        {
+            // 延用上次的线段宽度
+            io_Content.setLineWidth(io_LastStyle.getLineWidth());
+        }
+        
+        // 设置线段虚线样式
+        if ( i_DataTemplate.getLineDashPatternArr() != null )
+        {
+            io_LastStyle.setLineDashPatternArr(i_DataTemplate.getLineDashPatternArr());
+        }
+        if ( io_LastStyle.getLineDashPatternArr() != null )
+        {
+            // 延用上次的线段虚线样式
+            io_Content.setLineDashPattern(io_LastStyle.getLineDashPatternArr() ,0F);
+        }
+        
+        // 设置线段原点坐标X
+        float v_OriginX = 0;
+        if ( i_DataTemplate.getX() != null )
+        {
+            io_LastStyle.setX(i_DataTemplate.getX());
+        }
+        if ( io_LastStyle.getX() != null )
+        {
+            // 延用上次的线段原点坐标X
+            v_OriginX = io_LastStyle.getX();
+        }
+        
+        // 设置线段原点坐标Y
+        float v_OriginY = 0;
+        if ( i_DataTemplate.getY() != null )
+        {
+            io_LastStyle.setY(i_DataTemplate.getY());
+        }
+        if ( io_LastStyle.getY() != null )
+        {
+            // 延用上次的线段原点坐标Y
+            v_OriginY = io_LastStyle.getY();
+        }
 
-        // drawShape(io_Content, shape);
+        drawShape(v_OriginX ,v_OriginY ,io_Content, parserPath(i_Data.toString()));
 
         // 执行描边操作
         io_Content.stroke();
@@ -587,10 +643,45 @@ public class PDFHelp
     
     
     
-    private static void drawShape(PDPageContentStream io_Content, Shape i_SvgShape) throws IOException
+    /**
+     * 解释路径数据
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-18
+     * @version     v1.0
+     *
+     * @param i_Datas
+     * @return
+     */
+    private static Shape parserPath(String i_Datas)
+    {
+        AWTPathProducer v_Pandler = new AWTPathProducer();
+        
+        PathParser v_PathParser = new PathParser();
+        v_PathParser.setPathHandler(v_Pandler);
+        v_PathParser.parse(i_Datas);
+        
+        return v_Pandler.getShape();
+    }
+    
+    
+    
+    /**
+     * 绘制路径
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-18
+     * @version     v1.0
+     *
+     * @param i_OriginX    原点坐标X
+     * @param io_Content   原点坐标Y
+     * @param i_SvgShape
+     * @throws IOException
+     */
+    private static void drawShape(float i_OriginX ,float i_OriginY ,PDPageContentStream io_Content, Shape i_SvgShape) throws IOException
     {
         PathIterator v_PathIterator = i_SvgShape.getPathIterator(null);
-        float [] v_Coordinates = new float[6];
+        float []     v_Coordinates  = new float[6];
 
         while ( !v_PathIterator.isDone() )
         {
@@ -600,22 +691,25 @@ public class PDFHelp
             {
                 // 将画笔移动到指定的坐标位置
                 case PathIterator.SEG_MOVETO:
-                    io_Content.moveTo(v_Coordinates[0], v_Coordinates[1]);
+                    io_Content.moveTo(v_Coordinates[0] + i_OriginX ,v_Coordinates[1] + i_OriginY);
                     break;
                     
                 // 从当前点绘制一条直线到指定的坐标
                 case PathIterator.SEG_LINETO:
-                    io_Content.lineTo(v_Coordinates[0], v_Coordinates[1]);
+                    io_Content.lineTo(v_Coordinates[0] + i_OriginX ,v_Coordinates[1] + i_OriginY);
                     break;
                 
                 // 使用两个坐标点绘制二次贝塞尔曲线
                 case PathIterator.SEG_QUADTO:
-                    io_Content.curveTo1(v_Coordinates[0], v_Coordinates[1], v_Coordinates[2], v_Coordinates[3]);
+                    io_Content.curveTo1(v_Coordinates[0] + i_OriginX ,v_Coordinates[1] + i_OriginY
+                                       ,v_Coordinates[2] + i_OriginX ,v_Coordinates[3] + i_OriginY);
                     break;
                     
                 // 使用三个坐标点绘制贝塞尔曲线
                 case PathIterator.SEG_CUBICTO:
-                    io_Content.curveTo(v_Coordinates[0], v_Coordinates[1], v_Coordinates[2], v_Coordinates[3], v_Coordinates[4], v_Coordinates[5]);
+                    io_Content.curveTo(v_Coordinates[0] + i_OriginX ,v_Coordinates[1]  + i_OriginY
+                                      ,v_Coordinates[2] + i_OriginX ,v_Coordinates[3]  + i_OriginY
+                                      ,v_Coordinates[4] + i_OriginX ,v_Coordinates[5]  + i_OriginY);
                     break;
                     
                 // 关闭路径，绘制一条从当前点到起始点的直线
@@ -650,38 +744,77 @@ public class PDFHelp
     @SuppressWarnings("rawtypes")
     private static void pageContentByImage(PDDocument io_Doc ,PDPageContentStream io_Content ,PDFDataTemplateDomain i_DataTemplate ,Object i_Data ,PDFDataTemplateDomain io_LastStyle) throws IOException
     {
+        // 设置图片类型
+        ImageTypeEnum v_ImageType = null;
+        if ( i_DataTemplate.getImageTypeEnum() != null )
+        {
+            io_LastStyle.setImageTypeEnum(i_DataTemplate.getImageTypeEnum());
+        }
+        if ( io_LastStyle.getImageTypeEnum() != null )
+        {
+            // 延用上次的图片类型
+            v_ImageType = io_LastStyle.getImageTypeEnum();
+        }
+        
         String         v_ImagePath   = i_Data.toString();
         BufferedImage  v_ImageBuffer = FileHelp.getContentImage(v_ImagePath);
-        ImageTypeEnum  v_ImageType   = i_DataTemplate.getImageTypeEnum() == null ? ImageTypeEnum.PNG : i_DataTemplate.getImageTypeEnum();
-        byte []        v_ImageBytes  = FileHelp.toBytes(v_ImageBuffer ,v_ImageType.getDesc());
+        byte []        v_ImageBytes  = FileHelp.toBytes(v_ImageBuffer ,(v_ImageType == null ? ImageTypeEnum.PNG : v_ImageType).getDesc());
         PDImageXObject v_PDImage     = PDImageXObject.createFromByteArray(io_Doc ,v_ImageBytes ,v_ImagePath);
         
+        // 图片宽度
         Float v_Width = 0F;
         if ( i_DataTemplate.getImageWidth() != null )
         {
-            v_Width = i_DataTemplate.getImageWidth();
+            io_LastStyle.setImageWidth(i_DataTemplate.getImageWidth());
+        }
+        if ( io_LastStyle.getImageWidth() != null )
+        {
+            // 延用上次的图片宽度
+            v_Width = io_LastStyle.getImageWidth();
         }
         else
         {
+            // 否则取图片自身尺寸
             v_Width = v_ImageBuffer.getWidth() * 1.0F;
         }
+        
+        // 图片宽度缩放比例
         if ( i_DataTemplate.getImageWidthScale() != null )
         {
-            v_Width = v_Width * i_DataTemplate.getImageWidthScale();
+            io_LastStyle.setImageWidthScale(i_DataTemplate.getImageWidthScale());
+        }
+        if ( io_LastStyle.getImageWidthScale() != null )
+        {
+            // 延用上次的图片宽度缩放比例
+            v_Width = v_Width * io_LastStyle.getImageWidthScale();
         }
         
+        // 图片高度
         Float v_Height = 0F;
         if ( i_DataTemplate.getImageHeight() != null )
         {
-            v_Height = i_DataTemplate.getImageHeight();
+            io_LastStyle.setImageHeight(i_DataTemplate.getImageHeight());
+        }
+        if ( io_LastStyle.getImageHeight() != null )
+        {
+            // 延用上次的图片宽度
+            v_Height = io_LastStyle.getImageHeight();
         }
         else
         {
+            // 否则取图片自身尺寸
             v_Height = v_ImageBuffer.getHeight() * 1.0F;
         }
+        
+        // 图片高度缩放比例
         if ( i_DataTemplate.getImageHeightScale() != null )
         {
-            v_Height = v_Height * i_DataTemplate.getImageHeightScale();
+            io_LastStyle.setImageHeightScale(i_DataTemplate.getImageHeightScale());
+        }
+        if ( io_LastStyle.getImageHeightScale() != null )
+        {
+            // 延用上次的图片高度缩放比例
+            v_Height = v_Height * io_LastStyle.getImageHeightScale();
         }
         
         io_Content.drawImage(v_PDImage ,i_DataTemplate.getX() ,i_DataTemplate.getY() ,v_Width ,v_Height);
@@ -732,14 +865,14 @@ public class PDFHelp
         }
         
         // 设置字体颜色。设置非描边颜色（即填充颜色）
-        if ( i_DataTemplate.getPdColor() != null )
+        if ( i_DataTemplate.getPdFontColor() != null )
         {
-            io_LastStyle.setPdColor(i_DataTemplate.getPdColor());
+            io_LastStyle.setPdFontColor(i_DataTemplate.getPdFontColor());
         }
-        if ( io_LastStyle.getPdColor() != null )
+        if ( io_LastStyle.getPdFontColor() != null )
         {
             // 延用上次的字体颜色
-            io_Content.setNonStrokingColor(io_LastStyle.getPdColor());
+            io_Content.setNonStrokingColor(io_LastStyle.getPdFontColor());
         }
         
         // 设置字间距
@@ -747,10 +880,10 @@ public class PDFHelp
         {
             io_LastStyle.setFontSpacing(i_DataTemplate.getFontSpacing());
         }
-        if ( i_DataTemplate.getFontSpacing() != null )
+        if ( io_LastStyle.getFontSpacing() != null )
         {
             // 延用上次的字间距
-            io_Content.setCharacterSpacing(i_DataTemplate.getFontSpacing());
+            io_Content.setCharacterSpacing(io_LastStyle.getFontSpacing());
         }
         
         // 设置字间距
@@ -758,10 +891,10 @@ public class PDFHelp
         {
             io_LastStyle.setWordSpacing(i_DataTemplate.getWordSpacing());
         }
-        if ( i_DataTemplate.getWordSpacing() != null )
+        if ( io_LastStyle.getWordSpacing() != null )
         {
             // 延用上次的字间距
-            io_Content.setWordSpacing(i_DataTemplate.getWordSpacing());
+            io_Content.setWordSpacing(io_LastStyle.getWordSpacing());
         }
         
         // 设置行间距
@@ -769,10 +902,10 @@ public class PDFHelp
         {
             io_LastStyle.setLeading(i_DataTemplate.getLeading());
         }
-        if ( i_DataTemplate.getLeading() != null )
+        if ( io_LastStyle.getLeading() != null )
         {
             // 延用上次的行间距
-            io_Content.setLeading(i_DataTemplate.getLeading());
+            io_Content.setLeading(io_LastStyle.getLeading());
         }
         
         // 设置文本的水平缩放比例
@@ -780,10 +913,10 @@ public class PDFHelp
         {
             io_LastStyle.setHorizontalScaling(i_DataTemplate.getHorizontalScaling());
         }
-        if ( i_DataTemplate.getHorizontalScaling() != null )
+        if ( io_LastStyle.getHorizontalScaling() != null )
         {
             // 延用上次的文本的水平缩放比例
-            io_Content.setHorizontalScaling(i_DataTemplate.getHorizontalScaling());
+            io_Content.setHorizontalScaling(io_LastStyle.getHorizontalScaling());
         }
         
         // 设置文本的上标与下标
@@ -791,10 +924,10 @@ public class PDFHelp
         {
             io_LastStyle.setTextRise(i_DataTemplate.getTextRise());
         }
-        if ( i_DataTemplate.getTextRise() != null )
+        if ( io_LastStyle.getTextRise() != null )
         {
             // 延用上次的文本的上标与下标
-            io_Content.setTextRise(i_DataTemplate.getTextRise());
+            io_Content.setTextRise(io_LastStyle.getTextRise());
         }
         
         // 设置文本起始位置

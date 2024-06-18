@@ -28,7 +28,7 @@ public class PDFDataImage extends PDFDataTemplate<PDFDataImage> implements Seria
      * 构建器
      *
      * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
+     * @createDate  2024-06-15
      * @version     v1.0
      */
     public PDFDataImage()
@@ -42,15 +42,16 @@ public class PDFDataImage extends PDFDataTemplate<PDFDataImage> implements Seria
      * 构建器
      *
      * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
+     * @createDate  2024-06-15
      * @version     v1.0
-     *
+     * 
      * @param i_Name      模板占位符变量名称
-     * @param i_FontName  字体名称
+     * @param i_X         位置 x 轴
+     * @param i_Y         位置 y 轴
      */
-    public PDFDataImage(String i_Name ,String i_FontName)
+    public PDFDataImage(String i_Name)
     {
-        this(i_Name ,null ,null ,null ,i_FontName);
+        this(i_Name ,null ,null);
     }
     
     
@@ -59,42 +60,7 @@ public class PDFDataImage extends PDFDataTemplate<PDFDataImage> implements Seria
      * 构建器
      *
      * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
-     * @version     v1.0
-     *
-     * @param i_Name      模板占位符变量名称
-     * @param i_FontSize  字体大小
-     */
-    public PDFDataImage(String i_Name ,Float i_FontSize)
-    {
-        this(i_Name ,null ,null ,i_FontSize ,null);
-    }
-    
-    
-    
-    /**
-     * 构建器
-     *
-     * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
-     * @version     v1.0
-     *
-     * @param i_Name      模板占位符变量名称
-     * @param i_FontSize  字体大小
-     * @param i_FontName  字体名称
-     */
-    public PDFDataImage(String i_Name ,Float i_FontSize ,String i_FontName)
-    {
-        this(i_Name ,null ,null ,i_FontSize ,i_FontName);
-    }
-    
-    
-    
-    /**
-     * 构建器
-     *
-     * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
+     * @createDate  2024-06-15
      * @version     v1.0
      * 
      * @param i_Name      模板占位符变量名称
@@ -103,7 +69,7 @@ public class PDFDataImage extends PDFDataTemplate<PDFDataImage> implements Seria
      */
     public PDFDataImage(String i_Name ,Float i_X ,Float i_Y)
     {
-        this(i_Name ,i_X ,i_Y ,null ,null);
+        this(i_Name ,i_X ,i_Y ,null ,null ,null);
     }
     
     
@@ -112,17 +78,17 @@ public class PDFDataImage extends PDFDataTemplate<PDFDataImage> implements Seria
      * 构建器
      *
      * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
+     * @createDate  2024-06-15
      * @version     v1.0
-     *
-     * @param i_Name      模板占位符变量名称
-     * @param i_X         位置 x 轴
-     * @param i_Y         位置 y 轴
-     * @param i_FontSize  字体大小
+     * 
+     * @param i_Name        模板占位符变量名称
+     * @param i_X           位置 x 轴
+     * @param i_Y           位置 y 轴
+     * @param i_ImageType   图片格式。参考 ImageTypeEnum 枚举。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
      */
-    public PDFDataImage(String i_Name ,Float i_X ,Float i_Y ,Float i_FontSize)
+    public PDFDataImage(String i_Name ,Float i_X ,Float i_Y ,String i_ImageType)
     {
-        this(i_Name ,i_X ,i_Y ,i_FontSize ,null);
+        this(i_Name ,i_X ,i_Y ,null ,null ,i_ImageType);
     }
     
     
@@ -131,17 +97,18 @@ public class PDFDataImage extends PDFDataTemplate<PDFDataImage> implements Seria
      * 构建器
      *
      * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
+     * @createDate  2024-06-15
      * @version     v1.0
-     *
-     * @param i_Name      模板占位符变量名称
-     * @param i_X         位置 x 轴
-     * @param i_Y         位置 y 轴
-     * @param i_FontName  字体名称
+     * 
+     * @param i_Name        模板占位符变量名称
+     * @param i_X           位置 x 轴
+     * @param i_Y           位置 y 轴
+     * @param i_ImageWidth  图片宽度。为NULL时自动取图片原始大小
+     * @param i_ImageHeight 图片高度。为NULL时自动取图片原始大小
      */
-    public PDFDataImage(String i_Name ,Float i_X ,Float i_Y ,String i_FontName)
+    public PDFDataImage(String i_Name ,Float i_X ,Float i_Y ,Float i_ImageWidth ,Float i_ImageHeight)
     {
-        this(i_Name ,i_X ,i_Y ,null ,i_FontName);
+        this(i_Name ,i_X ,i_Y ,null ,null ,null);
     }
     
     
@@ -150,19 +117,23 @@ public class PDFDataImage extends PDFDataTemplate<PDFDataImage> implements Seria
      * 构建器
      *
      * @author      ZhengWei(HY)
-     * @createDate  2024-06-13
+     * @createDate  2024-06-15
      * @version     v1.0
-     *
-     * @param i_Name      模板占位符变量名称
-     * @param i_X         位置 x 轴
-     * @param i_Y         位置 y 轴
-     * @param i_FontSize  字体大小
-     * @param i_FontName  字体名称
+     * 
+     * @param i_Name        模板占位符变量名称
+     * @param i_X           位置 x 轴
+     * @param i_Y           位置 y 轴
+     * @param i_ImageWidth  图片宽度。为NULL时自动取图片原始大小
+     * @param i_ImageHeight 图片高度。为NULL时自动取图片原始大小
+     * @param i_ImageType   图片格式。参考 ImageTypeEnum 枚举。没有直接从图片路径中解析，原因是：网络图片路径很可能不包括扩展名
      */
-    public PDFDataImage(String i_Name ,Float i_X ,Float i_Y ,Float i_FontSize ,String i_FontName)
+    public PDFDataImage(String i_Name ,Float i_X ,Float i_Y ,Float i_ImageWidth ,Float i_ImageHeight ,String i_ImageType)
     {
-        super(i_Name ,i_X ,i_Y ,i_FontSize ,i_FontName);
+        super(i_Name ,i_X ,i_Y ,null ,null);
         this.setDataType(DataTypeEnum.IMAGE.getValue());
+        this.setImageWidth(i_ImageWidth);
+        this.setImageHeight(i_ImageHeight);
+        this.setImageType(i_ImageType);
     }
     
 }

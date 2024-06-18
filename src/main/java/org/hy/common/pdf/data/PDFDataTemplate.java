@@ -78,6 +78,21 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     /** 线段宽度 */
     private Float  lineWidth;
     
+    /** 线段颜色。支持 #FFFFFF 格式的颜色 */
+    private String lineColor;
+    
+    /**
+     * 线段虚线样式。
+     * 由数字组成的用英文逗号分隔。
+     *   奇数位上的数字表示：实线单位占比
+     *   偶数位上的数字表示：虚线单位占比
+     * 
+     * 格式举例：
+     *   5,3       表示5单位实线，3单位空白：
+     *   10,5,3,5  表示10单位实线，5单位空白，3单位实线，5单位空白
+     */
+    private String lineDashPattern;
+    
     
     
     /**
@@ -616,6 +631,64 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     public I setLineWidth(Float i_LineWidth)
     {
         this.lineWidth = i_LineWidth;
+        return (I) this;
+    }
+
+    
+    /**
+     * 获取：线段颜色。支持 #FFFFFF 格式的颜色
+     */
+    public String getLineColor()
+    {
+        return lineColor;
+    }
+
+    
+    /**
+     * 设置：线段颜色。支持 #FFFFFF 格式的颜色
+     * 
+     * @param i_LineColor 线段颜色。支持 #FFFFFF 格式的颜色
+     */
+    @SuppressWarnings("unchecked")
+    public I setLineColor(String i_LineColor)
+    {
+        this.lineColor = i_LineColor;
+        return (I) this;
+    }
+
+    
+    /**
+     * 获取：线段虚线样式。
+     * 由数字组成的用英文逗号分隔。
+     *   奇数位上的数字表示：实线单位占比
+     *   偶数位上的数字表示：虚线单位占比
+     * 
+     * 格式举例：
+     *   5,3       表示5单位实线，3单位空白：
+     *   10,5,3,5  表示10单位实线，5单位空白，3单位实线，5单位空白
+     */
+    public String getLineDashPattern()
+    {
+        return lineDashPattern;
+    }
+
+    
+    /**
+     * 设置：线段虚线样式。
+     * 由数字组成的用英文逗号分隔。
+     *   奇数位上的数字表示：实线单位占比
+     *   偶数位上的数字表示：虚线单位占比
+     * 
+     * 格式举例：
+     *   5,3       表示5单位实线，3单位空白：
+     *   10,5,3,5  表示10单位实线，5单位空白，3单位实线，5单位空白
+     * 
+     * @param i_LineDashPattern 线段虚线样式。
+     */
+    @SuppressWarnings("unchecked")
+    public I setLineDashPattern(String i_LineDashPattern)
+    {
+        this.lineDashPattern = i_LineDashPattern;
         return (I) this;
     }
     

@@ -30,6 +30,9 @@ public class PDFText extends PDFDataTemplate<PDFText> implements Serializable
      */
     private String imagePath;
     
+    /** 线段路径数据 */
+    private String linePath;
+    
     
     
     /**
@@ -239,6 +242,27 @@ public class PDFText extends PDFDataTemplate<PDFText> implements Serializable
     public PDFText setImagePath(String i_ImagePath)
     {
         this.imagePath = i_ImagePath;
+        return this;
+    }
+
+    
+    /**
+     * 获取：线段路径数据
+     */
+    public String getLinePath()
+    {
+        return linePath;
+    }
+
+    
+    /**
+     * 设置：线段路径数据
+     * 
+     * @param i_LinePath 线段路径数据
+     */
+    public PDFText setLinePath(String i_LinePath)
+    {
+        this.linePath = i_LinePath;
         return this;
     }
 

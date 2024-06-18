@@ -34,6 +34,11 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     
     
     
+    /** 线段虚线样式数据的分隔符 */
+    private static final String $LineDashPatternSplit = ",";
+    
+    
+    
     /** 数据类型（文本、图片、线段） */
     private DataTypeEnum  dataTypeEnum;
     
@@ -44,10 +49,16 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     private PDFont        pdFont;
     
     /** 字体颜色对象 */
-    private PDColor       pdColor;
+    private PDColor       pdFontColor;
     
     /** 图片类型 */
     private ImageTypeEnum imageTypeEnum;
+    
+    /** 线段颜色 */
+    private PDColor       pdLineColor;
+    
+    /** 线段虚线样式 */
+    private float []      lineDashPatternArr;
     
     
     
@@ -84,11 +95,39 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
         if ( !Help.isNull(this.data.getFontColor()) )
         {
             Color v_Color = Color.decode(this.data.getFontColor());
-            this.pdColor = new PDColor(new float[]{v_Color.getRed() / 255F ,v_Color.getGreen() / 255F ,v_Color.getBlue() / 255F}, PDDeviceRGB.INSTANCE);
+            this.pdFontColor = new PDColor(new float[]{v_Color.getRed() / 255F ,v_Color.getGreen() / 255F ,v_Color.getBlue() / 255F}, PDDeviceRGB.INSTANCE);
         }
         
         // 转换图片类型
         this.imageTypeEnum = ImageTypeEnum.get(this.getImageType());
+        
+        // 转换线段颜色
+        if ( !Help.isNull(this.data.getLineColor()) )
+        {
+            Color v_Color = Color.decode(this.data.getLineColor());
+            this.pdLineColor = new PDColor(new float[]{v_Color.getRed() / 255F ,v_Color.getGreen() / 255F ,v_Color.getBlue() / 255F}, PDDeviceRGB.INSTANCE);
+        }
+        
+        // 转换线段虚线样式
+        if ( !Help.isNull(this.data.getLineDashPattern()) )
+        {
+            String [] v_Arr = this.data.getLineDashPattern().split($LineDashPatternSplit);
+            this.lineDashPatternArr = new float[v_Arr.length];
+            for (int x=0; x<v_Arr.length; x++)
+            {
+                String v_Value = v_Arr[x].trim();
+                if ( Help.isNumber(v_Value) )
+                {
+                    this.lineDashPatternArr[x] = Float.parseFloat(v_Value);
+                }
+                else
+                {
+                    // 任意位置非数字均按实线样式绘制
+                    this.lineDashPatternArr = null;
+                    break;
+                }
+            }
+        }
     }
     
     
@@ -187,7 +226,7 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
      * 
      * @param i_Y 位置 y 轴
      */
-    public void setTextY(Float i_Y)
+    public void setY(Float i_Y)
     {
         this.data.setY(i_Y);
     }
@@ -227,7 +266,7 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
      * 
      * @param i_FontNameType 字体名称
      */
-    public void setFontName(FontName i_FontNameType)
+    public void setFontNameType(FontName i_FontNameType)
     {
         this.fontNameType = i_FontNameType;
     }
@@ -296,20 +335,20 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     /**
      * 获取：字体颜色对象
      */
-    public PDColor getPdColor()
+    public PDColor getPdFontColor()
     {
-        return pdColor;
+        return pdFontColor;
     }
 
     
     /**
      * 设置：字体颜色对象
      * 
-     * @param i_PdColor 字体颜色对象
+     * @param i_PdFontColor 字体颜色对象
      */
-    public void setPdColor(PDColor i_PdColor)
+    public void setPdFontColor(PDColor i_PdFontColor)
     {
-        this.pdColor = i_PdColor;
+        this.pdFontColor = i_PdFontColor;
     }
     
     
@@ -550,6 +589,86 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     public void setLineWidth(Float i_LineWidth)
     {
         this.data.setLineWidth(i_LineWidth);
+    }
+    
+    
+    /**
+     * 获取：线段颜色。支持 #FFFFFF 格式的颜色
+     */
+    public String getLineColor()
+    {
+        return this.data.getLineColor();
+    }
+
+    
+    /**
+     * 设置：线段颜色。支持 #FFFFFF 格式的颜色
+     * 
+     * @param i_LineColor 线段颜色。支持 #FFFFFF 格式的颜色
+     */
+    public void setLineColor(String i_LineColor)
+    {
+        this.data.setLineColor(i_LineColor);
+    }
+
+
+    /**
+     * 获取：线段颜色
+     */
+    public PDColor getPdLineColor()
+    {
+        return pdLineColor;
+    }
+
+    
+    /**
+     * 设置：线段颜色
+     * 
+     * @param i_PdLineColor 线段颜色
+     */
+    public void setPdLineColor(PDColor i_PdLineColor)
+    {
+        this.pdLineColor = i_PdLineColor;
+    }
+    
+    
+    /**
+     * 获取：线段虚线样式。
+     */
+    public String getLineDashPattern()
+    {
+        return this.data.getLineDashPattern();
+    }
+
+    
+    /**
+     * 设置：线段虚线样式。
+     * 
+     * @param i_LineDashPattern 线段虚线样式。
+     */
+    public void setLineDashPattern(String i_LineDashPattern)
+    {
+        this.data.setLineDashPattern(i_LineDashPattern);
+    }
+
+
+    /**
+     * 获取：线段虚线样式
+     */
+    public float [] getLineDashPatternArr()
+    {
+        return lineDashPatternArr;
+    }
+
+
+    /**
+     * 设置：线段虚线样式
+     * 
+     * @param i_LineDashPatternArr 线段虚线样式
+     */
+    public void setLineDashPatternArr(float [] i_LineDashPatternArr)
+    {
+        this.lineDashPatternArr = i_LineDashPatternArr;
     }
     
 }
