@@ -766,4 +766,84 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
         this.data.setLineHeightScale(i_LineHeightScale);
     }
     
+    
+    /**
+     * 获取：线段旋转角度
+     */
+    public Float getLineRotationAngle()
+    {
+        return this.data.getLineRotationAngle();
+    }
+
+    
+    /**
+     * 设置：线段旋转角度
+     * 
+     * @param i_LineRotationAngle 线段旋转角度
+     */
+    public void setLineRotationAngle(Float i_LineRotationAngle)
+    {
+        this.data.setLineRotationAngle(i_LineRotationAngle);
+    }
+    
+    
+    /**
+     * 获取：线段旋转点的X坐标
+     */
+    public Float getLineRotationX()
+    {
+        return this.data.getLineRotationX();
+    }
+    
+    
+    /**
+     * 设置：线段旋转点的X坐标
+     * 
+     * @param i_LineRotationX 线段旋转点的X坐标
+     */
+    public void setLineRotationX(Float i_LineRotationX)
+    {
+        this.data.setLineRotationX(i_LineRotationX);
+    }
+    
+    
+    /**
+     * 获取：线段旋转点的Y坐标
+     */
+    public Float getLineRotationY()
+    {
+        return this.data.getLineRotationY();
+    }
+    
+    
+    /**
+     * 设置：线段旋转点的Y坐标
+     * 
+     * @param i_LineRotationY 线段旋转点的Y坐标
+     */
+    public void setLineRotationY(Float i_LineRotationY)
+    {
+        this.data.setLineRotationY(i_LineRotationY);
+    }
+    
+    
+    /**
+     * 获取：线段是否要转换坐标系（SVG坐标转PDF坐标）
+     */
+    public Boolean getLineTranslateXY()
+    {
+        return this.data.getLineTranslateXY();
+    }
+
+    
+    /**
+     * 设置：线段是否要转换坐标系（SVG坐标转PDF坐标）
+     * 
+     * @param i_LineTranslateXY 线段是否要转换坐标系（SVG坐标转PDF坐标）
+     */
+    public void setLineTranslateXY(Boolean i_LineTranslateXY)
+    {
+        this.data.setLineTranslateXY(i_LineTranslateXY);
+    }
+    
 }

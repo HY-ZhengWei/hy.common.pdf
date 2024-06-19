@@ -47,7 +47,7 @@ public class JU_SVG_PDF
     {
         List<PDFDataTemplate> v_DataTemplates = new ArrayList<PDFDataTemplate>();
         
-        v_DataTemplates.add(new PDFDataPath("svgPath1" ,150F ,300F ,1F ,0.25F).setLineFillColor("#FFD73A"));
+        v_DataTemplates.add(new PDFDataPath("svgPath1" ,150F ,500F ,1F ,0.25F).setLineFillColor("#FFD73A").setLineTranslateXY(true));
         v_DataTemplates.add(new PDFDataPath("svgPath2").setLineFillColor("#873A18"));
         v_DataTemplates.add(new PDFDataPath("svgPath3").setLineFillColor("#FFFFFF"));
         v_DataTemplates.add(new PDFDataPath("svgPath4").setLineFillColor("#F44444"));

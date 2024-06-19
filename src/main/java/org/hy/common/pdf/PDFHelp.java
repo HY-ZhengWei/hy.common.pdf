@@ -626,7 +626,7 @@ public class PDFHelp
         }
         
         // 设置线段路径宽度缩放比例
-        float v_WidthScale = 1F;
+        float v_WidthScale = 1F;    // 默认值
         if ( i_DataTemplate.getLineWidthScale() != null )
         {
             io_LastStyle.setLineWidthScale(i_DataTemplate.getLineWidthScale());
@@ -638,7 +638,7 @@ public class PDFHelp
         }
         
         // 设置线段路径高度缩放比例
-        float v_HeightScale = 1F;
+        float v_HeightScale = 1F;    // 默认值
         if ( i_DataTemplate.getLineHeightScale() != null )
         {
             io_LastStyle.setLineHeightScale(i_DataTemplate.getLineHeightScale());
@@ -649,8 +649,44 @@ public class PDFHelp
             v_HeightScale = io_LastStyle.getLineHeightScale();
         }
         
+        // 设置旋转角度
+        float v_RotationAngle = 0F;    // 默认值
+        if ( i_DataTemplate.getLineRotationAngle() != null )
+        {
+            io_LastStyle.setLineRotationAngle(i_DataTemplate.getLineRotationAngle());
+        }
+        if ( io_LastStyle.getLineRotationAngle() != null )
+        {
+            // 延用上次的旋转角度
+            v_RotationAngle = io_LastStyle.getLineRotationAngle();
+        }
+        
+        // 设置旋转点坐标X
+        float v_RotationX = 0;    // 默认值
+        if ( i_DataTemplate.getLineRotationX() != null )
+        {
+            io_LastStyle.setLineRotationX(i_DataTemplate.getLineRotationX());
+        }
+        if ( io_LastStyle.getLineRotationX() != null )
+        {
+            // 延用上次的旋转点坐标X
+            v_RotationX = io_LastStyle.getLineRotationX();
+        }
+        
+        // 设置旋转点坐标Y
+        float v_RotationY = 0;    // 默认值
+        if ( i_DataTemplate.getLineRotationY() != null )
+        {
+            io_LastStyle.setLineRotationY(i_DataTemplate.getLineRotationY());
+        }
+        if ( io_LastStyle.getLineRotationY() != null )
+        {
+            // 延用上次的旋转点坐标Y
+            v_RotationY = io_LastStyle.getLineRotationY();
+        }
+        
         // 设置线段原点坐标X
-        float v_OriginX = 0;
+        float v_OriginX = 0;    // 默认值
         if ( i_DataTemplate.getX() != null )
         {
             io_LastStyle.setX(i_DataTemplate.getX());
@@ -662,7 +698,7 @@ public class PDFHelp
         }
         
         // 设置线段原点坐标Y
-        float v_OriginY = 0;
+        float v_OriginY = 0;    // 默认值
         if ( i_DataTemplate.getY() != null )
         {
             io_LastStyle.setY(i_DataTemplate.getY());
@@ -672,8 +708,23 @@ public class PDFHelp
             // 延用上次的线段原点坐标Y
             v_OriginY = io_LastStyle.getY();
         }
-
-        drawShape(v_OriginX ,v_OriginY ,io_Content, parserPath(i_Data.toString() ,v_WidthScale ,v_HeightScale));
+        
+        // 设置否要转换坐标系（SVG坐标转PDF坐标）
+        boolean v_TranslateXY = false;    // 默认值
+        if ( i_DataTemplate.getLineTranslateXY() != null )
+        {
+            io_LastStyle.setLineTranslateXY(i_DataTemplate.getLineTranslateXY());
+        }
+        if ( io_LastStyle.getLineTranslateXY() != null )
+        {
+            // 延用上次的否要转换坐标系（SVG坐标转PDF坐标）
+            v_TranslateXY = io_LastStyle.getLineTranslateXY();
+        }
+        
+        Shape v_Shape = parserPath(i_Data.toString());
+        v_Shape = pathScale(v_Shape ,v_WidthScale ,v_HeightScale);
+        v_Shape = pathRotation(v_Shape ,v_RotationAngle ,v_RotationX ,v_RotationY);
+        drawShape(v_OriginX ,v_OriginY ,io_Content ,v_Shape ,v_TranslateXY);
 
         if ( io_LastStyle.getPdLineColor() != null )
         {
@@ -696,12 +747,10 @@ public class PDFHelp
      * @createDate  2024-06-18
      * @version     v1.0
      *
-     * @param i_Datas
-     * @param i_WidthScale
-     * @param i_HeightScale
+     * @param i_Datas  路径数据
      * @return
      */
-    private static Shape parserPath(String i_Datas ,float i_WidthScale ,float i_HeightScale)
+    private static Shape parserPath(String i_Datas)
     {
         AWTPathProducer v_Pandler = new AWTPathProducer();
         
@@ -710,18 +759,72 @@ public class PDFHelp
         v_PathParser.parse(i_Datas);
         
         Shape v_Shape = v_Pandler.getShape();
-        
+        return v_Shape;
+    }
+    
+    
+    
+    /**
+     * 缩放形状
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-19
+     * @version     v1.0
+     *
+     * @param i_Shape       形状
+     * @param i_WidthScale  宽度缩放比例
+     * @param i_HeightScale 高度缩放比例
+     * @return
+     */
+    private static Shape pathScale(Shape i_Shape ,float i_WidthScale ,float i_HeightScale)
+    {
+        // 缩放
         if ( i_WidthScale != 1F || i_HeightScale != 1F )
         {
             // 创建缩放变换
-            AffineTransform transform = AffineTransform.getScaleInstance(i_WidthScale ,i_HeightScale);
-            // 对路径进行缩放
-            Shape v_ScaledShape = transform.createTransformedShape(v_Shape);
-            return v_ScaledShape;
+            AffineTransform v_Transform = AffineTransform.getScaleInstance(i_WidthScale ,i_HeightScale);
+            // 执行缩放
+            return v_Transform.createTransformedShape(i_Shape);
         }
         else
         {
-            return v_Shape;
+            return i_Shape;
+        }
+    }
+    
+    
+    
+    /**
+     * 旋转形状
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-19
+     * @version     v1.0
+     *
+     * @param i_Shape          形状
+     * @param i_RotationAngle  旋转角度（0~360）
+     * @param i_RotationX      旋转点的X坐标
+     * @param i_RotationY      旋转点的Y坐标
+     * @return
+     */
+    private static Shape pathRotation(Shape i_Shape ,float i_RotationAngle ,float i_RotationX ,float i_RotationY)
+    {
+        // 旋转
+        if ( i_RotationAngle != 0F )
+        {
+            // 设置旋转的角度（弧度制）
+            double v_Theta = Math.toRadians(i_RotationAngle);
+            AffineTransform v_Transform = AffineTransform.getRotateInstance(v_Theta);
+     
+            // 将变换原点移动到矩形中心
+            v_Transform.translate(i_RotationX ,i_RotationY);
+     
+            // 对路径进行缩放
+            return v_Transform.createTransformedShape(i_Shape);
+        }
+        else
+        {
+            return i_Shape;
         }
     }
     
@@ -734,12 +837,13 @@ public class PDFHelp
      * @createDate  2024-06-18
      * @version     v1.0
      *
-     * @param i_OriginX    原点坐标X
-     * @param io_Content   原点坐标Y
-     * @param i_SvgShape
+     * @param i_OriginX      原点坐标X
+     * @param io_Content     原点坐标Y
+     * @param i_SvgShape     形状
+     * @param i_TranslateXY  否要转换坐标系（SVG坐标转PDF坐标）
      * @throws IOException
      */
-    private static void drawShape(float i_OriginX ,float i_OriginY ,PDPageContentStream io_Content, Shape i_SvgShape) throws IOException
+    private static void drawShape(float i_OriginX ,float i_OriginY ,PDPageContentStream io_Content, Shape i_SvgShape ,boolean i_TranslateXY) throws IOException
     {
         PathIterator v_PathIterator = i_SvgShape.getPathIterator(null);
         float []     v_Coordinates  = new float[6];
@@ -752,25 +856,25 @@ public class PDFHelp
             {
                 // 将画笔移动到指定的坐标位置
                 case PathIterator.SEG_MOVETO:
-                    io_Content.moveTo(v_Coordinates[0] + i_OriginX ,v_Coordinates[1] + i_OriginY);
+                    io_Content.moveTo(translateX(v_Coordinates[0] ,i_TranslateXY) + i_OriginX ,translateY(v_Coordinates[1] ,i_TranslateXY) + i_OriginY);
                     break;
                     
                 // 从当前点绘制一条直线到指定的坐标
                 case PathIterator.SEG_LINETO:
-                    io_Content.lineTo(v_Coordinates[0] + i_OriginX ,v_Coordinates[1] + i_OriginY);
+                    io_Content.lineTo(translateX(v_Coordinates[0] ,i_TranslateXY) + i_OriginX ,translateY(v_Coordinates[1] ,i_TranslateXY) + i_OriginY);
                     break;
                 
                 // 使用两个坐标点绘制二次贝塞尔曲线
                 case PathIterator.SEG_QUADTO:
-                    io_Content.curveTo1(v_Coordinates[0] + i_OriginX ,v_Coordinates[1] + i_OriginY
-                                       ,v_Coordinates[2] + i_OriginX ,v_Coordinates[3] + i_OriginY);
+                    io_Content.curveTo1(translateX(v_Coordinates[0] ,i_TranslateXY) + i_OriginX ,translateY(v_Coordinates[1] ,i_TranslateXY) + i_OriginY
+                                       ,translateX(v_Coordinates[2] ,i_TranslateXY) + i_OriginX ,translateY(v_Coordinates[3] ,i_TranslateXY) + i_OriginY);
                     break;
                     
                 // 使用三个坐标点绘制贝塞尔曲线
                 case PathIterator.SEG_CUBICTO:
-                    io_Content.curveTo(v_Coordinates[0] + i_OriginX ,v_Coordinates[1]  + i_OriginY
-                                      ,v_Coordinates[2] + i_OriginX ,v_Coordinates[3]  + i_OriginY
-                                      ,v_Coordinates[4] + i_OriginX ,v_Coordinates[5]  + i_OriginY);
+                    io_Content.curveTo(translateX(v_Coordinates[0] ,i_TranslateXY) + i_OriginX ,translateY(v_Coordinates[1] ,i_TranslateXY) + i_OriginY
+                                      ,translateX(v_Coordinates[2] ,i_TranslateXY) + i_OriginX ,translateY(v_Coordinates[3] ,i_TranslateXY) + i_OriginY
+                                      ,translateX(v_Coordinates[4] ,i_TranslateXY) + i_OriginX ,translateY(v_Coordinates[5] ,i_TranslateXY) + i_OriginY);
                     break;
                     
                 // 关闭路径，绘制一条从当前点到起始点的直线
@@ -783,6 +887,55 @@ public class PDFHelp
             }
 
             v_PathIterator.next();
+        }
+    }
+    
+    
+    
+    /**
+     * 转换坐标轴
+     * 
+     * SVG 坐标系通常以左上角为原点，向右为正 X 轴，向下为正 Y 轴。
+     * PDF 坐标系以左下角为原点，向右为正 X 轴，向上为正 Y 轴。
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-19
+     * @version     v1.0
+     *
+     * @param i_SvgX         坐标X轴
+     * @param i_TranslateXY  是否转换坐标系
+     * @return
+     */
+    private static float translateX(float i_SvgX ,boolean i_TranslateXY)
+    {
+        return i_SvgX;
+    }
+    
+    
+    
+    /**
+     * 转换坐标轴
+     * 
+     * SVG 坐标系通常以左上角为原点，向右为正 X 轴，向下为正 Y 轴。
+     * PDF 坐标系以左下角为原点，向右为正 X 轴，向上为正 Y 轴。
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-06-19
+     * @version     v1.0
+     *
+     * @param i_SvgY         坐标Y轴
+     * @param i_TranslateXY  是否转换坐标系
+     * @return
+     */
+    private static float translateY(float i_SvgY ,boolean i_TranslateXY)
+    {
+        if ( i_TranslateXY )
+        {
+            return i_SvgY * -1F;
+        }
+        else
+        {
+            return i_SvgY;
         }
     }
     

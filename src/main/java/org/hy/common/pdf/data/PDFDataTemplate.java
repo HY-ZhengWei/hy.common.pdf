@@ -103,6 +103,18 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     /** 线段路径高度缩放比例 */
     private Float  lineHeightScale;
     
+    /** 线段旋转角度 */
+    private Float  lineRotationAngle;
+    
+    /** 线段旋转点的X坐标 */
+    private Float  lineRotationX;
+    
+    /** 线段旋转点的Y坐标 */
+    private Float  lineRotationY;
+    
+    /** 线段是否要转换坐标系（SVG坐标转PDF坐标） */
+    private Boolean lineTranslateXY;
+    
     
     
     /**
@@ -767,6 +779,94 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     public I setLineHeightScale(Float i_LineHeightScale)
     {
         this.lineHeightScale = i_LineHeightScale;
+        return (I) this;
+    }
+
+
+    /**
+     * 获取：线段旋转角度
+     */
+    public Float getLineRotationAngle()
+    {
+        return lineRotationAngle;
+    }
+
+    
+    /**
+     * 设置：线段旋转角度
+     * 
+     * @param i_LineRotationAngle 线段旋转角度
+     */
+    @SuppressWarnings("unchecked")
+    public I setLineRotationAngle(Float i_LineRotationAngle)
+    {
+        this.lineRotationAngle = i_LineRotationAngle;
+        return (I) this;
+    }
+    
+    
+    /**
+     * 获取：线段旋转点的X坐标
+     */
+    public Float getLineRotationX()
+    {
+        return lineRotationX;
+    }
+    
+    
+    /**
+     * 设置：线段旋转点的X坐标
+     * 
+     * @param i_LineRotationX 线段旋转点的X坐标
+     */
+    @SuppressWarnings("unchecked")
+    public I setLineRotationX(Float i_LineRotationX)
+    {
+        this.lineRotationX = i_LineRotationX;
+        return (I) this;
+    }
+    
+    
+    /**
+     * 获取：线段旋转点的Y坐标
+     */
+    public Float getLineRotationY()
+    {
+        return lineRotationY;
+    }
+    
+    
+    /**
+     * 设置：线段旋转点的Y坐标
+     * 
+     * @param i_LineRotationY 线段旋转点的Y坐标
+     */
+    @SuppressWarnings("unchecked")
+    public I setLineRotationY(Float i_LineRotationY)
+    {
+        this.lineRotationY = i_LineRotationY;
+        return (I) this;
+    }
+
+    
+    /**
+     * 获取：线段是否要转换坐标系（SVG坐标转PDF坐标）
+     */
+    public Boolean getLineTranslateXY()
+    {
+        return lineTranslateXY;
+    }
+
+    
+    /**
+     * 设置：线段是否要转换坐标系（SVG坐标转PDF坐标）
+     * 
+     * @param i_LineTranslateXY 线段是否要转换坐标系（SVG坐标转PDF坐标）
+     */
+    @SuppressWarnings("unchecked")
+    public I setLineTranslateXY(Boolean i_LineTranslateXY)
+    {
+        this.lineTranslateXY = i_LineTranslateXY;
         return (I) this;
     }
     
