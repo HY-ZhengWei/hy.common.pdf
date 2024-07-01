@@ -51,10 +51,11 @@ public class JU_AlipayTemplate
     private List<PDFDataTemplate> makeDataTemplages()
     {
         List<PDFDataTemplate> v_DataTemplates = new ArrayList<PDFDataTemplate>();
-        String v_FontName = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\SIMFANG.TTF";
+        String v_FontNormal = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\SIMFANG.TTF";
+        String v_FontBlod   = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\SIMHEI.TTF";
         
         // Company
-        v_DataTemplates.add(new PDFDataTemplate("companyName"           ,70F  ,663F ,12F ,v_FontName));
+        v_DataTemplates.add(new PDFDataTemplate("companyName"           ,70F  ,663F ,12F ,v_FontNormal));
         v_DataTemplates.add(new PDFDataTemplate("companyAddress1"       ,70F  ,644F));
         v_DataTemplates.add(new PDFDataTemplate("companyAddress2"       ,70F  ,624F));
         
@@ -73,10 +74,10 @@ public class JU_AlipayTemplate
         // Price Details
         v_DataTemplates.add(new PDFDataTemplate("totalRoomCharges"      ,300F ,374F));
         v_DataTemplates.add(new PDFDataTemplate("discount"              ,300F ,356F));
-        v_DataTemplates.add(new PDFDataTemplate("grandTotal"            ,300F ,338F ,"Helvetica-Bold"));
+        v_DataTemplates.add(new PDFDataTemplate("grandTotal"            ,300F ,338F ,v_FontBlod));
         
         // Title
-        v_DataTemplates.add(new PDFDataTemplate("titleName"             ,64F  ,553F ,v_FontName));
+        v_DataTemplates.add(new PDFDataTemplate("titleName"             ,64F  ,553F ,v_FontNormal));
         v_DataTemplates.add(new PDFDataTemplate("titleEmail"            ,64F  ,534F));
         v_DataTemplates.add(new PDFDataTemplate("titleBookingID"        ,64F  ,499F));
         v_DataTemplates.add(new PDFDataTemplate("titleHotelName"        ,64F  ,481F));
@@ -87,10 +88,10 @@ public class JU_AlipayTemplate
         v_DataTemplates.add(new PDFDataTemplate("titleTotalRoomCharges" ,64F  ,374F));
         v_DataTemplates.add(new PDFDataTemplate("titleDiscount"         ,64F  ,356F));
         v_DataTemplates.add(new PDFDataTemplate("titleGrandTotal"       ,64F  ,338F));
-        v_DataTemplates.add(new PDFDataTemplate("titleHint"             ,64F  ,325F));
+        v_DataTemplates.add(new PDFDataTemplate("titleHint"             ,64F  ,310F ,9F));
         
         // Main Title
-        v_DataTemplates.add(new PDFDataTemplate("titleEReceipt"         ,270F ,588F));
+        v_DataTemplates.add(new PDFDataTemplate("titleEReceipt"         ,270F ,588F ,12F ,v_FontBlod));
         v_DataTemplates.add(new PDFDataTemplate("titleGuestDetails"     ,256F ,570F).setFontColor("#FFFFFF"));
         v_DataTemplates.add(new PDFDataTemplate("titleBookingDetails"   ,250F ,517F));
         v_DataTemplates.add(new PDFDataTemplate("titlePriceDetails"     ,130F ,392F));
@@ -190,10 +191,12 @@ public class JU_AlipayTemplate
     private List<PDFDataTemplate> makeDataTemplagesRefund()
     {
         List<PDFDataTemplate> v_DataTemplates = new ArrayList<PDFDataTemplate>();
-        String v_FontName = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\SIMFANG.TTF";
+        String v_FontNormal = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\SIMFANG.TTF";
+        String v_FontBlod   = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\SIMHEI.TTF";
+        
         
         // Company
-        v_DataTemplates.add(new PDFDataTemplate("companyName"           ,70F  ,663F ,12F ,v_FontName));
+        v_DataTemplates.add(new PDFDataTemplate("companyName"           ,70F  ,663F ,12F ,v_FontNormal));
         v_DataTemplates.add(new PDFDataTemplate("companyAddress1"       ,70F  ,644F));
         v_DataTemplates.add(new PDFDataTemplate("companyAddress2"       ,70F  ,624F));
                                                                         
@@ -213,14 +216,14 @@ public class JU_AlipayTemplate
         // Price Details
         v_DataTemplates.add(new PDFDataTemplate("totalRoomCharges"      ,300F ,357F));
         v_DataTemplates.add(new PDFDataTemplate("discount"              ,300F ,338F));
-        v_DataTemplates.add(new PDFDataTemplate("grandTotal"            ,300F ,320F ,"Helvetica-Bold"));
+        v_DataTemplates.add(new PDFDataTemplate("grandTotal"            ,300F ,320F ,v_FontBlod));
                                                                         
         // Refund Details
-        v_DataTemplates.add(new PDFDataTemplate("refunded"              ,300F ,284.5F ,v_FontName));
+        v_DataTemplates.add(new PDFDataTemplate("refunded"              ,300F ,284.5F ,v_FontNormal));
         v_DataTemplates.add(new PDFDataTemplate("nonRefundable"         ,300F ,266F).setFontColor("#FF0000"));
         
         // Title
-        v_DataTemplates.add(new PDFDataTemplate("titleName"             ,64F  ,553F ,v_FontName).setFontColor("#000000"));
+        v_DataTemplates.add(new PDFDataTemplate("titleName"             ,64F  ,553F ,v_FontNormal).setFontColor("#000000"));
         v_DataTemplates.add(new PDFDataTemplate("titleEmail"            ,64F  ,534F));
         v_DataTemplates.add(new PDFDataTemplate("titleBookingID"        ,64F  ,499F));
         v_DataTemplates.add(new PDFDataTemplate("titleBookingStatus"    ,64F  ,481F));
@@ -234,10 +237,10 @@ public class JU_AlipayTemplate
         v_DataTemplates.add(new PDFDataTemplate("titleGrandTotal"       ,64F  ,320F));
         v_DataTemplates.add(new PDFDataTemplate("titleRefunded"         ,64F  ,284.5F));
         v_DataTemplates.add(new PDFDataTemplate("titleNonRefundable"    ,64F  ,266F));
-        v_DataTemplates.add(new PDFDataTemplate("titleHint"             ,64F  ,235F));
+        v_DataTemplates.add(new PDFDataTemplate("titleHint"             ,64F  ,235F ,9F));
         
         // Main Title
-        v_DataTemplates.add(new PDFDataTemplate("titleEReceipt"         ,270F ,588F));
+        v_DataTemplates.add(new PDFDataTemplate("titleEReceipt"         ,270F ,588F ,12F ,v_FontBlod));
         v_DataTemplates.add(new PDFDataTemplate("titleGuestDetails"     ,256F ,570F).setFontColor("#FFFFFF"));
         v_DataTemplates.add(new PDFDataTemplate("titleBookingDetails"   ,250F ,517F));
         v_DataTemplates.add(new PDFDataTemplate("titlePriceDetails"     ,130F ,374F));
