@@ -72,9 +72,12 @@ public class JU_AlipayTemplate
         v_DataTemplates.add(new PDFDataTemplate("paymentDate"           ,300F ,409F));
                                                                         
         // Price Details
-        v_DataTemplates.add(new PDFDataTemplate("totalRoomCharges"      ,300F ,374F));
-        v_DataTemplates.add(new PDFDataTemplate("discount"              ,300F ,356F));
-        v_DataTemplates.add(new PDFDataTemplate("grandTotal"            ,300F ,338F ,v_FontBlod));
+        v_DataTemplates.add(new PDFDataTemplate("totalRoomCharges"      ,300F ,356F));
+        v_DataTemplates.add(new PDFDataTemplate("vat"                   ,300F ,319F));
+        v_DataTemplates.add(new PDFDataTemplate("serviceFee"            ,300F ,302F));
+        v_DataTemplates.add(new PDFDataTemplate("surcharge"             ,300F ,283F));
+        v_DataTemplates.add(new PDFDataTemplate("discount"              ,300F ,266F));
+        v_DataTemplates.add(new PDFDataTemplate("grandTotal"            ,300F ,248F ,v_FontBlod));
         
         // Title
         v_DataTemplates.add(new PDFDataTemplate("titleName"             ,64F  ,553F ,v_FontNormal));
@@ -85,10 +88,17 @@ public class JU_AlipayTemplate
         v_DataTemplates.add(new PDFDataTemplate("titleCheckOut"         ,64F  ,444F));
         v_DataTemplates.add(new PDFDataTemplate("titleNumberofRooms"    ,64F  ,426F));
         v_DataTemplates.add(new PDFDataTemplate("titlePaymentDate"      ,64F  ,409F));
-        v_DataTemplates.add(new PDFDataTemplate("titleTotalRoomCharges" ,64F  ,374F));
-        v_DataTemplates.add(new PDFDataTemplate("titleDiscount"         ,64F  ,356F));
-        v_DataTemplates.add(new PDFDataTemplate("titleGrandTotal"       ,64F  ,338F));
-        v_DataTemplates.add(new PDFDataTemplate("titleHint"             ,64F  ,310F ,9F));
+        
+        // Title Price
+        v_DataTemplates.add(new PDFDataTemplate("titleRoomType"         ,64F  ,374F));
+        v_DataTemplates.add(new PDFDataTemplate("titleTotalRoomCharges" ,64F  ,356F));
+        v_DataTemplates.add(new PDFDataTemplate("titleFaxesFees"        ,64F  ,337F));
+        v_DataTemplates.add(new PDFDataTemplate("titleVAT"              ,80F  ,319F));
+        v_DataTemplates.add(new PDFDataTemplate("titleServiceFee"       ,80F  ,302F));
+        v_DataTemplates.add(new PDFDataTemplate("titleSurcharge"        ,80F  ,283F));
+        v_DataTemplates.add(new PDFDataTemplate("titleDiscount"         ,64F  ,266F));
+        v_DataTemplates.add(new PDFDataTemplate("titleGrandTotal"       ,64F  ,248F));
+        v_DataTemplates.add(new PDFDataTemplate("titleHint"             ,64F  ,215F ,9F));
         
         // Main Title
         v_DataTemplates.add(new PDFDataTemplate("titleEReceipt"         ,270F ,588F ,12F ,v_FontBlod));
@@ -134,8 +144,11 @@ public class JU_AlipayTemplate
                                             
         // Price Details
         v_Datas.put("totalRoomCharges"      ,"CNY 500.00");
-        v_Datas.put("discount"              ,"-CNY 50.00");
-        v_Datas.put("grandTotal"            ,"CNY 450.00");
+        v_Datas.put("vat"                   ,"CNY 10.00");
+        v_Datas.put("serviceFee"            ,"CNY 20.00");
+        v_Datas.put("surcharge"             ,"CNY 30.00");
+        v_Datas.put("discount"              ,"-CNY 40.00");
+        v_Datas.put("grandTotal"            ,"CNY 520.00");
                                             
         // Title
         v_Datas.put("titleName"             ,"Name:");
@@ -146,8 +159,15 @@ public class JU_AlipayTemplate
         v_Datas.put("titleCheckOut"         ,"Check-out Date:");
         v_Datas.put("titleNumberofRooms"    ,"Number of Room(s):");
         v_Datas.put("titlePaymentDate"      ,"Payment Date:");
-        v_Datas.put("titleTotalRoomCharges" ,"Total Room Charges:");
-        v_Datas.put("titleDiscount"         ,"Discount:");
+        
+        // Title Price
+        v_Datas.put("titleRoomType"         ,"Room Type");
+        v_Datas.put("titleTotalRoomCharges" ,"1 room(s) x 1 nights:");
+        v_Datas.put("titleFaxesFees"        ,"Taxes & Fees:");
+        v_Datas.put("titleVAT"              ,"VAT");
+        v_Datas.put("titleServiceFee"       ,"Service Fee");
+        v_Datas.put("titleSurcharge"        ,"Surcharge");
+        v_Datas.put("titleDiscount"         ,"Special Discount:");
         v_Datas.put("titleGrandTotal"       ,"Grand Total(Paid via TNG eWallet)");
         v_Datas.put("titleHint"             ,"This receipt is auto generated and no signature required.");
         
@@ -206,47 +226,57 @@ public class JU_AlipayTemplate
                                                                         
         // Booking Details
         v_DataTemplates.add(new PDFDataTemplate("bookingID"             ,300F ,499F));
-        v_DataTemplates.add(new PDFDataTemplate("bookingStatus"         ,300F ,481F));
-        v_DataTemplates.add(new PDFDataTemplate("hotelName"             ,300F ,463F));
-        v_DataTemplates.add(new PDFDataTemplate("checkInDate"           ,300F ,444F));
-        v_DataTemplates.add(new PDFDataTemplate("checkOutDate"          ,300F ,426F));
-        v_DataTemplates.add(new PDFDataTemplate("numberOfRooms"         ,300F ,409F));
-        v_DataTemplates.add(new PDFDataTemplate("paymentDate"           ,300F ,391F));
+        v_DataTemplates.add(new PDFDataTemplate("hotelName"             ,300F ,481F));
+        v_DataTemplates.add(new PDFDataTemplate("checkInDate"           ,300F ,463F));
+        v_DataTemplates.add(new PDFDataTemplate("checkOutDate"          ,300F ,444F));
+        v_DataTemplates.add(new PDFDataTemplate("numberOfRooms"         ,300F ,426F));
+        v_DataTemplates.add(new PDFDataTemplate("paymentDate"           ,300F ,409F));
                                                                         
         // Price Details
-        v_DataTemplates.add(new PDFDataTemplate("totalRoomCharges"      ,300F ,357F));
-        v_DataTemplates.add(new PDFDataTemplate("discount"              ,300F ,338F));
-        v_DataTemplates.add(new PDFDataTemplate("grandTotal"            ,300F ,320F ,v_FontBlod));
+        v_DataTemplates.add(new PDFDataTemplate("totalRoomCharges"      ,300F ,356F));
+        v_DataTemplates.add(new PDFDataTemplate("vat"                   ,300F ,338F));
+        v_DataTemplates.add(new PDFDataTemplate("serviceFee"            ,300F ,301F));
+        v_DataTemplates.add(new PDFDataTemplate("surcharge"             ,300F ,283F));
+        v_DataTemplates.add(new PDFDataTemplate("discount"              ,300F ,265F));
+        v_DataTemplates.add(new PDFDataTemplate("grandTotal"            ,300F ,247.5F ,v_FontBlod));
                                                                         
         // Refund Details
-        v_DataTemplates.add(new PDFDataTemplate("refunded"              ,300F ,284.5F ,v_FontNormal));
-        v_DataTemplates.add(new PDFDataTemplate("nonRefundable"         ,300F ,266F).setFontColor("#FF0000"));
+        v_DataTemplates.add(new PDFDataTemplate("refunded"              ,300F ,213F ,v_FontNormal));
+        v_DataTemplates.add(new PDFDataTemplate("nonRefundable"         ,300F ,194F).setFontColor("#FF0000"));
         
         // Title
         v_DataTemplates.add(new PDFDataTemplate("titleName"             ,64F  ,553F ,v_FontNormal).setFontColor("#000000"));
         v_DataTemplates.add(new PDFDataTemplate("titleEmail"            ,64F  ,534F));
         v_DataTemplates.add(new PDFDataTemplate("titleBookingID"        ,64F  ,499F));
-        v_DataTemplates.add(new PDFDataTemplate("titleBookingStatus"    ,64F  ,481F));
-        v_DataTemplates.add(new PDFDataTemplate("titleHotelName"        ,64F  ,463F));
-        v_DataTemplates.add(new PDFDataTemplate("titleCheckIn"          ,64F  ,444F));
-        v_DataTemplates.add(new PDFDataTemplate("titleCheckOut"         ,64F  ,426F));
-        v_DataTemplates.add(new PDFDataTemplate("titleNumberofRooms"    ,64F  ,409F));
-        v_DataTemplates.add(new PDFDataTemplate("titlePaymentDate"      ,64F  ,391F));
-        v_DataTemplates.add(new PDFDataTemplate("titleTotalRoomCharges" ,64F  ,357F));
-        v_DataTemplates.add(new PDFDataTemplate("titleDiscount"         ,64F  ,338F));
-        v_DataTemplates.add(new PDFDataTemplate("titleGrandTotal"       ,64F  ,320F));
-        v_DataTemplates.add(new PDFDataTemplate("titleRefunded"         ,64F  ,284.5F));
-        v_DataTemplates.add(new PDFDataTemplate("titleNonRefundable"    ,64F  ,266F));
-        v_DataTemplates.add(new PDFDataTemplate("titleHint"             ,64F  ,235F ,9F));
+        v_DataTemplates.add(new PDFDataTemplate("titleHotelName"        ,64F  ,481F));
+        v_DataTemplates.add(new PDFDataTemplate("titleCheckIn"          ,64F  ,463F));
+        v_DataTemplates.add(new PDFDataTemplate("titleCheckOut"         ,64F  ,444F));
+        v_DataTemplates.add(new PDFDataTemplate("titleNumberofRooms"    ,64F  ,426F));
+        v_DataTemplates.add(new PDFDataTemplate("titlePaymentDate"      ,64F  ,409F));
+        
+        // Title Price
+        v_DataTemplates.add(new PDFDataTemplate("titleRoomType"         ,64F  ,374F));
+        v_DataTemplates.add(new PDFDataTemplate("titleTotalRoomCharges" ,64F  ,356F));
+        v_DataTemplates.add(new PDFDataTemplate("titleFaxesFees"        ,64F  ,337F));
+        v_DataTemplates.add(new PDFDataTemplate("titleVAT"              ,80F  ,319F));
+        v_DataTemplates.add(new PDFDataTemplate("titleServiceFee"       ,80F  ,302F));
+        v_DataTemplates.add(new PDFDataTemplate("titleSurcharge"        ,80F  ,283F));
+        v_DataTemplates.add(new PDFDataTemplate("titleDiscount"         ,64F  ,266F));
+        v_DataTemplates.add(new PDFDataTemplate("titleGrandTotal"       ,64F  ,248F));
+        
+        // Title Price Refund
+        v_DataTemplates.add(new PDFDataTemplate("titleRefunded"         ,64F  ,213F));
+        v_DataTemplates.add(new PDFDataTemplate("titleNonRefundable"    ,64F  ,194F));
+        v_DataTemplates.add(new PDFDataTemplate("titleHint"             ,64F  ,165F ,9F));
         
         // Main Title
         v_DataTemplates.add(new PDFDataTemplate("titleEReceipt"         ,270F ,588F ,12F ,v_FontBlod));
         v_DataTemplates.add(new PDFDataTemplate("titleGuestDetails"     ,256F ,570F).setFontColor("#FFFFFF"));
         v_DataTemplates.add(new PDFDataTemplate("titleBookingDetails"   ,250F ,517F));
-        v_DataTemplates.add(new PDFDataTemplate("titlePriceDetails"     ,130F ,374F));
-        v_DataTemplates.add(new PDFDataTemplate("titleAmount"           ,400F ,374F));
-        v_DataTemplates.add(new PDFDataTemplate("titleRefundDetails"    ,128F ,302F));
-        v_DataTemplates.add(new PDFDataTemplate("titleRefundAmount"     ,400F ,302F));
+        v_DataTemplates.add(new PDFDataTemplate("titlePriceDetails"     ,130F ,391.5F));
+        v_DataTemplates.add(new PDFDataTemplate("titleAmount"           ,400F ,391.5F));
+        v_DataTemplates.add(new PDFDataTemplate("titleRefundDetails"    ,128F ,231F));
+        v_DataTemplates.add(new PDFDataTemplate("titleRefundAmount"     ,400F ,231F));
         
         return v_DataTemplates;
     }
@@ -277,7 +307,6 @@ public class JU_AlipayTemplate
         
         // Booking Details
         v_Datas.put("bookingID"        ,"1234567890");
-        v_Datas.put("bookingStatus"    ,"CANCELED");
         v_Datas.put("hotelName"        ,"Correct Hotel");
         v_Datas.put("checkInDate"      ,"2024-06-13");
         v_Datas.put("checkOutDate"     ,"2024-06-28");
@@ -286,26 +315,37 @@ public class JU_AlipayTemplate
         
         // Price Details
         v_Datas.put("totalRoomCharges" ,"CNY 500.00");
-        v_Datas.put("discount"         ,"-CNY 50.00");
-        v_Datas.put("grandTotal"       ,"CNY 450.00");
+        v_Datas.put("vat"              ,"CNY 10.00");
+        v_Datas.put("serviceFee"       ,"CNY 20.00");
+        v_Datas.put("surcharge"        ,"CNY 30.00");
+        v_Datas.put("discount"         ,"-CNY 40.00");
+        v_Datas.put("grandTotal"       ,"CNY 520.00");
         
         // Refund Details
-        v_Datas.put("refunded"         ,"CNY 300.00");
-        v_Datas.put("nonRefundable"    ,"CNY 150.00");
+        v_Datas.put("refunded"         ,"CNY 320.00");
+        v_Datas.put("nonRefundable"    ,"CNY 200.00");
         
         // Title
         v_Datas.put("titleName"             ,"Name:");
         v_Datas.put("titleEmail"            ,"Email Address:");
         v_Datas.put("titleBookingID"        ,"Booking ID:");
-        v_Datas.put("titleBookingStatus"    ,"Booking Status:");
         v_Datas.put("titleHotelName"        ,"Hotel Name:");
         v_Datas.put("titleCheckIn"          ,"Check-in Date:");
         v_Datas.put("titleCheckOut"         ,"Check-out Date:");
         v_Datas.put("titleNumberofRooms"    ,"Number of Room(s):");
         v_Datas.put("titlePaymentDate"      ,"Payment Date:");
-        v_Datas.put("titleTotalRoomCharges" ,"Total Room Charges:");
-        v_Datas.put("titleDiscount"         ,"Discount:");
+        
+        // Title Price
+        v_Datas.put("titleRoomType"         ,"Room Type");
+        v_Datas.put("titleTotalRoomCharges" ,"1 room(s) x 1 nights:");
+        v_Datas.put("titleFaxesFees"        ,"Taxes & Fees:");
+        v_Datas.put("titleVAT"              ,"VAT");
+        v_Datas.put("titleServiceFee"       ,"Service Fee");
+        v_Datas.put("titleSurcharge"        ,"Surcharge");
+        v_Datas.put("titleDiscount"         ,"Special Discount:");
         v_Datas.put("titleGrandTotal"       ,"Grand Total(Paid via TNG eWallet)");
+        
+        // Title Price Refund
         v_Datas.put("titleRefunded"         ,"Refunded Amount:");
         v_Datas.put("titleNonRefundable"    ,"Non-Refundable Amount:");
         v_Datas.put("titleHint"             ,"This receipt is auto generated and no signature required.");
