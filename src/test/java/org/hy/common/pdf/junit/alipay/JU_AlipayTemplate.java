@@ -51,8 +51,8 @@ public class JU_AlipayTemplate
     private List<PDFDataTemplate> makeDataTemplages()
     {
         List<PDFDataTemplate> v_DataTemplates = new ArrayList<PDFDataTemplate>();
-        String v_FontNormal = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\SIMFANG.TTF";
-        String v_FontBlod   = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\SIMHEI.TTF";
+        String v_FontNormal = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\PingFangHK-Regular-19.ttf";
+        String v_FontBlod   = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\PingFang-Bold-1.ttf";
         
         // Company
         v_DataTemplates.add(new PDFDataTemplate("companyName"           ,70F  ,663F ,12F ,v_FontNormal));
@@ -191,8 +191,8 @@ public class JU_AlipayTemplate
     private List<PDFDataTemplate> makeDataTemplagesRefund()
     {
         List<PDFDataTemplate> v_DataTemplates = new ArrayList<PDFDataTemplate>();
-        String v_FontNormal = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\SIMFANG.TTF";
-        String v_FontBlod   = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\SIMHEI.TTF";
+        String v_FontNormal = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\PingFangHK-Regular-19.ttf";
+        String v_FontBlod   = "D:\\WorkSpace\\hy.common.pdf\\src\\test\\java\\org\\hy\\common\\pdf\\junit\\alipay\\PingFang-Bold-1.ttf";
         
         
         // Company
