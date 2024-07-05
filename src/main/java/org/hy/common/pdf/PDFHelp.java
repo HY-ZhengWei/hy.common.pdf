@@ -685,30 +685,6 @@ public class PDFHelp
             v_RotationY = io_LastStyle.getLineRotationY();
         }
         
-        // 设置线段原点坐标X
-        float v_OriginX = 0;    // 默认值
-        if ( i_DataTemplate.getX() != null )
-        {
-            io_LastStyle.setX(i_DataTemplate.getX());
-        }
-        if ( io_LastStyle.getX() != null )
-        {
-            // 延用上次的线段原点坐标X
-            v_OriginX = io_LastStyle.getX();
-        }
-        
-        // 设置线段原点坐标Y
-        float v_OriginY = 0;    // 默认值
-        if ( i_DataTemplate.getY() != null )
-        {
-            io_LastStyle.setY(i_DataTemplate.getY());
-        }
-        if ( io_LastStyle.getY() != null )
-        {
-            // 延用上次的线段原点坐标Y
-            v_OriginY = io_LastStyle.getY();
-        }
-        
         // 设置否要转换坐标系（SVG坐标转PDF坐标）
         boolean v_TranslateXY = false;    // 默认值
         if ( i_DataTemplate.getLineTranslateXY() != null )
@@ -721,10 +697,52 @@ public class PDFHelp
             v_TranslateXY = io_LastStyle.getLineTranslateXY();
         }
         
+        // 设置位置x轴
+        if ( i_DataTemplate.getX() != null )
+        {
+            io_LastStyle.setX(i_DataTemplate.getX());
+        }
+        else if ( i_DataTemplate.getOffsetX() != null )
+        {
+            if ( io_LastStyle.getX() == null )
+            {
+                io_LastStyle.setX(i_DataTemplate.getOffsetX());
+            }
+            else
+            {
+                io_LastStyle.setX(io_LastStyle.getX() + i_DataTemplate.getOffsetX());
+            }
+        }
+        if ( io_LastStyle.getX() == null )
+        {
+            io_LastStyle.setX(0F);
+        }
+        
+        // 设置位置y轴
+        if ( i_DataTemplate.getY() != null )
+        {
+            io_LastStyle.setY(i_DataTemplate.getY());
+        }
+        else if ( i_DataTemplate.getOffsetY() != null )
+        {
+            if ( io_LastStyle.getY() == null )
+            {
+                io_LastStyle.setY(i_DataTemplate.getOffsetY());
+            }
+            else
+            {
+                io_LastStyle.setY(io_LastStyle.getY() + i_DataTemplate.getOffsetY());
+            }
+        }
+        if ( io_LastStyle.getY() == null )
+        {
+            io_LastStyle.setY(0F);
+        }
+        
         Shape v_Shape = parserPath(i_Data.toString());
         v_Shape = pathScale(v_Shape ,v_WidthScale ,v_HeightScale);
         v_Shape = pathRotation(v_Shape ,v_RotationAngle ,v_RotationX ,v_RotationY);
-        drawShape(v_OriginX ,v_OriginY ,io_Content ,v_Shape ,v_TranslateXY);
+        drawShape(io_LastStyle.getX() ,io_LastStyle.getY() ,io_Content ,v_Shape ,v_TranslateXY);
 
         if ( io_LastStyle.getPdLineColor() != null )
         {
@@ -1031,7 +1049,49 @@ public class PDFHelp
             v_Height = v_Height * io_LastStyle.getImageHeightScale();
         }
         
-        io_Content.drawImage(v_PDImage ,i_DataTemplate.getX() ,i_DataTemplate.getY() ,v_Width ,v_Height);
+        // 设置位置x轴
+        if ( i_DataTemplate.getX() != null )
+        {
+            io_LastStyle.setX(i_DataTemplate.getX());
+        }
+        else if ( i_DataTemplate.getOffsetX() != null )
+        {
+            if ( io_LastStyle.getX() == null )
+            {
+                io_LastStyle.setX(i_DataTemplate.getOffsetX());
+            }
+            else
+            {
+                io_LastStyle.setX(io_LastStyle.getX() + i_DataTemplate.getOffsetX());
+            }
+        }
+        if ( io_LastStyle.getX() == null )
+        {
+            io_LastStyle.setX(0F);
+        }
+        
+        // 设置位置y轴
+        if ( i_DataTemplate.getY() != null )
+        {
+            io_LastStyle.setY(i_DataTemplate.getY());
+        }
+        else if ( i_DataTemplate.getOffsetY() != null )
+        {
+            if ( io_LastStyle.getY() == null )
+            {
+                io_LastStyle.setY(i_DataTemplate.getOffsetY());
+            }
+            else
+            {
+                io_LastStyle.setY(io_LastStyle.getY() + i_DataTemplate.getOffsetY());
+            }
+        }
+        if ( io_LastStyle.getY() == null )
+        {
+            io_LastStyle.setY(0F);
+        }
+        
+        io_Content.drawImage(v_PDImage ,io_LastStyle.getX() ,io_LastStyle.getY() ,v_Width ,v_Height);
     }
     
     
@@ -1144,16 +1204,50 @@ public class PDFHelp
             io_Content.setTextRise(io_LastStyle.getTextRise());
         }
         
-        // 设置文本起始位置
-        if ( i_DataTemplate.getX() != null && i_DataTemplate.getY() != null )
+        // 设置位置x轴
+        if ( i_DataTemplate.getX() != null )
         {
-            io_Content.newLineAtOffset(i_DataTemplate.getX(), i_DataTemplate.getY());
+            io_LastStyle.setX(i_DataTemplate.getX());
         }
-        else
+        else if ( i_DataTemplate.getOffsetX() != null )
         {
-            io_Content.newLine();
+            if ( io_LastStyle.getX() == null )
+            {
+                io_LastStyle.setX(i_DataTemplate.getOffsetX());
+            }
+            else
+            {
+                io_LastStyle.setX(io_LastStyle.getX() + i_DataTemplate.getOffsetX());
+            }
+        }
+        if ( io_LastStyle.getX() == null )
+        {
+            io_LastStyle.setX(0F);
         }
         
+        // 设置位置y轴
+        if ( i_DataTemplate.getY() != null )
+        {
+            io_LastStyle.setY(i_DataTemplate.getY());
+        }
+        else if ( i_DataTemplate.getOffsetY() != null )
+        {
+            if ( io_LastStyle.getY() == null )
+            {
+                io_LastStyle.setY(i_DataTemplate.getOffsetY());
+            }
+            else
+            {
+                io_LastStyle.setY(io_LastStyle.getY() + i_DataTemplate.getOffsetY());
+            }
+        }
+        if ( io_LastStyle.getY() == null )
+        {
+            io_LastStyle.setY(0F);
+        }
+        
+        // 设置文本起始位置
+        io_Content.newLineAtOffset(io_LastStyle.getX(), io_LastStyle.getY());
         // 写入文本
         io_Content.showText(i_Data.toString());
         // 结束写入内容

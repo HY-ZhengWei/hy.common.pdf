@@ -245,6 +245,46 @@ public class PDFDataTemplateDomain<D extends PDFDataTemplate> extends BaseDomain
     {
         this.data.setY(i_Y);
     }
+    
+    
+    /**
+     * 获取：相对 x 轴偏移量
+     */
+    public Float getOffsetX()
+    {
+        return this.data.getOffsetX();
+    }
+
+    
+    /**
+     * 设置：相对 x 轴偏移量
+     * 
+     * @param i_OffsetX 相对 x 轴偏移量
+     */
+    public void setOffsetX(Float i_OffsetX)
+    {
+        this.data.setOffsetX(i_OffsetX);
+    }
+
+    
+    /**
+     * 获取：相对 y 轴偏移量
+     */
+    public Float getOffsetY()
+    {
+        return this.data.getOffsetY();
+    }
+
+    
+    /**
+     * 设置：相对 y 轴偏移量
+     * 
+     * @param i_OffsetY 相对 y 轴偏移量
+     */
+    public void setOffsetY(Float i_OffsetY)
+    {
+        this.data.setOffsetY(i_OffsetY);
+    }
 
     
     /**

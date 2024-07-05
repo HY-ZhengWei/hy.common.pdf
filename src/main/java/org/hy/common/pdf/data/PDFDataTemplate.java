@@ -8,7 +8,14 @@ import java.io.Serializable;
 
 /**
  * PDF文本数据的模板。
- * 将数据与数据格式分离，形成数据与数据模板
+ * 将数据与数据格式分离，形成数据与数据模板。
+ * 
+ * 位置量x、y与相对偏移量x、y的关系说明
+ *   1. 位置x有值时（不等于NULL），偏移量x无效。反之，偏移量x有效；
+ *   2. 位置y有值时（不等于NULL），偏移量y无效。反之，偏移量y有效；
+ * 
+ *   3. 当偏移量x有值而有效时，偏移量x是对上个文本数据位置x的相对偏移。
+ *   4. 当偏移量y有值而有效时，偏移量y是对上个文本数据位置y的相对偏移。
  *
  * @author      ZhengWei(HY)
  * @createDate  2024-06-14
@@ -31,6 +38,12 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     
     /** 位置 y 轴 */
     private Float  y;
+    
+    /** 相对 x 轴偏移量 */
+    private Float  offsetX;
+    
+    /** 相对 y 轴偏移量 */
+    private Float  offsetY;
     
     /** 字体大小 */
     private Float  fontSize;
@@ -190,7 +203,7 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * @createDate  2024-06-13
      * @version     v1.0
      * 
-     * @param i_Name      模板占位符变量名称
+     * @param i_Name  模板占位符变量名称
      * @param i_X     文本位置 x 轴
      * @param i_Y     文本位置 y 轴
      */
@@ -209,8 +222,8 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * @version     v1.0
      *
      * @param i_Name      模板占位符变量名称
-     * @param i_X     文本位置 x 轴
-     * @param i_Y     文本位置 y 轴
+     * @param i_X         文本位置 x 轴
+     * @param i_Y         文本位置 y 轴
      * @param i_FontSize  字体大小
      */
     public PDFDataTemplate(String i_Name ,Float i_X ,Float i_Y ,Float i_FontSize)
@@ -228,8 +241,8 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
      * @version     v1.0
      *
      * @param i_Name      模板占位符变量名称
-     * @param i_X     文本位置 x 轴
-     * @param i_Y     文本位置 y 轴
+     * @param i_X         文本位置 x 轴
+     * @param i_Y         文本位置 y 轴
      * @param i_FontName  字体名称
      */
     public PDFDataTemplate(String i_Name ,Float i_X ,Float i_Y ,String i_FontName)
@@ -259,6 +272,23 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
         this.y        = i_Y;
         this.fontSize = i_FontSize;
         this.fontName = i_FontName;
+    }
+    
+    
+    /**
+     * 设置偏移量
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-07-05
+     * @version     v1.0
+     *
+     * @param i_OffsetX  相对 x 轴偏移量
+     * @param i_OffsetY  相对 y 轴偏移量
+     */
+    public void offset(Float i_OffsetX ,Float i_OffsetY)
+    {
+        this.offsetX = i_OffsetX;
+        this.offsetY = i_OffsetY;
     }
     
     
@@ -345,6 +375,50 @@ public class PDFDataTemplate<I extends PDFDataTemplate<I>> implements Serializab
     public I setY(Float i_Y)
     {
         this.y = i_Y;
+        return (I) this;
+    }
+    
+    
+    /**
+     * 获取：相对 x 轴偏移量
+     */
+    public Float getOffsetX()
+    {
+        return this.offsetX;
+    }
+
+    
+    /**
+     * 设置：相对 x 轴偏移量
+     * 
+     * @param i_OffsetX 相对 x 轴偏移量
+     */
+    @SuppressWarnings("unchecked")
+    public I setOffsetX(Float i_OffsetX)
+    {
+        this.offsetX = i_OffsetX;
+        return (I) this;
+    }
+    
+    
+    /**
+     * 获取：相对 y 轴偏移量
+     */
+    public Float getOffsetY()
+    {
+        return this.offsetY;
+    }
+    
+    
+    /**
+     * 设置：相对 y 轴偏移量
+     * 
+     * @param i_OffsetY 相对 y 轴偏移量
+     */
+    @SuppressWarnings("unchecked")
+    public I setOffsetY(Float i_OffsetY)
+    {
+        this.offsetY = i_OffsetY;
         return (I) this;
     }
 
